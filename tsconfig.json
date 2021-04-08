@@ -22,5 +22,5 @@
   },
   "include": [
     "src"
-  ]
+, "Main.tsx", "Main.tsx"  ]
 }
