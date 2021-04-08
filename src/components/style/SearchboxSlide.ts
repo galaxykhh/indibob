@@ -2,7 +2,7 @@ import {keyframes} from 'styled-components';
 
 export const slideDown = keyframes`
     from {
-        opacity: 0.1;
+        opacity: 0;
         top: 50px;
     }
     to {

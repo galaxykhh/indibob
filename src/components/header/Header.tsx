@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState, useRef } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from 'react-router-dom';
@@ -10,25 +10,26 @@ import { slideUp, slideDown } from '../style/SearchboxSlide';
 const Header: React.FC = () => {
 
     const useSearch = () => {
-        const [hide, setHide] = useState(true);
+        const [hide, setHide] = useState<boolean>(true);
+        const searchInput = useRef<HTMLInputElement>(null);
         const onClick = () => {
-            setHide(!hide)
+            setHide(!hide);
+            searchInput.current?.focus();
         }
-        return { hide , onClick }
-    }
-
+        return { hide , onClick, searchInput };
+    };
     const handleSearch = useSearch();
 
     return (
         <>
             <LogoContainer>
                     <Logo to='/' > INDIBOB </Logo>
-                    <FontAwesomeIcon {...handleSearch} icon={faSearch} style={{ fontSize: '35px', paddingLeft: '25px',paddingBottom: '20px', color: 'white', cursor: 'pointer'}} />
+                    <SearchBtn onClick={handleSearch.onClick} icon={faSearch} />
             </LogoContainer>
-                <SearchBox hide={handleSearch.hide} />
+                <SearchBox visible={handleSearch.hide} ref={handleSearch.searchInput} />
         </>
-    )
-}
+    );
+};
 
 export default Header;
 
@@ -41,14 +42,15 @@ const LogoContainer = styled.div`
     background-color: #252c41;
 `;
 
-const SearchBox = styled.input<{hide: boolean}>`
+const SearchBox = styled.input.attrs(({
+    type: 'text',
+    placeholder: '아티스트명 또는 곡명'
+}))<{ visible: boolean }>`
     all: unset;
     border: 5px solid #52616a;
     position: absolute;
-    top: 50px;
     left:50%; transform:translateX(-50%);
-    display: ${props => props.hide ? 'none' : 'block'};
-    animation: ${props => props.hide ? slideUp : slideDown} .4s ease forwards;
+    animation: ${props => props.visible ? slideUp : slideDown } .6s ease forwards;
     border-radius: 60px;
     background-color: #ffffff;
     padding-left: 50px;
@@ -64,4 +66,12 @@ const Logo = styled(NavLink)`
     font-size: 70px;
     font-weight: bold;
     letter-spacing: 10px;
+`;
+
+const SearchBtn = styled(FontAwesomeIcon)`
+    font-size: 35px;
+    padding-left: 25px;
+    padding-bottom: 20px;
+    color: white;
+    cursor: pointer;
 `;

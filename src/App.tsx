@@ -5,17 +5,19 @@ import Main from './components/page/Main';
 
 const App = () => {
 
-  return (
-      <BrowserRouter>
-      <GlobalStyle />
-      <Header />
-        <Switch>
-            <Route exact path='/'>
-                <Main />
-            </Route>
-        </Switch>
-      </BrowserRouter>
-  );
+    return (
+        <>
+            <GlobalStyle />
+            <BrowserRouter>
+            <Header />
+                <Switch>
+                    <Route exact path='/'>
+                        <Main />
+                    </Route>
+                </Switch>
+            </BrowserRouter>
+        </>
+    );
 }
 
 export default App;
