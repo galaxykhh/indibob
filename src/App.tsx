@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import GlobalStyle from './components/style/global';
-import Header from './components/header/Header';
-import Main from './components/page/Main';
+import Header from './components/Header';
+import Main from './page/Main';
 
 const App = () => {
 

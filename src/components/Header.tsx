@@ -1,37 +1,31 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { slideUp, slideDown } from '../style/SearchboxSlide';
-
-
+import { slideUp, slideDown } from './style/Slide';
+import { useSearch } from './useSearch';
 
 const Header: React.FC = () => {
-
-    const useSearch = () => {
-        const [hide, setHide] = useState<boolean>(true);
-        const searchInput = useRef<HTMLInputElement>(null);
-        const onClick = () => {
-            setHide(!hide);
-            searchInput.current?.focus();
-        }
-        return { hide , onClick, searchInput };
-    };
+    
     const handleSearch = useSearch();
 
     return (
         <>
             <LogoContainer>
-                    <Logo to='/' > INDIBOB </Logo>
-                    <SearchBtn onClick={handleSearch.onClick} icon={faSearch} />
+                    <Logo to='/' > INDIEBOB </Logo>
+                    <SearchBtn onClick={handleSearch.handleSearchBox} icon={handleSearch.icon} />
+                    <SearchBox display={handleSearch.display} animation={handleSearch.animation} ref={handleSearch.searchInput} />
             </LogoContainer>
-                <SearchBox visible={handleSearch.hide} ref={handleSearch.searchInput} />
         </>
     );
 };
 
 export default Header;
+
+interface SearchProp {
+    animation: boolean,
+    display: string;
+}
 
 const LogoContainer = styled.div`
     display: flex;
@@ -45,33 +39,41 @@ const LogoContainer = styled.div`
 const SearchBox = styled.input.attrs(({
     type: 'text',
     placeholder: '아티스트명 또는 곡명'
-}))<{ visible: boolean }>`
+}))<SearchProp>`
     all: unset;
     border: 5px solid #52616a;
     position: absolute;
     left:50%; transform:translateX(-50%);
-    animation: ${props => props.visible ? slideUp : slideDown } .6s ease forwards;
+    opacity: 0;
+    display: ${props => props.display};
+    animation: ${props => props.animation ? slideUp : slideDown} .5s ease forwards;
     border-radius: 60px;
     background-color: #ffffff;
     padding-left: 50px;
     width: 450px;
-    height: 60px;
-    font-size: 22px;
+    height: 50px;
+    font-size: 20px;
 `;
 
 const Logo = styled(NavLink)`
     font-family: 'Russo One', sans-serif;
     text-decoration: none;
     color: #ffffff;
-    font-size: 70px;
+    font-size: 60px;
     font-weight: bold;
     letter-spacing: 10px;
 `;
 
-const SearchBtn = styled(FontAwesomeIcon)`
+const SearchBtn = styled(FontAwesomeIcon).attrs(props => ({
+    icon: props.icon,
+}))`
     font-size: 35px;
     padding-left: 25px;
     padding-bottom: 20px;
     color: white;
     cursor: pointer;
+    transition: 0.5s ease;
+    &:hover {
+        color: #f1404b;
+    }
 `;
