@@ -7,7 +7,7 @@ interface CateProp {
     category: string;
 }
 
-const CategoryBox: React.FC<CateProp> = (props) => {
+const CategoryStore: React.FC<CateProp> = (props) => {
     return (
         <Center>
             <Container>
@@ -17,14 +17,16 @@ const CategoryBox: React.FC<CateProp> = (props) => {
         </Center>
     );
 }
-export default CategoryBox;
+export default CategoryStore;
 
 const Container = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    margin-top: 40px;
+    border-bottom: 1px solid #696666;
+    padding-bottom: 80px;
+    margin-bottom: 80px;
 `;
 
 const Center = styled.div`

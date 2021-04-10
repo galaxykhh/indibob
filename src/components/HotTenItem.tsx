@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
-const TopTenItem: React.FC<{ image: string, title: string, artist: string, rank: number }> = (props) => {
+const HotTenItem: React.FC<{ image: string, title: string, artist: string, rank: number }> = (props) => {
     return (
         <ItemBox>
             <CoverBox>
@@ -17,15 +17,15 @@ const TopTenItem: React.FC<{ image: string, title: string, artist: string, rank:
     )
 }
 
-export default TopTenItem;
+export default HotTenItem;
 
 const ItemBox = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
-    border-bottom: 1px solid #696666;
-    padding: 7px;
+    border-bottom: 1px solid #815054;
+    padding-bottom: 9px;
     width: 470px;
     height: 50px;
 `;

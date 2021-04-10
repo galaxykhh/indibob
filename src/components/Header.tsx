@@ -5,6 +5,13 @@ import styled from 'styled-components';
 import { slideUp, slideDown } from './style/Slide';
 import { useSearch } from './useSearch';
 
+// const Menus = [
+//     {
+//         id: ,
+        
+//     }
+// ]
+
 const Header: React.FC = () => {
     
     const handleSearch = useSearch();
@@ -16,6 +23,7 @@ const Header: React.FC = () => {
                     <SearchBtn onClick={handleSearch.handleSearchBox} icon={handleSearch.icon} />
                     <SearchBox display={handleSearch.display} animation={handleSearch.animation} ref={handleSearch.searchInput} />
             </LogoContainer>
+            <RedLine />
         </>
     );
 };
@@ -34,6 +42,12 @@ const LogoContainer = styled.div`
     width: 100%;
     height: 100px;
     background-color: #252c41;
+`;
+
+const RedLine = styled.div`
+    width: 100%;
+    height: 5px;
+    background-color: #f1404b;
 `;
 
 const SearchBox = styled.input.attrs(({
