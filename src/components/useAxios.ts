@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import axios, { AxiosResponse } from 'axios';
 
-interface HType {
+export interface HType {
     id: number;
-    title: string;
+    songTitle: string;
     artist: string;
     image: string;
+    bob: number;
+    date: number;
 }
 
 export const useAxios = (address: string) => {
@@ -25,6 +27,6 @@ export const useAxios = (address: string) => {
         getData();
     }, []);
 
-    return { data };
+    return data;
 }
 

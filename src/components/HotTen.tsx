@@ -1,22 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
 import HotTenItem from './HotTenItem';
-import { useAxios } from './useAxios';
-import LoadingContainer from './LoadingContainer'
-const address = 'http://localhost:8000/hotten';
+import { useAxios, HType } from './useAxios';
+import LoadingSpinner from './LoadingSpinener'
+const address = 'http://localhost:8000/songlist';
 
 const HotTen: React.FC = () => {
 
     const list = useAxios(address);
+    const rankedList = list?.slice();
+    rankedList?.sort((a, b) => b.bob - a.bob)
+    let rank = 0
 
     return (
         <>
-        {list.data ?
+        {Array.isArray(rankedList) ? // Array.isArray() = 어레이인지 판별하는 프로토타입 메소드. true 랑 false를 리턴.
             <Container>
-            {list.data.map(item => (
-                <HotTenItem rank={item.id} image={item.image} title={item.title} artist={item.artist} key={item.id} />))}
+            {rankedList.map(item => (
+                <HotTenItem rank={rank+=1} image={item.image} title={item.songTitle} artist={item.artist} key={item.id} />))}
             </Container> : 
-            <LoadingContainer />}
+            <LoadingSpinner />}
         </>
     )
 }

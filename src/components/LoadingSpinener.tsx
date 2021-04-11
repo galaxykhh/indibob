@@ -2,15 +2,15 @@ import React from 'react'
 import styled from 'styled-components';
 import Loader from 'react-loader-spinner';
 
-const LoadingContainer: React.FC = () => {
+const LoadingSpinner: React.FC = () => {
     return (
         <LoadContainer>
-            <Loader type="Oval" color="#f1404b" height={50} width={50} />
+            <Loader type="Oval" color="#f1404b" height={30} width={30} />
         </LoadContainer>
     )
 }
 
-export default LoadingContainer;
+export default LoadingSpinner;
 
 const LoadContainer = styled.div`
     display: flex;
