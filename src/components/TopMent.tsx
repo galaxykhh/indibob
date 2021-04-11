@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { crossUp, crossDown } from './style/Slide';
-const src = '/Image/background.jpg';
 
 const TopMent: React.FC = () => {
     return (
@@ -33,7 +32,7 @@ const BGContainer = styled.div`
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    margin-top: 40px;
+    margin-top: 130px;
     height: 120px;
     @media only screen and (max-width: 850px) {
         flex-direction: column;

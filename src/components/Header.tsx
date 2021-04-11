@@ -4,27 +4,21 @@ import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { slideUp, slideDown } from './style/Slide';
 import { useSearch } from './useSearch';
-
-// const Menus = [
-//     {
-//         id: ,
-        
-//     }
-// ]
+import Loader from 'react-loader-spinner';
 
 const Header: React.FC = () => {
     
     const handleSearch = useSearch();
 
     return (
-        <>
+        <HeaderContainer>
             <LogoContainer>
                     <Logo to='/' > INDIEBOB </Logo>
                     <SearchBtn onClick={handleSearch.handleSearchBox} icon={handleSearch.icon} />
                     <SearchBox display={handleSearch.display} animation={handleSearch.animation} ref={handleSearch.searchInput} />
             </LogoContainer>
             <RedLine />
-        </>
+        </HeaderContainer>
     );
 };
 
@@ -34,6 +28,13 @@ interface SearchProp {
     animation: boolean,
     display: string;
 }
+
+const HeaderContainer = styled.div`
+    position: fixed;
+    top:0;
+    width: 100%;
+    z-index: 1;
+`;
 
 const LogoContainer = styled.div`
     display: flex;

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 interface HType {
     id: number;
@@ -10,19 +10,19 @@ interface HType {
 
 export const useAxios = (address: string) => {
 
-    const [data, setData] = useState<HType[]>([]);
+    const [data, setData] = useState<HType[]>();
 
     const getData = async () => {
         try {
-            const response = await axios.get(address);
+            const response: AxiosResponse = await axios.get(address);
             setData(response.data);
         } catch(e) {
             console.log(e);
         }
-    };
+    } 
 
     useEffect(() => {
-        getData()
+        getData();
     }, []);
 
     return { data };
