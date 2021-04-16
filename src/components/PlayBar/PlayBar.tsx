@@ -1,16 +1,31 @@
-import React　from 'react';
+import React, { useState }　from 'react';
 import styled from 'styled-components';
+import ListBar from './ListBar';
 import { observer } from 'mobx-react';
 import musicStore from '../../stores/musicStore';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
-// import { PcrossDown, PcrossUp } from '../style/Slide';
 import { useBob } from '../useBob';
+import { rotate, noRotate } from '../style/Slide';
 
 
-const PlayBar: React.FC = () => {
+const PlayBar: React.FC = observer(() => {
     const handleBob = useBob();
-    // const [currentBob, setCurrentBob] = useState<number>();
+    const [handletab, setHandletab] = useState<boolean>(musicStore.isTabOpen);
+    const [display, setDisplay] = useState<string>('none');
+
+    const toggleList = () => {
+        setHandletab(!handletab);
+    }
+
+    const handleListBar = () => {
+        if (display === 'none') {
+            setDisplay('block');
+            toggleList();
+        } else {
+            toggleList();
+        };
+    };
 
     return (
         <>
@@ -32,28 +47,31 @@ const PlayBar: React.FC = () => {
                     <div style={{color: 'white'}}> next </div>
                     <div style={{color: 'white'}}> loop </div>
                 </MusicController>
-                <ListController> list </ListController>
+                <TabHandlerBox onClick={handleListBar} >
+                    <TabHandler animation={handletab} >
+                        〈〈
+                    </TabHandler>
+                </TabHandlerBox>
             </Container>
+            <ListBar handletab={handletab} display={display} />
         </>
     )
-}
+});
 
-const PlayBarObserver = observer(PlayBar);
-
-export default PlayBarObserver;
+export default PlayBar;
 
 const Container = styled.div`
     position: fixed;
     left: 0;
     bottom: 0;
     display: flex;
-    flex: 1;
     flex-direction: row;
     justify-content: space-between;
     align-content: center;
     align-items: center;
     width: 100%;
     height: 110px;
+    z-index: 3;
     background-color: rgba(0, 0, 0, 0.8);
 `;
 
@@ -75,13 +93,21 @@ const MusicController = styled.div`
     height: 100px;
 `;
 
-const ListController = styled.div`
+const TabHandlerBox = styled.div`
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
-    color: white;
     width: 300px;
     height: 100px;
+`;
+
+const TabHandler = styled.button<{animation: boolean}>`
+    all: unset;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+    margin-right: 50px;
+    animation: ${props => props.animation ? rotate : noRotate } 0.4s ease forwards;
 `;
 
 const ImgDiv = styled.div`
@@ -138,5 +164,4 @@ const BobBtn = styled(FontAwesomeIcon)<{isbob: boolean}>`
     color: ${props => (props.isbob ? 'white' : 'red')};
     cursor: pointer;
     margin-left: 20px;
-    transition: 0.2s ease;
 `;

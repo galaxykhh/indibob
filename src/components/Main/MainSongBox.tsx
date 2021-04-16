@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { observer } from 'mobx-react';
-import styled from 'styled-components';
+import styled from 'styled-components/';
 import musicStore from '../../stores/musicStore';
 
 interface IMainSong {
@@ -17,17 +17,15 @@ interface IMainSong {
     };
 };
 
-const MainSongBox: React.FC<IMainSong>= ({item, rank, mr, ml, width}) => {
+const MainSongBox: React.FC<IMainSong> = ({ item, rank, mr, ml, width }) => {
     const { image, songTitle, artist } = item;
-    
+
     return (
         <ItemBox>
-            <CoverBox>
-                <Cover url={image} />
-            </CoverBox>
+            <AlbumCover url={image} onClick={() => musicStore.setCurrentMusic(item)} />
             <Rank mr={mr} ml={ml} width={width} > {rank} </Rank>
             <InfoFlex>
-                <Title onClick={() => musicStore.setCurrentMusic(item)} > {songTitle} </Title>
+                <Title> {songTitle} </Title>
                 <Artist to='/' > {artist} </Artist>
             </InfoFlex>
         </ItemBox>
@@ -58,9 +56,46 @@ const InfoFlex = styled.div`
     height: 50px;
 `;
 
+interface IProp {
+    url: string;
+    onClick: () => void;
+}
+
+const AlbumCover: React.FC<IProp> = (props) => {
+    return (
+        <CoverBox onClick={props.onClick} >
+            <PlayIcon>
+                ▶
+            </PlayIcon>
+            <Cover url={props.url} />
+        </CoverBox>
+    )
+}
+
 const CoverBox = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 50px;
     height: 50px;
+`;
+
+const PlayIcon = styled.div`
+    position: absolute;
+    color: none;
+    width: 50px;
+    height: 44px;
+    text-align: center;
+    padding-top: 10px;
+    font-size: 0px;
+    color: white;
+    cursor: pointer;
+    &:hover {
+        background-image: linear-gradient(
+            rgba(0, 0, 0, 0.8),
+            rgba(0, 0, 0, 0.8));
+        font-size: 30px;
+    }
 `;
 
 const Cover = styled.div<{ url: string }>`
@@ -71,7 +106,7 @@ const Cover = styled.div<{ url: string }>`
     background-image: url(${props => props.url});
 `;
 
-const Rank = styled.div<{width?: string, ml?: string, mr?: string}>`
+const Rank = styled.div<{ width?: string, ml?: string, mr?: string }>`
     width: ${props => props.width};
     margin-left: ${props => props.ml};
     margin-right: ${props => props.mr};

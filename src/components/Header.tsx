@@ -13,7 +13,7 @@ const Header: React.FC = () => {
         <>
             <LogoContainer>
                     <Logo to='/' > INDIEBOB </Logo>
-                    <SearchBtn onClick={handleSearch.handleSearchBox} icon={handleSearch.icon} />
+                    <SearchBtn onClick={handleSearch.handleSearchBox} icon={handleSearch.toggleBtn} />
                     <SearchBox display={handleSearch.display} animation={handleSearch.animation} ref={handleSearch.searchInput} />
             </LogoContainer>
             <RedLine />
@@ -72,7 +72,7 @@ const Logo = styled(NavLink)`
 `;
 
 const SearchBtn = styled(FontAwesomeIcon).attrs(props => ({
-    icon: props.icon,
+    icon: props.icon
 }))`
     font-size: 35px;
     padding-left: 25px;

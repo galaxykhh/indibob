@@ -3,7 +3,7 @@ import {keyframes} from 'styled-components';
 export const slideDown = keyframes`
     from {
         opacity: 0;
-        top: 60px;
+        top: -200px;
     }
     to {
         opacity: 1;
@@ -18,29 +18,40 @@ export const slideUp = keyframes`
     }
     to {
         opacity: 0;
-        top: 60px;
+        top: -200px;
     }
 `;
 
-export const PcrossUp = keyframes`
+export const tabOpen = keyframes`
     from {
-        opacity: 0;
-        bottom: -110px;
+        right: -430px;
     }
     to {
-        opacity: 1;
-        bottom: 0px;
+        right: 0px;
     }
 `;
 
-export const PcrossDown = keyframes`
+export const tabClose = keyframes`
     from {
-        opacity: 1;
-        bottom: 0px;
+        right: 0px;
     }
     to {
-        opacity: 0;
-        bottom: -110px;
+        right: -430px;
 
+    }
+`;
+
+export const noRotate = keyframes`
+    from {
+        transform: rotate(180deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+`;
+
+export const rotate = keyframes`
+    100% {
+        transform: rotate(180deg);
     }
 `;

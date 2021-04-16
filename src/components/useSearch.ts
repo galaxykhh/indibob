@@ -5,26 +5,25 @@ export const useSearch = () => {
     const [animation, setAnimation] = useState<boolean>(true);
     const [display, setDisplay] = useState<string>('none');
     const searchInput = useRef<HTMLInputElement>(null);
-    const [icon, setIcon] = useState<any>(faSearch);
+    const [toggleBtn, setToggleBtn] = useState<any>(faSearch);
 
-    const showIt = () => {
-        setDisplay('block');
+    const toggleSearchBtn = () => {
+        if (toggleBtn === faSearch) {
         setAnimation(!animation);
+        setToggleBtn(faTimes);
         setTimeout(() => searchInput.current?.focus(), 400);
-        setIcon(faTimes);
-    }
-    const hideIt = () => {
-        setTimeout(() => setDisplay('none'), 400);
-        setAnimation(!animation);
-        setIcon(faSearch);
-    }
-
-    const handleSearchBox = () => {
-        if (display === 'none') {
-            showIt();
         } else {
-            hideIt();
+            setAnimation(!animation);
+            setToggleBtn(faSearch);
         }
     }
-    return { animation , handleSearchBox, searchInput, display, icon };
+    const handleSearchBox = () => {
+        if (display === 'none') {
+            setDisplay('block');
+            toggleSearchBtn();
+        } else {
+            toggleSearchBtn();
+        }
+    }
+    return { animation , handleSearchBox, searchInput, display, toggleBtn };
 };

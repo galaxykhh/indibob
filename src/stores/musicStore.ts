@@ -9,19 +9,20 @@ export interface MusicData {
 class MusicStore {
     musicList: MusicData[] = [];
     currentMusic: MusicData = {image: '', songTitle: '', artist: ''};
-    isBobClicked: boolean = false;
+    isTabOpen: boolean = false;
     constructor() {
         makeObservable(this, {
             musicList: observable,
             currentMusic: observable,
+            isTabOpen: observable,
             addSong: action,
             setCurrentMusic: action,
-            isBobClicked: observable,
+            setIsTabOpen: action,
         })
     }
     setCurrentMusic(song: MusicData) {
         this.currentMusic = song;
-        console.log(song);
+        this.musicList.push(song);
     }
 
     addSong(song: MusicData) {
@@ -30,6 +31,10 @@ class MusicStore {
         }   else {
             return;
         }
+    }
+
+    setIsTabOpen() {
+        this.isTabOpen = !this.isTabOpen;
     }
 }
 
