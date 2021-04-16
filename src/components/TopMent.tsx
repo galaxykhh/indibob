@@ -1,19 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
-import { crossUp, crossDown } from './style/Slide';
 
-const TopMent: React.FC = () => {
+const TopMent: React.FC<{first: string, second: string}> = (props) => {
     return (
         <BGContainer>
-            <Text animation={crossUp} > Show Your Indie, </Text>
-            <Text ml='30px' animation={crossDown} > Let Me Indie </Text>
+            <Text> {props.first} </Text>
+            <Text ml='30px' > {props.second} </Text>
         </BGContainer>
     )
 }
 export default TopMent;
 
 interface Prop {
-    animation?: any,
     ml?: string
     src?: string;
 }
@@ -21,10 +19,9 @@ interface Prop {
 const Text = styled.div<Prop>`
     font-family: 'Kalam', cursive;
     margin-left: ${props => props.ml};
-    font-size: 35px;
+    font-size: 30px;
     color: #e8eaf0;
     letter-spacing: 5px;
-    animation: ${props => props.animation} 1s ease forwards;
 `;
 
 const BGContainer = styled.div`
@@ -32,9 +29,9 @@ const BGContainer = styled.div`
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    margin-top: 130px;
+    margin-bottom: 30px;
     height: 120px;
-    @media only screen and (max-width: 850px) {
-        flex-direction: column;
+    @media only screen and (max-width: 900px) {
+        visibility: hidden;
     }
 `;

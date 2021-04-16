@@ -1,17 +1,17 @@
 import React from 'react'
 import TopMent from '../components/TopMent';
-import CategoryStore from '../components/CategoryStore';
-import HotTen from '../components/HotTen';
-import NewIndie from '../components/NewIndie'
+import CategoryStore from '../components/Main/CategoryStore';
+import HotTen from '../components/Main/HotTen';
+import NewIndie from '../components/Main/NewIndie'
 
 const Main: React.FC = () => {
     return (
         <>
-             <TopMent />
-            <CategoryStore to='/' category='HOT 10 Indie'> 
+            <TopMent first='Show Your Indie,' second='Let Me Indie' />
+            <CategoryStore to='/' category='HOT 10 Indie'>
                 <HotTen />
             </CategoryStore>
-            <CategoryStore to='/' category='New Indie'> 
+            <CategoryStore to='/' category='New Indie'>
                 <NewIndie />
             </CategoryStore>
         </>

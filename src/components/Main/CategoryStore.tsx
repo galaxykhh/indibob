@@ -9,12 +9,12 @@ interface CateProp {
 
 const CategoryStore: React.FC<CateProp> = (props) => {
     return (
-        <Center>
+        <Flex>
             <Container>
                 <Category to={props.to}> {props.category} </Category>
                 {props.children}
             </Container>
-        </Center>
+        </Flex>
     );
 }
 export default CategoryStore;
@@ -29,7 +29,7 @@ const Container = styled.div`
     margin-bottom: 80px;
 `;
 
-const Center = styled.div`
+const Flex = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -40,6 +40,6 @@ const Category = styled(NavLink).attrs(props => ({
 }))`
     text-decoration: none;
     color: #ffffff;
-    font-size: 30px;
+    font-size: 24px;
     margin-bottom: 20px;
 `;

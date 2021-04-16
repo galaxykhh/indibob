@@ -1,23 +1,42 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { observer } from 'mobx-react';
 import styled from 'styled-components';
+import musicStore from '../../stores/musicStore';
 
-const HotTenItem: React.FC<{ image: string, title: string, artist: string, rank: number }> = (props) => {
+interface IMainSong {
+    rank?: number;
+    mr?: string;
+    ml?: string;
+    width?: string;
+    item: {
+        image: string;
+        songTitle: string;
+        artist: string;
+        bob: number | null;
+    };
+};
+
+const MainSongBox: React.FC<IMainSong>= ({item, rank, mr, ml, width}) => {
+    const { image, songTitle, artist } = item;
+    
     return (
         <ItemBox>
             <CoverBox>
-                <Cover url={props.image} />
+                <Cover url={image} />
             </CoverBox>
-            <Rank> {props.rank} </Rank>
+            <Rank mr={mr} ml={ml} width={width} > {rank} </Rank>
             <InfoFlex>
-                <Title to='/' > {props.title} </Title>
-                <Artist to='/' > {props.artist} </Artist>
+                <Title onClick={() => musicStore.setCurrentMusic(item)} > {songTitle} </Title>
+                <Artist to='/' > {artist} </Artist>
             </InfoFlex>
         </ItemBox>
     )
 }
 
-export default HotTenItem;
+const MainSongBoxObserver = observer(MainSongBox);
+
+export default MainSongBoxObserver;
 
 const ItemBox = styled.div`
     display: flex;
@@ -52,20 +71,21 @@ const Cover = styled.div<{ url: string }>`
     background-image: url(${props => props.url});
 `;
 
-const Rank = styled.div`
-    width: 50px;
-    margin-left: 15px;
-    margin-right:15px;
+const Rank = styled.div<{width?: string, ml?: string, mr?: string}>`
+    width: ${props => props.width};
+    margin-left: ${props => props.ml};
+    margin-right: ${props => props.mr};
     text-align: center;
     font-size: 16px;
     color: #e7616a;
 `;
 
-const Title = styled(NavLink)`
+const Title = styled.div`
     margin-bottom: 10px;
     text-decoration: none;
     font-size: 15px;
     color: #ffffff;
+    cursor: pointer;
 `;
 
 const Artist = styled(NavLink)`

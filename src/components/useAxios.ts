@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import axios, { AxiosResponse } from 'axios';
 
 export interface HType {
-    id: number;
+    albumTitle: string;
     songTitle: string;
     artist: string;
     image: string;
@@ -11,22 +11,20 @@ export interface HType {
 }
 
 export const useAxios = (address: string) => {
-
-    const [data, setData] = useState<HType[]>();
-
+    const [data, setData] = useState<HType>();
     const getData = async () => {
         try {
             const response: AxiosResponse = await axios.get(address);
             setData(response.data);
-        } catch(e) {
+        } catch (e) {
             console.log(e);
         }
-    } 
+    }
 
     useEffect(() => {
         getData();
-    }, []);
+    }, []);// eslint-disable-line
 
-    return data;
+    return data
 }
 
