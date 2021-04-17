@@ -4,13 +4,10 @@ import ListBar from './ListBar';
 import { observer } from 'mobx-react';
 import musicStore from '../../stores/musicStore';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from '@fortawesome/free-solid-svg-icons';
-import { useBob } from '../useBob';
-import { rotate, noRotate } from '../style/Slide';
+import { rotate, reRotate } from '../style/Slide';
 
 
 const PlayBar: React.FC = observer(() => {
-    const handleBob = useBob();
     const [handletab, setHandletab] = useState<boolean>(musicStore.isTabOpen);
     const [display, setDisplay] = useState<string>('none');
 
@@ -34,11 +31,10 @@ const PlayBar: React.FC = observer(() => {
                     <ImgDiv>
                         <Img url={musicStore.currentMusic.image} />
                     </ImgDiv>
-                    <Box>
-                        <STitle> {musicStore.currentMusic.songTitle.slice()} </STitle>
+                    <TABox>
+                        <STitle> {musicStore.currentMusic.songTitle} </STitle>
                         <Artist> {musicStore.currentMusic.artist} </Artist>
-                    </Box>
-                    <BobBtn onClick={handleBob.PBob} icon={faHeart} isbob={handleBob.bob} />
+                    </TABox>
                 </CurrentPlay>
                 <MusicController>
                     <div style={{color: 'white'}}> rand </div>
@@ -47,8 +43,8 @@ const PlayBar: React.FC = observer(() => {
                     <div style={{color: 'white'}}> next </div>
                     <div style={{color: 'white'}}> loop </div>
                 </MusicController>
-                <TabHandlerBox onClick={handleListBar} >
-                    <TabHandler animation={handletab} >
+                <TabHandlerBox >
+                    <TabHandler animation={handletab} onClick={handleListBar}>
                         〈〈
                     </TabHandler>
                 </TabHandlerBox>
@@ -70,7 +66,7 @@ const Container = styled.div`
     align-content: center;
     align-items: center;
     width: 100%;
-    height: 110px;
+    height: 10%;
     z-index: 3;
     background-color: rgba(0, 0, 0, 0.8);
 `;
@@ -107,7 +103,7 @@ const TabHandler = styled.button<{animation: boolean}>`
     color: white;
     cursor: pointer;
     margin-right: 50px;
-    animation: ${props => props.animation ? rotate : noRotate } 0.4s ease forwards;
+    animation: ${props => props.animation ? rotate : reRotate } 0.4s ease forwards;
 `;
 
 const ImgDiv = styled.div`
@@ -125,7 +121,7 @@ const Img = styled.div<{ url?: string }>`
     background-image: url(${props => props.url});
 `;
 
-const Box = styled.div`
+const TABox = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: flex-start;

@@ -15,26 +15,18 @@ class MusicStore {
             musicList: observable,
             currentMusic: observable,
             isTabOpen: observable,
-            addSong: action,
             setCurrentMusic: action,
-            setIsTabOpen: action,
+            forcePlay: action,
         })
     }
+
     setCurrentMusic(song: MusicData) {
         this.currentMusic = song;
         this.musicList.push(song);
     }
 
-    addSong(song: MusicData) {
-        if (song !== this.musicList[0]) {
-            this.musicList.push(song);
-        }   else {
-            return;
-        }
-    }
-
-    setIsTabOpen() {
-        this.isTabOpen = !this.isTabOpen;
+    forcePlay(song: MusicData) {
+        this.currentMusic = song;
     }
 }
 

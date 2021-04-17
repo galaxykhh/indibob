@@ -32,6 +32,17 @@ const MainSongBox: React.FC<IMainSong> = ({ item, rank, mr, ml, width }) => {
     )
 }
 
+const AlbumCover: React.FC<IProp> = (props) => {
+    return (
+        <CoverBox onClick={props.onClick} >
+            <PlayIcon>
+                ▶
+            </PlayIcon>
+            <Cover url={props.url} />
+        </CoverBox>
+    )
+}
+
 const MainSongBoxObserver = observer(MainSongBox);
 
 export default MainSongBoxObserver;
@@ -59,17 +70,6 @@ const InfoFlex = styled.div`
 interface IProp {
     url: string;
     onClick: () => void;
-}
-
-const AlbumCover: React.FC<IProp> = (props) => {
-    return (
-        <CoverBox onClick={props.onClick} >
-            <PlayIcon>
-                ▶
-            </PlayIcon>
-            <Cover url={props.url} />
-        </CoverBox>
-    )
 }
 
 const CoverBox = styled.div`

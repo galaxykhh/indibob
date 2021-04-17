@@ -24,7 +24,7 @@ export const slideUp = keyframes`
 
 export const tabOpen = keyframes`
     from {
-        right: -430px;
+        right: -2000px;
     }
     to {
         right: 0px;
@@ -36,12 +36,12 @@ export const tabClose = keyframes`
         right: 0px;
     }
     to {
-        right: -430px;
+        right: -2000px;
 
     }
 `;
 
-export const noRotate = keyframes`
+export const reRotate = keyframes`
     from {
         transform: rotate(180deg);
     }
