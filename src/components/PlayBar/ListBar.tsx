@@ -13,7 +13,7 @@ interface IListBar {
 const ListBar: React.FC<IListBar> = observer((props) => {
     return (
         <Container handletab={props.handletab} display={props.display} >
-            <Top> Indie History </Top>
+            <Top> Playlist </Top>
             {musicStore.musicList.map(item => (
                 <ListItem item={item} key={item.id}/>
             ))}
@@ -28,7 +28,7 @@ const Container = styled.div<{ handletab: boolean, display: string }>`
     right: 0;
     top: 0;
     display: ${props => props.display};
-    width: 300px;
+    width: 400px;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.9);
     animation: ${props => props.handletab ? tabOpen : tabClose} .6s forwards;

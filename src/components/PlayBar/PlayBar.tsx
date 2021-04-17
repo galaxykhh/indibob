@@ -5,6 +5,7 @@ import { observer } from 'mobx-react';
 import musicStore from '../../stores/musicStore';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { rotate, reRotate } from '../style/keyframes';
+import { NavLink } from 'react-router-dom';
 
 
 const PlayBar: React.FC = observer(() => {
@@ -32,8 +33,8 @@ const PlayBar: React.FC = observer(() => {
                         <Img url={musicStore.currentMusic.image} />
                     </ImgDiv>
                     <TABox>
-                        <STitle> {musicStore.currentMusic.songTitle} </STitle>
-                        <Artist> {musicStore.currentMusic.artist} </Artist>
+                        <STitle to='/' > {musicStore.currentMusic.songTitle} </STitle>
+                        <Artist to='/' > {musicStore.currentMusic.artist} </Artist>
                     </TABox>
                 </CurrentPlay>
                 <MusicController>
@@ -128,7 +129,8 @@ const TABox = styled.div`
     align-items: flex-start;
 `;
 
-const STitle = styled.div`
+const STitle = styled(NavLink)`
+    text-decoration: none;
     margin-bottom: 10px;
     margin-left: 15px;
     font-size: 15px;
@@ -137,9 +139,13 @@ const STitle = styled.div`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    &:hover {
+        text-decoration: underline;
+    }
 `;
 
-const Artist = styled.div`
+const Artist = styled(NavLink)`
+    text-decoration: none;
     font-size: 13px;
     margin-left: 15px;
     color: white;
@@ -147,6 +153,9 @@ const Artist = styled.div`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    &:hover {
+        text-decoration: underline;
+    }
 `;
 
 const Bob = styled.div`

@@ -23,10 +23,10 @@ const MainSongBox: React.FC<IMainSong> = ({ item, rank, mr, ml, width }) => {
 
     return (
         <ItemBox>
-            <AlbumCover url={image} onClick={() => musicStore.setCurrentMusic(item)} />
+            <AlbumCover url={image} onClick={() => musicStore.handleCurrentMusic(item)} />
             <Rank mr={mr} ml={ml} width={width} > {rank} </Rank>
             <InfoFlex>
-                <Title> {songTitle} </Title>
+                <Title to='/'> {songTitle} </Title>
                 <Artist to='/' > {artist} </Artist>
             </InfoFlex>
         </ItemBox>
@@ -116,16 +116,22 @@ const Rank = styled.div<{ width?: string, ml?: string, mr?: string }>`
     color: #e7616a;
 `;
 
-const Title = styled.div`
+const Title = styled(NavLink)`
     margin-bottom: 10px;
     text-decoration: none;
     font-size: 15px;
     color: #ffffff;
     cursor: pointer;
+    &:hover {
+    text-decoration: underline;
+    }
 `;
 
 const Artist = styled(NavLink)`
     text-decoration: none;
     font-size: 14px;
     color: #c2bebe;
+    &:hover {
+    text-decoration: underline;
+    }
 `;

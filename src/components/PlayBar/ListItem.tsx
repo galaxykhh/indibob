@@ -15,15 +15,15 @@ const ListItem: React.FC<IListItem>= ({item}) => {
     const { image, songTitle, artist, id } = item
     return (
         <ItemBox >
-            <ImgDiv onClick={() => musicStore.playThis(item)} >
+            <ImgDiv onClick={() => musicStore.handlePlay(item)} >
                 <Img url={image} />
             </ImgDiv>
-            <TABox onClick={() => musicStore.playThis(item)} >
+            <TABox onClick={() => musicStore.handlePlay(item)} >
                 <STitle> {songTitle} </STitle>
                 <Artist> {artist} </Artist>
                 <IdStorage> {id} </IdStorage>
             </TABox>
-            <DeleteBtn onClick={() => musicStore.deleteThis(item)} > × </DeleteBtn>
+            <DeleteBtn onClick={() => musicStore.handleDelete(item)} > × </DeleteBtn>
         </ItemBox>
     )
 }
@@ -37,7 +37,7 @@ const ItemBox = styled.div`
     align-items: center;
     border-bottom: .5px solid #7c7a7a;
     padding-left: 4%;
-    width: 280px;
+    width: 380px;
     height: 52px;
     cursor: pointer;
     &:hover {
@@ -69,7 +69,7 @@ const TABox = styled.div`
 `;
 
 const STitle = styled.div`
-    margin-bottom: 10px;
+    margin-bottom: 3px;
     margin-left: 15px;
     font-size: 12px;
     color: white;
@@ -98,6 +98,7 @@ const DeleteBtn = styled.button`
     font-size: 25px;
     color: #9c9a9a;
     padding: 2px;
+    margin-right: 6px;
     cursor: pointer;
     font-weight: 100;
     &:hover {

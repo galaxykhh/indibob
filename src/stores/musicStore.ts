@@ -16,14 +16,15 @@ class MusicStore {
             musicList: observable,
             currentMusic: observable,
             isTabOpen: observable,
-            setCurrentMusic: action,
-            playThis: action,
+            handleCurrentMusic: action,
+            handlePlay: action,
+            handleDelete: action,
         })
     }
 
-    setCurrentMusic(song: MusicData) {
-        const findDuplicated = this.musicList.find(list => list.id === song.id)
-            if (findDuplicated === undefined) {
+    handleCurrentMusic(song: MusicData) {
+        const findDuplicated = this.musicList.find(list => list.id === song.id) // find 메서드로 같은 id를 가진 노래를 찾아서 리턴
+            if (findDuplicated === undefined) { // 리턴받은것이 없으면 중복되는 노래가 없다는 의미이므로 바로 push
                 this.currentMusic = song;
                 this.musicList.push(song);
             } else {
@@ -31,12 +32,12 @@ class MusicStore {
             }
     }
 
-    playThis(song: MusicData) {
+    handlePlay(song: MusicData) {
         this.currentMusic = song;
     }
 
-    deleteThis(song: MusicData) {
-        this.musicList.splice(this.musicList.indexOf(song), 1);
+    handleDelete(song: MusicData) {
+        this.musicList.splice(this.musicList.indexOf(song), 1); // indexOf 로 song 조건에 맞는 첫번쨰 인덱스를 리턴받아, splice로 그 인덱스만 삭제처리한다.
     }
 };
 
