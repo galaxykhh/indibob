@@ -10,10 +10,11 @@ interface IMainSong {
     ml?: string;
     width?: string;
     item: {
+        id: number;
         image: string;
         songTitle: string;
         artist: string;
-        bob: number | null;
+        bob: number;
     };
 };
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { slideUp, slideDown } from './style/Slide';
+import { slideUp, slideDown } from './style/keyframes';
 import { useSearch } from './useSearch';
 
 const Header: React.FC = () => {

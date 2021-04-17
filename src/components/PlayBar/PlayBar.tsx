@@ -4,7 +4,7 @@ import ListBar from './ListBar';
 import { observer } from 'mobx-react';
 import musicStore from '../../stores/musicStore';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { rotate, reRotate } from '../style/Slide';
+import { rotate, reRotate } from '../style/keyframes';
 
 
 const PlayBar: React.FC = observer(() => {
@@ -66,7 +66,7 @@ const Container = styled.div`
     align-content: center;
     align-items: center;
     width: 100%;
-    height: 10%;
+    height: 110px;
     z-index: 3;
     background-color: rgba(0, 0, 0, 0.8);
 `;
@@ -99,7 +99,7 @@ const TabHandlerBox = styled.div`
 
 const TabHandler = styled.button<{animation: boolean}>`
     all: unset;
-    font-size: 30px;
+    font-size: 25px;
     color: white;
     cursor: pointer;
     margin-right: 50px;

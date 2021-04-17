@@ -24,7 +24,7 @@ export const slideUp = keyframes`
 
 export const tabOpen = keyframes`
     from {
-        right: -2000px;
+        right: -700px;
     }
     to {
         right: 0px;
@@ -36,7 +36,7 @@ export const tabClose = keyframes`
         right: 0px;
     }
     to {
-        right: -2000px;
+        right: -700px;
 
     }
 `;
