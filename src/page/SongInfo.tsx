@@ -1,23 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
+import Top from '../components/SongInfo/Top';
 
-const Info: React.FC = () => {
+const SongInfo: React.FC = () => {
     return (
         <Flex>
-            <Box> asdasd </Box>
+            <Top />
         </Flex>
     );
 };
 
-export default Info;
+export default SongInfo;
 
 const Flex = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-`;
-
-const Box = styled.div`
-    margin-top: 160px;
-    color: white;
 `;

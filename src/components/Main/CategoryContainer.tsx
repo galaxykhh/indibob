@@ -7,7 +7,7 @@ interface CateProp {
     category: string;
 }
 
-const CategoryStore: React.FC<CateProp> = (props) => {
+const CategoryContainer: React.FC<CateProp> = (props) => {
     return (
         <Flex>
             <Container>
@@ -17,7 +17,7 @@ const CategoryStore: React.FC<CateProp> = (props) => {
         </Flex>
     );
 }
-export default CategoryStore;
+export default CategoryContainer;
 
 const Container = styled.div`
     display: flex;

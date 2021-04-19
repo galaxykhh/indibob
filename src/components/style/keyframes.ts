@@ -40,18 +40,3 @@ export const tabClose = keyframes`
 
     }
 `;
-
-export const reRotate = keyframes`
-    from {
-        transform: rotate(180deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-`;
-
-export const rotate = keyframes`
-    100% {
-        transform: rotate(180deg);
-    }
-`;

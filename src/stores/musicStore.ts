@@ -10,12 +10,10 @@ export interface MusicData {
 class MusicStore {
     musicList: MusicData[] = [];
     currentMusic: MusicData = {image: '', songTitle: '', artist: '', id: 0};
-    isTabOpen: boolean = false;
     constructor() {
         makeObservable(this, {
             musicList: observable,
             currentMusic: observable,
-            isTabOpen: observable,
             handleCurrentMusic: action,
             handlePlay: action,
             handleDelete: action,

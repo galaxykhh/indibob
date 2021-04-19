@@ -12,7 +12,7 @@ interface IListItem{
 };
 
 const ListItem: React.FC<IListItem>= ({item}) => {
-    const { image, songTitle, artist, id } = item
+    const { image, songTitle, artist } = item
     return (
         <ItemBox >
             <ImgDiv onClick={() => musicStore.handlePlay(item)} >
@@ -21,7 +21,6 @@ const ListItem: React.FC<IListItem>= ({item}) => {
             <TABox onClick={() => musicStore.handlePlay(item)} >
                 <STitle> {songTitle} </STitle>
                 <Artist> {artist} </Artist>
-                <IdStorage> {id} </IdStorage>
             </TABox>
             <DeleteBtn onClick={() => musicStore.handleDelete(item)} > × </DeleteBtn>
         </ItemBox>
@@ -87,10 +86,6 @@ const Artist = styled.div`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-`;
-
-const IdStorage = styled.div`
-    display: none;
 `;
 
 const DeleteBtn = styled.button`

@@ -1,6 +1,6 @@
 import React from 'react'
 import TopMent from '../components/TopMent';
-import CategoryStore from '../components/Main/CategoryStore';
+import CategoryContainer from '../components/Main/CategoryContainer';
 import HotTen from '../components/Main/HotTen';
 import NewIndie from '../components/Main/NewIndie'
 
@@ -8,14 +8,14 @@ const Main: React.FC = () => {
     return (
         <>
             <TopMent first='Show Your Indie,' second='Let Me Indie' />
-            <CategoryStore to='/' category='HOT 10 Indie'>
+            <CategoryContainer to='/' category='HOT 10 Indie'>
                 <HotTen />
-            </CategoryStore>
-            <CategoryStore to='/' category='New Indie'>
+            </CategoryContainer>
+            <CategoryContainer to='/' category='New Indie'>
                 <NewIndie />
-            </CategoryStore>
+            </CategoryContainer>
         </>
-    )
-}
+    );
+};
 
 export default Main;

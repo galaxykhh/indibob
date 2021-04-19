@@ -1,13 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useAxios } from '../useAxios';
+import { useGetData } from '../ussGetData';
 import MainSongBoxObserver from './MainSongBox';
 import LoadingSpinner from './LoadingSpinener'
-const lastestTen = 'http://localhost:8000/lastest10';
+const path = 'lastest10';
 
 const NewIndie: React.FC= () => {
-    const data = useAxios(lastestTen);
-
+    const data = useGetData(path);
     return (
         <>
         {Array.isArray(data) ?

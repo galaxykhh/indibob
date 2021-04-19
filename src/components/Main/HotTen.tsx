@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useAxios } from '../useAxios';
+import { useGetData } from '../ussGetData'
 import MainSonBoxObserver from './MainSongBox';
 import LoadingSpinner from './LoadingSpinener'
-const hotTen = 'http://localhost:8000/hot10';
+const path = '/hot10';
 
 const HotTen: React.FC = () => {
-    const data = useAxios(hotTen);
+    const data = useGetData(path);
 
     return (
         <>
