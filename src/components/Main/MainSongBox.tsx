@@ -14,7 +14,7 @@ interface IMainSong {
         image: string;
         songTitle: string;
         artist: string;
-        bob: number;
+        bob?: number;
     };
 };
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import TopMent from '../components/TopMent';
+import TopMent from '../components/Header/TopMent';
 import CategoryContainer from '../components/Main/CategoryContainer';
 import HotTen from '../components/Main/HotTen';
 import NewIndie from '../components/Main/NewIndie'

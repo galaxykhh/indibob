@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { useGetData } from '../ussGetData';
+import musicStore from '../../stores/musicStore';
 import MainSongBoxObserver from './MainSongBox';
 import LoadingSpinner from './LoadingSpinener'
-const path = 'lastest10';
+import { observer } from 'mobx-react';
 
-const NewIndie: React.FC= () => {
-    const data = useGetData(path);
+const NewIndie: React.FC= observer(() => {
+
+    useEffect(() => {
+        musicStore.getLastestList();
+    }, [])
+
     return (
         <>
-        {Array.isArray(data) ?
+        {musicStore.lastestList ?
             <Container>
-                {data.map((item, index) => (
+                {musicStore.lastestList.map((item, index) => (
                     <MainSongBoxObserver width='30px'
                                          item={item}
                                          key={index}
@@ -20,7 +24,7 @@ const NewIndie: React.FC= () => {
              <LoadingSpinner />}
         </>
     );
-};
+});
 export default NewIndie;
 
 const Container = styled.div`

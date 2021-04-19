@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import GlobalStyle from './components/style/global';
-import Header from './components/Header';
+import Header from './components/Header/Header';
 import PlayBar from './components/PlayBar/PlayBar';
 import Main from './page/Main';
 import SongInfo from './page/SongInfo';

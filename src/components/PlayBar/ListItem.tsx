@@ -40,7 +40,7 @@ const ItemBox = styled.div`
     height: 52px;
     cursor: pointer;
     &:hover {
-        background-color: #3b3a3a;
+        background-color: rgba(192, 72, 72, 0.2);
     }
 `;
 

@@ -1,33 +1,14 @@
-import React, { useState }　from 'react';
 import styled from 'styled-components';
 import ListBar from './ListBar';
 import { observer } from 'mobx-react';
 import musicStore from '../../stores/musicStore';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from 'react-router-dom';
-
-type DisplayType = 'none' | 'block';
+import { useHandleTab } from '../../Hooks/useHandleTab';
 
 const PlayBar: React.FC = observer(() => {
-    const [handletab, setHandletab] = useState<any>(+false);
-    const [display, setDisplay] = useState<DisplayType>('none');
 
-    const toggleList = () => {
-        if (handletab === +false) {
-            setHandletab(+true);
-        } else {
-            setHandletab(+false);
-        }
-    }
-
-    const handleListBar = () => {
-        if (display === 'none') {
-            setDisplay('block');
-            toggleList();
-        } else {
-            toggleList();
-        };
-    };
+    const handler = useHandleTab();
 
     return (
         <>
@@ -49,12 +30,12 @@ const PlayBar: React.FC = observer(() => {
                     <div style={{color: 'white'}}> loop </div>
                 </MusicController>
                 <TabHandlerBox >
-                    <TabHandler rotate={handletab} onClick={handleListBar}>
+                    <TabHandler rotate={handler.handleTab} onClick={handler.handleListBar}>
                         〈〈
                     </TabHandler>
                 </TabHandlerBox>
             </Container>
-            <ListBar handletab={handletab} display={display} />
+            <ListBar handletab={handler.handleTab} display={handler.display} />
         </>
     )
 });
@@ -102,7 +83,7 @@ const TabHandlerBox = styled.div`
     height: 100px;
 `;
 
-const TabHandler = styled.div<{rotate: boolean}>`
+const TabHandler = styled.button<{rotate: boolean}>`
     all: unset;
     font-size: 25px;
     color: white;

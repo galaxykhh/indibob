@@ -1,28 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { useGetData } from '../ussGetData'
 import MainSonBoxObserver from './MainSongBox';
 import LoadingSpinner from './LoadingSpinener'
-const path = '/hot10';
+import musicStore from '../../stores/musicStore';
+import { observer } from 'mobx-react';
 
-const HotTen: React.FC = () => {
-    const data = useGetData(path);
+const HotTen: React.FC = observer(() => {
+
+    useEffect(() => {
+        musicStore.getHotList();
+    }, []);
 
     return (
         <>
-            {Array.isArray(data) ?
+            {musicStore.hotList ?
                 <Container>
-                    {data.map((item, index)=> (
+                    {musicStore.hotList.map((item, index) => (
                         <MainSonBoxObserver mr='15px' ml='15px' width='50px'
-                                    item={item}
-                                    rank={index + 1}
-                                    key={index}
+                            item={item}
+                            rank={index + 1}
+                            key={index}
                         />))}
                 </Container> :
                 <LoadingSpinner />}
         </>
     )
-}
+})
+
 export default HotTen;
 
 const Container = styled.div`

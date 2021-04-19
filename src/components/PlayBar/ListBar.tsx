@@ -14,7 +14,7 @@ const ListBar: React.FC<IListBar> = observer((props) => {
     return (
         <Container handletab={props.handletab} display={props.display} >
             <Top> Playlist </Top>
-            {musicStore.musicList.map(item => (
+            {musicStore.playList.map(item => (
                 <ListItem item={item} key={item.id}/>
             ))}
         </Container>
