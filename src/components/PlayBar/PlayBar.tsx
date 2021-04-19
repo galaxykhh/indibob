@@ -4,16 +4,20 @@ import ListBar from './ListBar';
 import { observer } from 'mobx-react';
 import musicStore from '../../stores/musicStore';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { rotate, reRotate } from '../style/keyframes';
 import { NavLink } from 'react-router-dom';
 
+type DisplayType = 'none' | 'block';
 
 const PlayBar: React.FC = observer(() => {
-    const [handletab, setHandletab] = useState<boolean>(musicStore.isTabOpen);
-    const [display, setDisplay] = useState<string>('none');
+    const [handletab, setHandletab] = useState<any>(+false);
+    const [display, setDisplay] = useState<DisplayType>('none');
 
     const toggleList = () => {
-        setHandletab(!handletab);
+        if (handletab === +false) {
+            setHandletab(+true);
+        } else {
+            setHandletab(+false);
+        }
     }
 
     const handleListBar = () => {
@@ -45,7 +49,7 @@ const PlayBar: React.FC = observer(() => {
                     <div style={{color: 'white'}}> loop </div>
                 </MusicController>
                 <TabHandlerBox >
-                    <TabHandler animation={handletab} onClick={handleListBar}>
+                    <TabHandler rotate={handletab} onClick={handleListBar}>
                         〈〈
                     </TabHandler>
                 </TabHandlerBox>
@@ -98,13 +102,14 @@ const TabHandlerBox = styled.div`
     height: 100px;
 `;
 
-const TabHandler = styled.button<{animation: boolean}>`
+const TabHandler = styled.div<{rotate: boolean}>`
     all: unset;
     font-size: 25px;
     color: white;
     cursor: pointer;
     margin-right: 50px;
-    animation: ${props => props.animation ? rotate : reRotate } 0.4s ease forwards;
+    transform: ${props => props.rotate ? 'rotate(180deg)' : 'rotate(0deg)'};
+    transition: 0.4s ease;
 `;
 
 const ImgDiv = styled.div`
