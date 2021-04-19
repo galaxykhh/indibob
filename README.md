@@ -1,1 +1,1 @@
-# Practice develop website
+# Practice typescript with develop website
