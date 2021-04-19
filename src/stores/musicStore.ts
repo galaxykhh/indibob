@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { action, makeObservable, observable } from 'mobx';
+import { action, makeObservable, observable, runInAction } from 'mobx';
 import musicRepository from '../Repository/musicRepository';
 
 export interface MusicData {
@@ -30,14 +30,18 @@ class MusicStore {
 
     async getHotList() {
         const response: AxiosResponse = await musicRepository.getData(this.hotPath);
-        const data = await response.data;
-        this.hotList = await data;
+        runInAction(() => {
+        const data = response.data;
+            this.hotList = data;
+        })
     }
 
     async getLastestList() {
         const response: AxiosResponse = await musicRepository.getData(this.lastestPath);
-        const data = await response.data;
-        this.lastestList = await data;
+        runInAction(() => {
+        const data = response.data;
+        this.lastestList = data;
+        })
     }
 
     handleCurrentMusic(song: MusicData) {
