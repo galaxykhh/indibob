@@ -19,15 +19,15 @@ interface IMainSong {
 };
 
 const MainSongBox: React.FC<IMainSong> = ({ item, rank, mr, ml, width }) => {
-    const { image, songTitle, artist } = item;
+    const { image, songTitle, artist, id } = item;
 
     return (
         <ItemBox>
             <AlbumCover url={image} onClick={() => musicStore.handleCurrentMusic(item)} />
             <Rank mr={mr} ml={ml} width={width} > {rank} </Rank>
             <InfoFlex>
-                <Title to='/song'> {songTitle} </Title>
-                <Artist to='/artist' > {artist} </Artist>
+                <Title to={`/song/${id}`}> {songTitle} </Title>
+                <Artist to={`/artist`} > {artist} </Artist>
             </InfoFlex>
         </ItemBox>
     )

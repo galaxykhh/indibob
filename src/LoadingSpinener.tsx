@@ -5,7 +5,7 @@ import Loader from 'react-loader-spinner';
 const LoadingSpinner: React.FC = () => {
     return (
         <LoadContainer>
-            <Loader type="Oval" color="#f1404b" height={30} width={30} />
+            <Loader type="Oval" color="#f1404b" height={30} width={30}  />
         </LoadContainer>
     )
 }

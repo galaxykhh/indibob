@@ -15,11 +15,11 @@ const PlayBar: React.FC = observer(() => {
             <Container>
                 <CurrentPlay>
                     <ImgDiv>
-                        <Img url={musicStore.currentMusic.image} />
+                        <Img url={musicStore.currentTrack.image} />
                     </ImgDiv>
                     <TABox>
-                        <STitle to='/' > {musicStore.currentMusic.songTitle} </STitle>
-                        <Artist to='/' > {musicStore.currentMusic.artist} </Artist>
+                        <STitle to='/' > {musicStore.currentTrack.songTitle} </STitle>
+                        <Artist to='/' > {musicStore.currentTrack.artist} </Artist>
                     </TABox>
                 </CurrentPlay>
                 <MusicController>

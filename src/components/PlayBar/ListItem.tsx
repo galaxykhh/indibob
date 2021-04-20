@@ -29,7 +29,8 @@ const ListItem: React.FC<IListItem>= ({item}) => {
 
 export default ListItem;
 
-const ItemBox = styled.div`
+const ItemBox = styled.button`
+    all: unset;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import MainSonBoxObserver from './MainSongBox';
-import LoadingSpinner from './LoadingSpinener'
+import LoadingSpinner from '../../LoadingSpinener'
 import musicStore from '../../stores/musicStore';
 import { observer } from 'mobx-react';
 
@@ -13,7 +13,7 @@ const HotTen: React.FC = observer(() => {
 
     return (
         <>
-            {musicStore.hotList ?
+            {Array.isArray(musicStore.hotList) ?
                 <Container>
                     {musicStore.hotList.map((item, index) => (
                         <MainSonBoxObserver mr='15px' ml='15px' width='50px'

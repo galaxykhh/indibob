@@ -1,18 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import musicStore from '../../stores/musicStore';
 import { observer } from 'mobx-react';
+import { useParams } from 'react-router-dom';
 
 
-const Top: React.FC = observer(() => {
+const Top: React.FC= observer(() => {
+    const { id }: { id: string }  = useParams();
+
+    useEffect(() => {
+        musicStore.getSelectedTrack(id);
+    }, []);
+
     return (
         <Container>
             <ImgDiv>
-            <Img url={musicStore.currentMusic.image} />
+            <Img url={musicStore.selectedTrack.image} />
             </ImgDiv>
             <TABox>
-                <STitle> asdasd </STitle>
-                <Artist> asdasdasdad </Artist>
+                <STitle> {musicStore.selectedTrack.songTitle} </STitle>
+                <Artist> {musicStore.selectedTrack.artist} </Artist>
             </TABox>
         </Container>
     )
@@ -57,8 +64,6 @@ const STitle = styled.div`
     color: white;
     max-width: 200px;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 `;
 
 const Artist = styled.div`
@@ -66,7 +71,5 @@ const Artist = styled.div`
     color: white;
     max-width: 150px;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 `;
 

@@ -9,6 +9,10 @@ class MusicRepository {
     getData(path: string): AxiosPromise {
         return indieInstance.get(path);
     }
+
+    findTrack(path: string, data: { id: string }): AxiosPromise {
+        return indieInstance.post(path, data);
+    }
 }
 
 const musicRepository = new MusicRepository();
