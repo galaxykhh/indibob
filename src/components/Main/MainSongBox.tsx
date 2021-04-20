@@ -10,7 +10,7 @@ interface IMainSong {
     ml?: string;
     width?: string;
     item: {
-        id: number;
+        id: string;
         image: string;
         songTitle: string;
         artist: string;
@@ -27,7 +27,7 @@ const MainSongBox: React.FC<IMainSong> = ({ item, rank, mr, ml, width }) => {
             <Rank mr={mr} ml={ml} width={width} > {rank} </Rank>
             <InfoFlex>
                 <Title to={`/song/${id}`}> {songTitle} </Title>
-                <Artist to={`/artist`} > {artist} </Artist>
+                <Artist> {artist} </Artist>
             </InfoFlex>
         </ItemBox>
     )
@@ -127,11 +127,7 @@ const Title = styled(NavLink)`
     }
 `;
 
-const Artist = styled(NavLink)`
-    text-decoration: none;
+const Artist = styled.div`
     font-size: 14px;
     color: #c2bebe;
-    &:hover {
-    text-decoration: underline;
-    }
 `;

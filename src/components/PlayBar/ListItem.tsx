@@ -4,7 +4,7 @@ import musicStore from '../../stores/musicStore';
 
 interface IListItem{
     item: {
-        id: number;
+        id: string;
         image: string;
         songTitle: string;
         artist: string;
@@ -19,7 +19,7 @@ const ListItem: React.FC<IListItem>= ({item}) => {
                 <Img url={image} />
             </ImgDiv>
             <TABox onClick={() => musicStore.handlePlay(item)} >
-                <STitle> {songTitle} </STitle>
+                <Title> {songTitle} </Title>
                 <Artist> {artist} </Artist>
             </TABox>
             <DeleteBtn onClick={() => musicStore.handleDelete(item)} > × </DeleteBtn>
@@ -68,7 +68,7 @@ const TABox = styled.div`
     width: 100%;
 `;
 
-const STitle = styled.div`
+const Title = styled.div`
     margin-bottom: 3px;
     margin-left: 15px;
     font-size: 12px;

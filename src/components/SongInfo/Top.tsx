@@ -5,8 +5,8 @@ import { observer } from 'mobx-react';
 import { useParams } from 'react-router-dom';
 
 
-const Top: React.FC= observer(() => {
-    const { id }: { id: string }  = useParams();
+const Top: React.FC = observer(() => {
+    const { id }: { id: string } = useParams();
 
     useEffect(() => {
         musicStore.getSelectedTrack(id);
@@ -15,11 +15,15 @@ const Top: React.FC= observer(() => {
     return (
         <Container>
             <ImgDiv>
-            <Img url={musicStore.selectedTrack.image} />
+                <Img url={musicStore.selectedTrack.image} />
             </ImgDiv>
             <TABox>
-                <STitle> {musicStore.selectedTrack.songTitle} </STitle>
+                <Title> {musicStore.selectedTrack.songTitle} </Title>
                 <Artist> {musicStore.selectedTrack.artist} </Artist>
+                <BtnBox>
+                    <Btn onClick={() => musicStore.handleCurrentMusic(musicStore.selectedTrack)} > ▶ 재생 </Btn>
+                    <Btn onClick={() => musicStore.handleAddTrack(musicStore.selectedTrack)} > + 추가 </Btn>
+                </BtnBox>
             </TABox>
         </Container>
     )
@@ -37,39 +41,62 @@ export const Container = styled.div`
 `;
 
 const ImgDiv = styled.div`
-    width: 250px;
-    height: 250px;
+    width: 200px;
+    height: 200px;
 `;
 
 const Img = styled.div<{ url: string }>`
-    width: 250px;
-    height: 250px;
+    width: 200px;
+    height: 200px;
     background-size: cover;
     background-position: center;
     background-image: url(${props => props.url});
 `;
 
-const TABox = styled.div`
+const BtnBox = styled.div`
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    margin-left: 30px;
-    width: 100%;
+    flex-direction: row;
+    margin-top: 75px;
 `;
 
-const STitle = styled.div`
-    margin-bottom: 20px;
-    font-size: 25px;
+const TABox = styled.div`
+    margin-left: 30px;
+    height: 200px;
+`;
+
+const Title = styled.div`
+    margin-bottom: 10px;
+    font-size: 35px;
+    color: white;
+    max-width: 200px;
+    white-space: nowrap;
+`;
+
+const AlbumTitle = styled.div`
+    margin-bottom: 10px;
+    font-size: 20px;
     color: white;
     max-width: 200px;
     white-space: nowrap;
 `;
 
 const Artist = styled.div`
-    font-size: 20px;
+    margin-bottom: 10px;
+    font-size: 18px;
     color: white;
     max-width: 150px;
     white-space: nowrap;
 `;
 
+const Btn = styled.button`
+    all: unset;
+    width: 87px;
+    height: 44px;
+    border-radius: 15px;
+    color: black;
+    text-align: center;
+    font-size: 19px;
+    margin-right: 10px;
+    background-color: #ffffff;
+    cursor: pointer;
+`;
