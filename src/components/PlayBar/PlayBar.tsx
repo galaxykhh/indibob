@@ -1,17 +1,26 @@
 import styled from 'styled-components';
 import ListBar from './ListBar';
 import { observer } from 'mobx-react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import musicStore from '../../stores/musicStore';
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from 'react-router-dom';
 import { useHandleTab } from '../../Hooks/useHandleTab';
+import { faAngleDoubleLeft, faPlay,faPause, faStepBackward, faStepForward, faVolumeUp } from '@fortawesome/free-solid-svg-icons';
 
 const PlayBar: React.FC = observer(() => {
 
     const handler = useHandleTab();
 
+    const test = () => {
+        console.log('hi');
+    }
+
     return (
         <>
+            <TrackBar>
+                <Audio src={musicStore.musicSRC} />
+                <TrackProgress />
+            </TrackBar>
             <Container>
                 <CurrentPlay>
                     <ImgDiv>
@@ -22,21 +31,18 @@ const PlayBar: React.FC = observer(() => {
                         <Artist to='/' > {musicStore.currentTrack.artist} </Artist>
                     </TABox>
                 </CurrentPlay>
-                <MusicController>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div style={{color: 'white', letterSpacing: '-13px', fontSize: '20px', marginRight: '10px'}}> ▎◀ </div>
-                    <div style={{color: 'white', fontSize: '30px'}}> ▶ </div>
-                    <div style={{color: 'white', letterSpacing: '2px', fontSize: '20px' }}> ▶▎ </div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </MusicController>
+                <TrackController>
+                    <ControlBtn icon={faStepBackward} />
+                    <ControlBtn icon={!musicStore.isPlaying ? faPlay : faPause} onClick={musicStore.playTrack} />
+                    <ControlBtn icon={faStepForward} />
+                </TrackController>
+                <VolumeControllerBox>
+                    <VolumeIcon icon={faVolumeUp} />
+                </VolumeControllerBox>
                 <TabHandlerBox >
-                    <TabHandler rotate={handler.handleTab} onClick={handler.handleListBar}>
-                        〈〈
-                    </TabHandler>
+                    <Wrap rotate={handler.handleTab} >
+                        <TabHandler icon={faAngleDoubleLeft} onClick={handler.handleListBar} />
+                    </Wrap>
                 </TabHandlerBox>
             </Container>
             <ListBar handletab={handler.handleTab} display={handler.display} />
@@ -45,6 +51,28 @@ const PlayBar: React.FC = observer(() => {
 });
 
 export default PlayBar;
+
+const TrackBar = styled.div`
+    position: fixed;
+    bottom: 110px;
+    width: 100%;
+    height: 5px;
+    background-color: rgba(192, 56, 56, 0.4);
+    overflow: hidden;
+    cursor: pointer;
+    transition: .2s ease;
+    transition-delay: .25s;
+    &:hover {
+        height: 15px;
+    }
+`;
+
+const TrackProgress = styled.div`
+    position: absolute;
+    width: 40%;
+    height: 100%;
+    background-color: rgb(192, 56, 56);
+`;
 
 const Container = styled.div`
     position: fixed;
@@ -67,34 +95,57 @@ const CurrentPlay = styled.div`
     justify-content: flex-start;
     align-items: center;
     margin-left: 15px;
-    width: 300px;
+    width: 450px;
     height: 110px;
 `;
 
-const MusicController = styled.div`
+const TrackController = styled.div`
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
     width: 500px;
     height: 100px;
+`;
+
+const ControlBtn = styled(FontAwesomeIcon)`
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+`;
+
+const VolumeControllerBox = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 100px;
+`;
+
+const VolumeIcon = styled(FontAwesomeIcon)`
+    color: white;
+    font-size: 20px;
 `;
 
 const TabHandlerBox = styled.div`
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    width: 300px;
+    width: 150px;
     height: 100px;
 `;
 
-const TabHandler = styled.button<{rotate: boolean}>`
+const Wrap = styled.div<{rotate: boolean}>`
+    transform: ${props => props.rotate ? 'rotate(180deg)' : 'rotate(0deg)'};
+    transition: 0.4s ease;
+    margin-right: 50px;
+`;
+
+const TabHandler = styled(FontAwesomeIcon)`
     all: unset;
     font-size: 25px;
     color: white;
     cursor: pointer;
-    margin-right: 50px;
-    transform: ${props => props.rotate ? 'rotate(180deg)' : 'rotate(0deg)'};
-    transition: 0.4s ease;
 `;
 
 const ImgDiv = styled.div`
@@ -160,3 +211,7 @@ const Artist = styled(NavLink)`
 //     cursor: pointer;
 //     margin-left: 20px;
 // `;
+
+const Audio = styled.audio`
+
+`;

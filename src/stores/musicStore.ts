@@ -16,6 +16,8 @@ interface SelectedMusicData extends MusicData {
 }
 
 class MusicStore {
+    isPlaying: boolean = false;
+    musicSRC: string = '';
     temporaryTrack: any;
     playList: MusicData[] = [];
     hotList: MusicData[] | '' = ''; // Array.isArray(array) ?... => 데이터를 받아오지 못했을 때 '' 로 초기화 시켜주어 스피너 활성화
@@ -28,6 +30,8 @@ class MusicStore {
     isOpen: boolean = false;
     constructor() {
         makeObservable(this, {
+            isPlaying: observable,
+            musicSRC: observable,
             temporaryTrack: observable,
             playList: observable,
             hotList: observable,
@@ -35,6 +39,7 @@ class MusicStore {
             currentTrack: observable,
             selectedTrack: observable,
             isOpen: observable,
+            playTrack: action.bound,
             getHotList: action,
             getLastestList: action,
             getSelectedTrack: action,
@@ -46,6 +51,11 @@ class MusicStore {
             shutDownModal: action.bound,
         });
     };
+
+    playTrack() {
+        this.isPlaying = !this.isPlaying;
+        console.log('toggled');
+    }
 
     async getHotList() {
         const response: AxiosResponse = await musicRepository.getData(this.hotPath);

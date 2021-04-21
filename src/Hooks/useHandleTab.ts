@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
 
 type DisplayType = 'none' | 'block';
 
@@ -22,6 +23,6 @@ export const useHandleTab = () => {
             toggleList();
         };
     };
-
+    
     return { toggleList, handleListBar, handleTab, display };
 }
