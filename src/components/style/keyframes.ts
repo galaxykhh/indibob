@@ -40,3 +40,16 @@ export const tabClose = keyframes`
 
     }
 `;
+
+export const modalOpen = keyframes`
+    from {
+        transform: scale(0.1);
+    }
+    to {
+        transform: scale(1);
+    }
+`;
+
+export const modalClose = keyframes`
+    display: none;
+`;

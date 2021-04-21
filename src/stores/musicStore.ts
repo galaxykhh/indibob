@@ -16,31 +16,34 @@ interface SelectedMusicData extends MusicData {
 }
 
 class MusicStore {
+    temporaryTrack: any;
     playList: MusicData[] = [];
-
     hotList: MusicData[] | '' = ''; // Array.isArray(array) ?... => 데이터를 받아오지 못했을 때 '' 로 초기화 시켜주어 스피너 활성화
     lastestList: MusicData[] | '' = '';
-
     currentTrack: MusicData = {id: '', songTitle: '', artist: '', image: ''};
     selectedTrack: SelectedMusicData = {id: '', albumTitle: '', songTitle: '', artist: '', image: '', bob: 0, date: 0};
-
     hotPath: string = '/hot10';
     lastestPath: string = '/lastest10';
     findPath: string = '/findtrack';
-
+    isOpen: boolean = false;
     constructor() {
         makeObservable(this, {
+            temporaryTrack: observable,
             playList: observable,
             hotList: observable,
             lastestList: observable,
             currentTrack: observable,
             selectedTrack: observable,
+            isOpen: observable,
             getHotList: action,
             getLastestList: action,
             getSelectedTrack: action,
             handleCurrentMusic: action,
+            handleAddTrack: action.bound,
             handlePlay: action,
             handleDelete: action,
+            addDuplicatedTrack: action.bound,
+            shutDownModal: action.bound,
         });
     };
 
@@ -70,22 +73,34 @@ class MusicStore {
     };
 
     handleCurrentMusic(song: MusicData) {
-        const findDuplicated = this.playList.find(list => list.id === song.id) // find 메서드로 같은 id를 가진 노래를 찾아서 리턴
-            if (findDuplicated === undefined) { // 리턴받은것이 없으면 중복되는 노래가 없다는 의미이므로 바로 push
+        const duplicated = this.playList.find(list => list.id === song.id) // find 메서드로 같은 id를 가진 노래를 찾아서 리턴
+            if (duplicated === undefined) { // 리턴받은것이 없으면 중복되는 노래가 없다는 의미이므로 바로 push
                 this.currentTrack = song;
                 this.playList.push(song);
-            } else {
-                return; // 이미 있는곡인데, 그래도 추가할거냐는 질문을 한뒤, yes / no 로 핸들링 추후에 추가하기.
+
+            } else if (duplicated && duplicated !== this.currentTrack) { // 이미 리스트에 있지만 재생을 하고싶을 경우
+                this.currentTrack = song;
             };
     };
 
     handleAddTrack(song: MusicData) {
-        const findDuplicated = this.playList.find(list => list.id === song.id);
-            if (findDuplicated === undefined) {
-                this.playList.push(song);
-            } else {
-                return;
-            };
+        const duplicated= this.playList.find(list => list.id === song.id);
+
+        if (duplicated === undefined) {
+            this.playList.push(song);
+        } else if(duplicated) {
+            this.temporaryTrack = duplicated;
+            this.isOpen = true;
+        };
+    };
+
+    addDuplicatedTrack() {
+        this.playList.push(this.temporaryTrack);
+        this.isOpen = false;
+    }
+
+    shutDownModal() {
+        this.isOpen = false;
     }
 
     handlePlay(song: MusicData) {

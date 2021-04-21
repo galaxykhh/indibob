@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import ListBar from './ListBar';
 import { observer } from 'mobx-react';
 import musicStore from '../../stores/musicStore';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from 'react-router-dom';
 import { useHandleTab } from '../../Hooks/useHandleTab';
 
@@ -23,11 +23,15 @@ const PlayBar: React.FC = observer(() => {
                     </TABox>
                 </CurrentPlay>
                 <MusicController>
-                    <div style={{color: 'white'}}> rand </div>
-                    <div style={{color: 'white'}}> prev </div>
-                    <div style={{color: 'white'}}> play </div>
-                    <div style={{color: 'white'}}> next </div>
-                    <div style={{color: 'white'}}> loop </div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div style={{color: 'white', letterSpacing: '-13px', fontSize: '20px', marginRight: '10px'}}> ▎◀ </div>
+                    <div style={{color: 'white', fontSize: '30px'}}> ▶ </div>
+                    <div style={{color: 'white', letterSpacing: '2px', fontSize: '20px' }}> ▶▎ </div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
                 </MusicController>
                 <TabHandlerBox >
                     <TabHandler rotate={handler.handleTab} onClick={handler.handleListBar}>
@@ -144,15 +148,15 @@ const Artist = styled(NavLink)`
     }
 `;
 
-const Bob = styled.div`
-    font-size: 13px;
-    margin-left: 10px;
-    color: white;
-`;
+// const Bob = styled.div`
+//     font-size: 13px;
+//     margin-left: 10px;
+//     color: white;
+// `;
 
-const BobBtn = styled(FontAwesomeIcon)<{isbob: boolean}>`
-    font-size: 25px;
-    color: ${props => (props.isbob ? 'white' : 'red')};
-    cursor: pointer;
-    margin-left: 20px;
-`;
+// const BobBtn = styled(FontAwesomeIcon)<{isbob: boolean}>`
+//     font-size: 25px;
+//     color: ${props => (props.isbob ? 'white' : 'red')};
+//     cursor: pointer;
+//     margin-left: 20px;
+// `;
