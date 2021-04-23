@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components/';
 import musicStore from '../../stores/musicStore';
+import { observer } from 'mobx-react';
 
 interface IListItem{
     item: {
@@ -8,10 +9,11 @@ interface IListItem{
         image: string;
         songTitle: string;
         artist: string;
+        src: string;
     };
 };
 
-const ListItem: React.FC<IListItem>= ({item}) => {
+const ListItem: React.FC<IListItem> = observer(({item}) => {
     const { image, songTitle, artist } = item
     return (
         <ItemBox >
@@ -25,7 +27,7 @@ const ListItem: React.FC<IListItem>= ({item}) => {
             <DeleteBtn onClick={() => musicStore.handleDelete(item)} > × </DeleteBtn>
         </ItemBox>
     )
-}
+});
 
 export default ListItem;
 

@@ -42,11 +42,19 @@ export const tabClose = keyframes`
 `;
 
 export const modalOpen = keyframes`
-    from {
+    0% {
         transform: scale(0.1);
     }
-    to {
+    18% {
         transform: scale(1);
+    }
+
+    90% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(0.1);
     }
 `;
 

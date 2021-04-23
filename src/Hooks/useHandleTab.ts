@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
 
 type DisplayType = 'none' | 'block';
 

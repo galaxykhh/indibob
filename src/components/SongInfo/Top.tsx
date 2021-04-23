@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import musicStore from '../../stores/musicStore';
 import Modal from '../Modal/Modal';
@@ -6,19 +6,23 @@ import { observer } from 'mobx-react';
 import { useParams } from 'react-router-dom';
 
 const Top: React.FC = observer(() => {
+    const [isOpen, setIsOpen] = useState<boolean>(false)
+    const addBtn = useRef<HTMLButtonElement>(null)
     const { id }: { id: string } = useParams();
     useEffect(() => {
         musicStore.getSelectedTrack(id);
     }, [id]);
 
+    const showModal = () => {
+        setIsOpen(true);
+        setTimeout(() => setIsOpen(false), 2000)
+    }
+
     return (
         <Container>
-            <Modal addtrack={musicStore.addDuplicatedTrack}
-                   cancel={musicStore.shutDownModal}
-                   isopen={musicStore.isOpen}
-            >
+            <Modal isopen={isOpen} >
                 <Ment>
-                This track is already on the list.<br/><br/>Do you still want to add it?
+                    이 곡은 이미 플레이 리스트에 있는 곡입니다
                 </Ment>
             </Modal>
             <ImgDiv>
@@ -28,8 +32,13 @@ const Top: React.FC = observer(() => {
                 <Title> {musicStore.selectedTrack.songTitle} </Title>
                 <Artist> {musicStore.selectedTrack.artist} </Artist>
                 <BtnBox>
-                    <Btn onClick={() => musicStore.handleCurrentMusic(musicStore.selectedTrack)} > ▶ Play </Btn>
-                    <Btn onClick={() => musicStore.handleAddTrack(musicStore.selectedTrack)} > + Add </Btn>
+                    <Btn onClick={() => musicStore.handleCurrentMusic(musicStore.selectedTrack)} > ▶ 재생 </Btn>
+                    <Btn onClick={() => musicStore.handleAddTrack(musicStore.selectedTrack, showModal)}
+                         disabled={isOpen}
+                         ref={addBtn}
+                         >
+                             + 추가
+                    </Btn>
                 </BtnBox>
             </TABox>
         </Container>
@@ -102,16 +111,18 @@ const Artist = styled.div`
     white-space: nowrap;
 `;
 
-const Btn = styled.button`
+const Btn = styled.button.attrs(props =>({
+    disabled: props.disabled
+}))`
     all: unset;
-    width: 65px;
-    height: 45px;
+    width: 55px;
+    height: 35px;
     padding-left: 5px;
     padding-right: 5px;
     border-radius: 15px;
     color: black;
     text-align: center;
-    font-size: 19px;
+    font-size: 17px;
     margin-right: 10px;
     background-color: #dae9f4;
     cursor: pointer;

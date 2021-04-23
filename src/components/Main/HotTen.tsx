@@ -19,7 +19,7 @@ const HotTen: React.FC = observer(() => {
                         <MainSonBoxObserver mr='15px' ml='15px' width='50px'
                             item={item}
                             rank={index + 1}
-                            key={index}
+                            key={item.id}
                         />))}
                 </Container> :
                 <LoadingSpinner />}

@@ -1,5 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { slideUp, slideDown } from '../style/keyframes';
@@ -13,7 +14,7 @@ const Header: React.FC = () => {
         <>
             <LogoContainer>
                     <Logo to='/' > INDIEBOB </Logo>
-                    <SearchBtn onClick={handleSearch.handleSearchBox} icon={handleSearch.toggleBtn} />
+                    <SearchBtn onClick={handleSearch.handleSearchBox} icon={handleSearch.animation ? faSearch : faTimes} />
                     <SearchBox display={handleSearch.display} animation={handleSearch.animation} ref={handleSearch.searchInput} />
             </LogoContainer>
             <RedLine />
@@ -71,9 +72,7 @@ const Logo = styled(NavLink)`
     letter-spacing: 10px;
 `;
 
-const SearchBtn = styled(FontAwesomeIcon).attrs(props => ({
-    icon: props.icon
-}))`
+const SearchBtn = styled(FontAwesomeIcon)`
     font-size: 35px;
     padding-left: 25px;
     padding-bottom: 20px;

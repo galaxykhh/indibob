@@ -5,39 +5,41 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import musicStore from '../../stores/musicStore';
 import { NavLink } from 'react-router-dom';
 import { useHandleTab } from '../../Hooks/useHandleTab';
-import { faAngleDoubleLeft, faPlay,faPause, faStepBackward, faStepForward, faVolumeUp } from '@fortawesome/free-solid-svg-icons';
+import { useAudio } from '../../Hooks/useAudio';
+import { faAngleDoubleLeft, faPlay,faPause, faStepBackward, faStepForward, faVolumeUp, faVolumeMute } from '@fortawesome/free-solid-svg-icons';
+import { useEffect } from 'react';
 
 const PlayBar: React.FC = observer(() => {
-
+    const audio = useAudio();
     const handler = useHandleTab();
-
-    const test = () => {
-        console.log('hi');
-    }
+    const playList = musicStore.playList.slice(); // mobx의 플레이리스트 참조
+    useEffect(() => {
+        audio.handleAutoPlay();
+        console.log(playList);
+    }, [musicStore.playingTrack]); // eslint-disable-line
 
     return (
         <>
-            <TrackBar>
-                <Audio src={musicStore.musicSRC} />
-                <TrackProgress />
+            <TrackBar ref={audio.totalTime} >
+                <TrackProgress ref={audio.currentTime} />
             </TrackBar>
             <Container>
                 <CurrentPlay>
                     <ImgDiv>
-                        <Img url={musicStore.currentTrack.image} />
+                        <Img url={playList[audio.index]?.image} />
                     </ImgDiv>
-                    <TABox>
-                        <STitle to='/' > {musicStore.currentTrack.songTitle} </STitle>
-                        <Artist to='/' > {musicStore.currentTrack.artist} </Artist>
+                    <TABox> 
+                        <STitle to='/' > {playList[audio.index]?.songTitle} </STitle>
+                        <Artist to='/' > {playList[audio.index]?.artist} </Artist>
                     </TABox>
-                </CurrentPlay>
+                </CurrentPlay> 
                 <TrackController>
                     <ControlBtn icon={faStepBackward} />
-                    <ControlBtn icon={!musicStore.isPlaying ? faPlay : faPause} onClick={musicStore.playTrack} />
+                    <ControlBtn icon={!audio.isPlay ? faPlay : faPause} onClick={audio.handlePlayPause} />
                     <ControlBtn icon={faStepForward} />
                 </TrackController>
                 <VolumeControllerBox>
-                    <VolumeIcon icon={faVolumeUp} />
+                    <VolumeIcon icon={!audio.isMute ? faVolumeUp : faVolumeMute} onClick={audio.handleMute} />
                 </VolumeControllerBox>
                 <TabHandlerBox >
                     <Wrap rotate={handler.handleTab} >
@@ -46,6 +48,12 @@ const PlayBar: React.FC = observer(() => {
                 </TabHandlerBox>
             </Container>
             <ListBar handletab={handler.handleTab} display={handler.display} />
+            <Audio src={playList[audio.index]?.src}
+                       ref={audio.audio}
+                       crossOrigin='anonymous'
+                       autoPlay
+                       onEnded={() => console.log('end')}
+                       />
         </>
     )
 });
@@ -57,11 +65,11 @@ const TrackBar = styled.div`
     bottom: 110px;
     width: 100%;
     height: 5px;
-    background-color: rgba(192, 56, 56, 0.4);
+    background-color: rgba(192, 56, 56, .4);
     overflow: hidden;
     cursor: pointer;
     transition: .2s ease;
-    transition-delay: .25s;
+    transition-delay: .6s;
     &:hover {
         height: 15px;
     }
@@ -69,7 +77,7 @@ const TrackBar = styled.div`
 
 const TrackProgress = styled.div`
     position: absolute;
-    width: 40%;
+    width: 44.4%;
     height: 100%;
     background-color: rgb(192, 56, 56);
 `;
@@ -111,6 +119,9 @@ const ControlBtn = styled(FontAwesomeIcon)`
     color: white;
     font-size: 30px;
     cursor: pointer;
+    margin-left: -50px;
+    margin-right: -50px;
+    transition: all .5s ease;
 `;
 
 const VolumeControllerBox = styled.div`
@@ -124,7 +135,8 @@ const VolumeControllerBox = styled.div`
 
 const VolumeIcon = styled(FontAwesomeIcon)`
     color: white;
-    font-size: 20px;
+    font-size: 23px;
+    cursor: pointer;
 `;
 
 const TabHandlerBox = styled.div`
@@ -143,7 +155,7 @@ const Wrap = styled.div<{rotate: boolean}>`
 
 const TabHandler = styled(FontAwesomeIcon)`
     all: unset;
-    font-size: 25px;
+    font-size: 30px;
     color: white;
     cursor: pointer;
 `;
@@ -213,5 +225,4 @@ const Artist = styled(NavLink)`
 // `;
 
 const Audio = styled.audio`
-
 `;

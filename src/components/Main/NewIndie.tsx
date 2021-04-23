@@ -15,10 +15,10 @@ const NewIndie: React.FC= observer(() => {
         <>
         {Array.isArray(musicStore.lastestList) ?
             <Container>
-                {musicStore.lastestList.map((item, index) => (
+                {musicStore.lastestList.map(item => (
                     <MainSongBoxObserver width='30px'
                                          item={item}
-                                         key={index}
+                                         key={item.id}
                     />))}
             </Container> : 
              <LoadingSpinner />}
