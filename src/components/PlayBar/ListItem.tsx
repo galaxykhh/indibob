@@ -9,18 +9,19 @@ interface IListItem{
         image: string;
         songTitle: string;
         artist: string;
+        bob: number;
         src: string;
     };
 };
 
 const ListItem: React.FC<IListItem> = observer(({item}) => {
-    const { image, songTitle, artist } = item
+    const { image, songTitle, artist, bob } = item // eslint-disable-line
     return (
         <ItemBox >
-            <ImgDiv onClick={() => musicStore.handlePlay(item)} >
+            <ImgDiv onClick={() => musicStore.handleCurrentMusic(item)} >
                 <Img url={image} />
             </ImgDiv>
-            <TABox onClick={() => musicStore.handlePlay(item)} >
+            <TABox onClick={() => musicStore.handleCurrentMusic(item)} >
                 <Title> {songTitle} </Title>
                 <Artist> {artist} </Artist>
             </TABox>

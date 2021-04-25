@@ -15,7 +15,7 @@ const Top: React.FC = observer(() => {
 
     const showModal = () => {
         setIsOpen(true);
-        setTimeout(() => setIsOpen(false), 2000)
+        setTimeout(() => setIsOpen(false), 1500)
     }
 
     return (

@@ -8,11 +8,11 @@ interface IModal {
 
 const Modal: React.FC<IModal>= ({ children, isopen }) => {
     return (
-            <Dialog isopen={isopen}>
+            <Form isopen={isopen}>
                 <Flex>
                     {children}
                 </Flex>
-            </Dialog>
+            </Form>
     )
 }
 
@@ -22,17 +22,17 @@ interface BOOLEAN {
     isopen: boolean;
 }
 
-const Dialog = styled.div<BOOLEAN>`
+const Form = styled.div<BOOLEAN>`
     display: ${props => props.isopen ? 'block' : 'none'};
     position: absolute;
-    top: 70%;
+    top: 50%;
     left: 50%;
     width: 500px;
     height: 50px;
-    margin: -230px;
+    margin: -250px;
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 40px;
-    animation: ${props => props.isopen ? modalOpen : modalClose} 2s ease;
+    animation: ${props => props.isopen ? modalOpen : modalClose} 1.5s ease;
 `;
 
 const Flex = styled.div`
@@ -41,7 +41,7 @@ const Flex = styled.div`
     justify-content: center;
     align-items: center;
     width: 500px;
-    height: 45px;
+    height: 50px;
 `;
 
 // const BtnBox = styled.div`

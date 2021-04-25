@@ -14,13 +14,13 @@ interface IMainSong {
         image: string;
         songTitle: string;
         artist: string;
-        bob?: number;
+        bob: number;
         src: string;
     };
 };
 
 const MainSongBox: React.FC<IMainSong> = ({ item, rank, mr, ml, width }) => {
-    const { image, songTitle, artist, id, src } = item; // eslint-disable-line
+    const { image, songTitle, artist, id, src, bob } = item; // eslint-disable-line
 
     return (
         <ItemBox>
