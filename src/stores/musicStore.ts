@@ -20,7 +20,7 @@ interface SelectedMusicData extends MusicData {
 }
 
 class MusicStore {
-    trackStarted: boolean = false;
+    isTrackExist: boolean = false;
     playList: MusicData[] = [];
     trackIndex: number = 0;
     hotList: MusicData[] | '' = ''; // Array.isArray(array) ?... => 데이터를 받아오지 못했을 때 '' 로 초기화 시켜주어 스피너 활성화
@@ -28,7 +28,7 @@ class MusicStore {
     selectedTrack: SelectedMusicData = {id: '', albumTitle: '', songTitle: '', artist: '', image: '', bob: 0, date: 0, src: ''};
     constructor() {
         makeObservable(this, {
-            trackStarted: observable,
+            isTrackExist: observable,
             playList: observable,
             trackIndex: observable,
             hotList: observable,
@@ -37,7 +37,7 @@ class MusicStore {
             getHotList: action,
             getLastestList: action,
             getSelectedTrack: action,
-            handleTrackStarted: action.bound,
+            handleIsTrackExist: action.bound,
             handleCurrentMusic: action.bound,
             handleAddTrack: action.bound,
             handleDelete: action.bound,
@@ -74,20 +74,20 @@ class MusicStore {
         });
     };
     // 오디오 재생이 가능하게, 또는 가능하지 않게
-    handleTrackStarted() {
-        this.trackStarted = !this.trackStarted;
+    handleIsTrackExist() {
+        this.isTrackExist = !this.isTrackExist;
     }
     // 재생버튼을 누른 트랙을 재색목록 추가, 재생하고, 이미 리스트에 있을경우 재생만
     handleCurrentMusic(song: MusicData) {
         const duplicated = this.playList.find(list => list.id === song.id) // find 메서드로 같은 id를 가진 노래를 찾아서 리턴
 
             if (duplicated === undefined) { // 리턴받은것이 없으면 중복되는 노래가 없다는 의미이므로 바로 재생 후 push
-                this.trackStarted = true;
+                this.isTrackExist = true;
                 this.playList.push(song);
                 this.trackIndex = this.playList.length - 1
             } else if (duplicated) {
                 const index = this.playList.indexOf(duplicated)
-                this.trackStarted = true;
+                this.isTrackExist = true;
                 this.trackIndex = index;
             }
     };

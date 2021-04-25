@@ -17,7 +17,7 @@ const PlayBar: React.FC = observer(() => {
     const handler = useHandleTab();
     const playList = toJS(musicStore.playList);
     useEffect(() => {
-        audio.handleAutoPlay(musicStore.trackStarted);
+        audio.handleAutoPlay(musicStore.isTrackExist);
     }, [playList]); // eslint-disable-line
 
     return (
@@ -26,7 +26,7 @@ const PlayBar: React.FC = observer(() => {
                 <TrackHandler ref={audio.handler} // MDN의 linear-gradient 참고하여 그라데이션 없이 구분선을 정해주어, 퍼센트값을 넣어준다.
                               bg={`linear-gradient(to right,
                                  rgb(192, 56, 56) ${audio.currentPercent}%,
-                                 rgba(192, 56, 56, .4) ${audio.currentPercent}% 100%)`}
+                                 rgba(192, 56, 56, .25) ${audio.currentPercent}% 100%)`}
                               />
             </TrackBar>
 
@@ -45,7 +45,7 @@ const PlayBar: React.FC = observer(() => {
 
                 <TrackController>
                     <ControlBtn icon={faStepBackward} onClick={musicStore.handlePrev} />
-                    <ControlBtn icon={audio.isPlay ? faPause : faPlay} onClick={() => audio.handlePlayPause(musicStore.handleTrackStarted)} />
+                    <ControlBtn icon={audio.isPlay ? faPause : faPlay} onClick={() => audio.handlePlayPause(playList ,musicStore.handleIsTrackExist)} />
                     <ControlBtn icon={faStepForward} onClick={musicStore.handleNext} />
                 </TrackController>
 

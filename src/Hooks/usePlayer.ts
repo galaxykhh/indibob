@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import moment from 'moment';
 import 'moment-duration-format';
+import { MusicData } from '../stores/musicStore';
 
 export const usePlayer = () => {
     const audio = useRef<HTMLAudioElement>(null);
@@ -37,8 +38,10 @@ export const usePlayer = () => {
         }
     }
 
-    const handlePlayPause = (handler: () => void) => {
-        if (isPlay) {
+    const handlePlayPause = (playList: MusicData[], handler: () => void) => {
+        if (playList.length === 0) {
+            return
+        } else if (isPlay) {
             handler();
             setIsPlay(!isPlay);
             audio.current?.pause();
