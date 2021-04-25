@@ -6,13 +6,13 @@ import musicStore from '../../stores/musicStore';
 import { NavLink } from 'react-router-dom';
 import { useHandleTab } from '../../Hooks/useHandleTab';
 import { usePlayer } from '../../Hooks/usePlayer';
-import { faAngleDoubleLeft, faPlay,faPause, faStepBackward, faStepForward, faVolumeUp, faVolumeMute, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDoubleLeft, faPlay,faPause, faStepBackward, faStepForward, faVolumeUp, faVolumeMute } from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
-import { useBob } from '../../Hooks/useBob';
+// import { useBob } from '../../Hooks/useBob';
 import { toJS } from 'mobx';
 
 const PlayBar: React.FC = observer(() => {
-    const bob = useBob();
+    // const bob = useBob();
     const audio = usePlayer();
     const progressHandler = useHandleTab();
     const playList = toJS(musicStore.playList);
@@ -23,10 +23,17 @@ const PlayBar: React.FC = observer(() => {
     return (
         <>
             <TrackBar ref={audio.totalProgress}
-                      onClick={audio.handleProgress}
+                      onMouseDown={audio.handleProgress}
                       >
                 <TrackHandler ref={audio.progressHandler} // MDN의 linear-gradient 참고하여 그라데이션 없이 구분선을 정해주어, 퍼센트값을 넣어준다.
-                              progressPercent={audio.currentProgressPercent}/>
+                              style={{ 
+                                height: '100%',
+                                background: `linear-gradient(
+                                                to right,
+                                                rgb(192, 56, 56) ${audio.currentProgressPercent}%,
+                                                rgba(192, 56, 56, .5) ${audio.currentProgressPercent}% 100%)`,
+                             }}
+                               />
             </TrackBar>
 
             <Container>
@@ -67,7 +74,7 @@ const PlayBar: React.FC = observer(() => {
 
                 <VolumeControllerBox>
                     <VolumeIconBox>
-                        <VolumeIcon icon={audio.isMute ? faVolumeMute : faVolumeUp} 
+                        <VolumeIcon icon={audio.isMute ? faVolumeMute : faVolumeUp}
                                     onClick={audio.handleMute}
                                     />
                     </VolumeIconBox>
@@ -75,7 +82,13 @@ const PlayBar: React.FC = observer(() => {
                                onClick={audio.handleVolume}
                                >
                         <VolumeHandler ref={audio.volumeHandler}
-                                       volumePercent={audio.currentVolumePercent}
+                                       style={{
+                                        height: '100%',
+                                        background: `linear-gradient(
+                                                        to right,
+                                                      rgb(255, 255, 255) ${audio.currentVolumePercent}%,
+                                                      rgba(255, 255, 255, .5) ${audio.currentVolumePercent}% 100%)`,
+                                       }}
                                        />
                     </VolumeBar>
                 </VolumeControllerBox>
@@ -95,6 +108,7 @@ const PlayBar: React.FC = observer(() => {
             <Audio src={playList[musicStore.trackIndex]?.src}
                    ref={audio.audio}
                    crossOrigin='anonymous'
+                   preload='none'
                    onEnded={musicStore.handleNext}
                    onLoadedData={audio.setAudioData}
                    onTimeUpdate={audio.setAudioTime}
@@ -110,7 +124,7 @@ const TrackBar = styled.div`
     position: fixed;
     bottom: 110px;
     width: 100%;
-    height: 5px;
+    height: 6px;
     overflow: hidden;
     cursor: pointer;
     transition: .2s ease;
@@ -121,9 +135,7 @@ const TrackBar = styled.div`
     }
 `;
 
-const TrackHandler = styled.div<{progressPercent: number}>`
-    height: 100%;
-    background: linear-gradient(to right,rgb(192, 56, 56) ${props => props.progressPercent}%,rgba(192, 56, 56, .5) ${props => props.progressPercent}% 100%);
+const TrackHandler = styled.div`
 `;
 
 const Container = styled.div`
@@ -217,9 +229,7 @@ const VolumeBar = styled.div`
     }
 `;
 
-const VolumeHandler = styled.div<{volumePercent: number}>`
-    height: 100%;
-    background: linear-gradient(to right,rgb(255, 255, 255) ${props => props.volumePercent}%,rgba(255, 255, 255, .5) ${props => props.volumePercent}% 100%);
+const VolumeHandler = styled.div`
 `;
 const TabHandlerBox = styled.div`
     display: flex;
@@ -292,18 +302,18 @@ const Artist = styled.div`
     }
 `;
 
-const Bob = styled.div`
-    font-size: 13px;
-    margin-left: 10px;
-    color: white;
-`;
+// const Bob = styled.div`
+//     font-size: 13px;
+//     margin-left: 10px;
+//     color: white;
+// `;
 
-const BobBtn = styled(FontAwesomeIcon)`
-    font-size: 25px;
-    color: ${props => props.color};
-    cursor: pointer;
-    margin-left: 20px;
-`;
+// const BobBtn = styled(FontAwesomeIcon)`
+//     font-size: 25px;
+//     color: ${props => props.color};
+//     cursor: pointer;
+//     margin-left: 20px;
+// `;
 
 const Audio = styled.audio`
 `;

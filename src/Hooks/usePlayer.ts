@@ -33,16 +33,23 @@ export const usePlayer = () => {
         setVolume(audio.current?.volume);
     }
 
-    const handleAutoPlay = (trackAvailable: boolean) => { // 첫번쨰 컴포넌트 마운트를 스킵한다
+    const playBack = () => {
+        return audio.current?.play();
+    }
+
+    const handleAutoPlay = (trackAvailable: boolean) => {
         if (isFirstRun.current) {
-            isFirstRun.current = false;
+            isFirstRun.current = false; // componentDidMount
             return;
         }
-        if (trackAvailable === false) { // 
+        if (trackAvailable === false) { // 곡을 추가하는 동시에 trackAvailable가 활성화 (musicStore.handleCurrentTrack => handleTrackAvailable)
             audio.current?.pause();
         } else {
-            setIsPlay(true);
-            setTimeout(() => audio.current?.play(), 100); // 최소 재생가능한 오디오 데이터 받아오는 시간을 고려.. * oncanplay
+            setIsPlay(true); // audio 가 반환하는 audio promise => 재생이 가능한 수준까지 로딩이 되면 트랙을 재생
+            playBack()?.then(() => {
+            })
+            .catch(error => {
+            })
         }
     }
 
@@ -64,19 +71,19 @@ export const usePlayer = () => {
         if (isMute && audio.current) {
             setIsMute(!isMute);
             audio.current.volume = 1;
-
+            setVolume(1);
         } else if (!isMute && audio.current) {
             setIsMute(!isMute);
             audio.current.volume = 0;
+            setVolume(0);
         }
     }
 
     const handleProgress = (e: React.MouseEvent) => {
         if (duration && totalProgress.current && audio.current){
-            const totalWidth = totalProgress.current.offsetWidth;
-            const clickPosition = e.pageX;
-
-            audio.current.currentTime = (clickPosition / totalWidth) * audio.current.duration;
+            let totalWidth = totalProgress.current.offsetWidth;
+            let clickPosition = e.pageX;
+            audio.current.currentTime = (clickPosition! / totalWidth) * audio.current.duration;
         } else {
             return;
         }
@@ -91,7 +98,6 @@ export const usePlayer = () => {
             const volume = (clickedPositionInBar / progressWidth);
             audio.current.volume = volume;
             setVolume(volume);
-            return volume;
         }
     }
 
