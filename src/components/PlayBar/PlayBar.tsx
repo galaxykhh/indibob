@@ -14,7 +14,7 @@ import { toJS } from 'mobx';
 const PlayBar: React.FC = observer(() => {
     const bob = useBob();
     const audio = usePlayer();
-    const handler = useHandleTab();
+    const progressHandler = useHandleTab();
     const playList = toJS(musicStore.playList);
     useEffect(() => {
         audio.handleAutoPlay(musicStore.trackAvailable);
@@ -22,11 +22,11 @@ const PlayBar: React.FC = observer(() => {
 
     return (
         <>
-            <TrackBar ref={audio.totalTime}
+            <TrackBar ref={audio.totalProgress}
                       onClick={audio.handleProgress}
                       >
-                <TrackHandler ref={audio.handler} // MDN의 linear-gradient 참고하여 그라데이션 없이 구분선을 정해주어, 퍼센트값을 넣어준다.
-                              percent={audio.currentPercent}/>
+                <TrackHandler ref={audio.progressHandler} // MDN의 linear-gradient 참고하여 그라데이션 없이 구분선을 정해주어, 퍼센트값을 넣어준다.
+                              progressPercent={audio.currentProgressPercent}/>
             </TrackBar>
 
             <Container>
@@ -66,30 +66,39 @@ const PlayBar: React.FC = observer(() => {
                 </TimeViewerBox>
 
                 <VolumeControllerBox>
-                    <VolumeIcon icon={audio.isMute ? faVolumeMute : faVolumeUp} 
-                                onClick={audio.handleMute}
-                                />
+                    <VolumeIconBox>
+                        <VolumeIcon icon={audio.isMute ? faVolumeMute : faVolumeUp} 
+                                    onClick={audio.handleMute}
+                                    />
+                    </VolumeIconBox>
+                    <VolumeBar ref={audio.totalVolume}
+                               onClick={audio.handleVolume}
+                               >
+                        <VolumeHandler ref={audio.volumeHandler}
+                                       volumePercent={audio.currentVolumePercent}
+                                       />
+                    </VolumeBar>
                 </VolumeControllerBox>
 
                 <TabHandlerBox >
-                    <Wrap rotate={handler.handleTab} >
+                    <Wrap rotate={progressHandler.handleTab} >
                         <TabHandler icon={faAngleDoubleLeft}
-                                    onClick={handler.handleListBar}
+                                    onClick={progressHandler.handleListBar}
                                     />
                     </Wrap>
                 </TabHandlerBox>
             </Container>
 
-            <ListBar handletab={handler.handleTab}
-                     display={handler.display}
+            <ListBar handletab={progressHandler.handleTab}
+                     display={progressHandler.display}
                      />
             <Audio src={playList[musicStore.trackIndex]?.src}
                    ref={audio.audio}
                    crossOrigin='anonymous'
-                   autoPlay
                    onEnded={musicStore.handleNext}
                    onLoadedData={audio.setAudioData}
                    onTimeUpdate={audio.setAudioTime}
+                   onCanPlay={audio.setVolumeData}
                    />
         </>
     )
@@ -102,7 +111,6 @@ const TrackBar = styled.div`
     bottom: 110px;
     width: 100%;
     height: 5px;
-    background-color: rgba(192, 56, 56, .4);
     overflow: hidden;
     cursor: pointer;
     transition: .2s ease;
@@ -113,9 +121,9 @@ const TrackBar = styled.div`
     }
 `;
 
-const TrackHandler = styled.div<{percent: number}>`
+const TrackHandler = styled.div<{progressPercent: number}>`
     height: 100%;
-    background: linear-gradient(to right,rgb(192, 56, 56) ${props => props.percent}%,rgba(192, 56, 56, .25) ${props => props.percent}% 100%);
+    background: linear-gradient(to right,rgb(192, 56, 56) ${props => props.progressPercent}%,rgba(192, 56, 56, .5) ${props => props.progressPercent}% 100%);
 `;
 
 const Container = styled.div`
@@ -178,39 +186,40 @@ const TimeViewer = styled.div<{display: string;}>`
 const VolumeControllerBox = styled.div`
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     width: 200px;
     height: 100px;
 `;
 
+const VolumeIconBox = styled.div`
+    width: 45px;
+    height: 45px;
+`;
+
 const VolumeIcon = styled(FontAwesomeIcon)`
     color: white;
     font-size: 23px;
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
     cursor: pointer;
 `;
 
 const VolumeBar = styled.div`
-    position: fixed;
-    bottom: 110px;
-    width: 100%;
+    width: 90px;
     height: 5px;
-    background-color: rgba(192, 56, 56, .4);
     overflow: hidden;
     cursor: pointer;
     transition: .2s ease;
     transition-delay: .6s;
-    z-index: 10000;
     &:hover {
-        height: 15px;
+        height: 10px;
     }
 `;
 
-const VolumeHandler = styled.div<{percent: number}>`
+const VolumeHandler = styled.div<{volumePercent: number}>`
     height: 100%;
-    background: linear-gradient(to right,rgb(192, 56, 56) ${props => props.percent}%,rgba(192, 56, 56, .25) ${props => props.percent}% 100%);
+    background: linear-gradient(to right,rgb(255, 255, 255) ${props => props.volumePercent}%,rgba(255, 255, 255, .5) ${props => props.volumePercent}% 100%);
 `;
 const TabHandlerBox = styled.div`
     display: flex;
