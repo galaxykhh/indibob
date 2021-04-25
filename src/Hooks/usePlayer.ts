@@ -25,24 +25,24 @@ export const usePlayer = () => {
 
     const setAudioTime = () => setCurrentTime(audio.current?.currentTime);
 
-    const handleAutoPlay = (trackStarted: boolean) => { // 첫번쨰 컴포넌트 마운트를 스킵한다
+    const handleAutoPlay = (trackAvailable: boolean) => { // 첫번쨰 컴포넌트 마운트를 스킵한다
         if (isFirstRun.current) {
             isFirstRun.current = false;
             return;
         }
-        if (trackStarted === false) {
+        if (trackAvailable === false) { // 
             audio.current?.pause();
         } else {
             setIsPlay(true);
-            audio.current?.play();
+            setTimeout(() => audio.current?.play(), 100); // 최소 재생가능한 오디오 데이터 받아오는 시간을 고려.. * oncanplay
         }
     }
 
-    const handlePlayPause = (playList: MusicData[], handler: () => void) => {
+    const handlePlayPause = (playList: MusicData[], handler: () => void) => { // handler = musicStore.
         if (playList.length === 0) {
             return
         } else if (isPlay) {
-            handler();
+            handler(); 
             setIsPlay(!isPlay);
             audio.current?.pause();
         } else {
@@ -64,12 +64,13 @@ export const usePlayer = () => {
     }
 
     const handleProgress = (e: React.MouseEvent) => {
-        if (duration && handler.current){
-            const handlerWidth = handler.current.offsetWidth;
+        if (duration && totalTime.current && audio.current){
+            const totalWidth = totalTime.current.offsetWidth;
             const clickPosition = e.pageX;
-            const timePerPixel = duration / handlerWidth;
 
-            return timePerPixel * clickPosition;
+            audio.current.currentTime = (clickPosition / totalWidth) * audio.current.duration;
+        } else {
+            return;
         }
     }
 

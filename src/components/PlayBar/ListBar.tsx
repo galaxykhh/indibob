@@ -12,10 +12,14 @@ interface IListBar {
 
 const ListBar: React.FC<IListBar> = observer((props) => {
     return (
-        <Container handletab={props.handletab} display={props.display} >
+        <Container handletab={props.handletab}
+                   display={props.display}
+                   >
             <Top> 플레이리스트 </Top>
             {musicStore.playList.map(item => (
-                <ListItem item={item} key={item.id} />
+                <ListItem item={item}
+                          key={item.id}
+                          />
             ))}
         </Container>
     )

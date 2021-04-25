@@ -19,7 +19,8 @@ const NewIndie: React.FC= observer(() => {
                     <MainSongBoxObserver width='30px'
                                          item={item}
                                          key={item.id}
-                    />))}
+                                         />
+                ))}
             </Container> : 
              <LoadingSpinner />}
         </>

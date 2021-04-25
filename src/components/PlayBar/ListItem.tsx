@@ -18,14 +18,18 @@ const ListItem: React.FC<IListItem> = observer(({item}) => {
     const { image, songTitle, artist, bob } = item // eslint-disable-line
     return (
         <ItemBox >
+
             <ImgDiv onClick={() => musicStore.handleCurrentMusic(item)} >
                 <Img url={image} />
             </ImgDiv>
+
             <TABox onClick={() => musicStore.handleCurrentMusic(item)} >
                 <Title> {songTitle} </Title>
                 <Artist> {artist} </Artist>
             </TABox>
+
             <DeleteBtn onClick={() => musicStore.handleDelete(item)} > × </DeleteBtn>
+            
         </ItemBox>
     )
 });

@@ -16,11 +16,14 @@ const HotTen: React.FC = observer(() => {
             {Array.isArray(musicStore.hotList) ?
                 <Container>
                     {musicStore.hotList.map((item, index) => (
-                        <MainSonBoxObserver mr='15px' ml='15px' width='50px'
-                            item={item}
-                            rank={index + 1}
-                            key={item.id}
-                        />))}
+                        <MainSonBoxObserver mr='15px'
+                                            ml='15px'
+                                            width='50px'
+                                            item={item}
+                                            rank={index + 1}
+                                            key={item.id}
+                                            />
+                    ))}
                 </Container> :
                 <LoadingSpinner />}
         </>

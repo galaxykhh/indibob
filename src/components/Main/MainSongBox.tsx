@@ -25,7 +25,12 @@ const MainSongBox: React.FC<IMainSong> = ({ item, rank, mr, ml, width }) => {
     return (
         <ItemBox>
             <AlbumCover url={image} onClick={() => musicStore.handleCurrentMusic(item)} />
-            <Rank mr={mr} ml={ml} width={width} > {rank} </Rank>
+            <Rank mr={mr}
+                  ml={ml}
+                  width={width}
+                  >
+                {rank}
+            </Rank>
             <InfoFlex>
                 <Title to={`/song/${id}`}> {songTitle} </Title>
                 <Artist> {artist} </Artist>

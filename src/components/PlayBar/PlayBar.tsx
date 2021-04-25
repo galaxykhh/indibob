@@ -17,36 +17,46 @@ const PlayBar: React.FC = observer(() => {
     const handler = useHandleTab();
     const playList = toJS(musicStore.playList);
     useEffect(() => {
-        audio.handleAutoPlay(musicStore.isTrackExist);
+        audio.handleAutoPlay(musicStore.trackAvailable);
     }, [playList]); // eslint-disable-line
 
     return (
         <>
-            <TrackBar ref={audio.totalTime} onClick={audio.handleProgress} > 
+            <TrackBar ref={audio.totalTime}
+                      onClick={audio.handleProgress}
+                      >
                 <TrackHandler ref={audio.handler} // MDN의 linear-gradient 참고하여 그라데이션 없이 구분선을 정해주어, 퍼센트값을 넣어준다.
-                              bg={`linear-gradient(to right,
-                                 rgb(192, 56, 56) ${audio.currentPercent}%,
-                                 rgba(192, 56, 56, .25) ${audio.currentPercent}% 100%)`}
-                              />
+                              percent={audio.currentPercent}/>
             </TrackBar>
 
             <Container>
                 <CurrentPlay>
+
                     <ImgDiv>
                         <Img url={playList[musicStore.trackIndex]?.image} />
                     </ImgDiv>
+
                     <TABox> 
-                        <STitle to='/' > {playList[musicStore.trackIndex]?.songTitle} </STitle>
-                        <Artist to='/' > {playList[musicStore.trackIndex]?.artist} </Artist>
+                        <STitle to={`/song/${playList[musicStore.trackIndex]?.id}`}>
+                            {playList[musicStore.trackIndex]?.songTitle}
+                        </STitle>
+                        <Artist> {playList[musicStore.trackIndex]?.artist} </Artist>
                     </TABox>
+
                     {/* <Bob> {musicStore.playList[audio.index]?.bob} </Bob>
                     <BobBtn icon={faHeart} color={bob.bob ? 'white' : 'red'} onClick={bob.PBob} /> */}
                 </CurrentPlay> 
 
                 <TrackController>
-                    <ControlBtn icon={faStepBackward} onClick={musicStore.handlePrev} />
-                    <ControlBtn icon={audio.isPlay ? faPause : faPlay} onClick={() => audio.handlePlayPause(playList ,musicStore.handleIsTrackExist)} />
-                    <ControlBtn icon={faStepForward} onClick={musicStore.handleNext} />
+                    <ControlBtn icon={faStepBackward}
+                                onClick={musicStore.handlePrev}
+                                />
+                    <ControlBtn icon={audio.isPlay ? faPause : faPlay}
+                                onClick={() => audio.handlePlayPause(playList ,musicStore.handleTrackAvailable)}
+                                />
+                    <ControlBtn icon={faStepForward}
+                                onClick={musicStore.handleNext}
+                                />
                 </TrackController>
 
                 <TimeViewerBox>
@@ -56,24 +66,31 @@ const PlayBar: React.FC = observer(() => {
                 </TimeViewerBox>
 
                 <VolumeControllerBox>
-                    <VolumeIcon icon={audio.isMute ? faVolumeMute : faVolumeUp} onClick={audio.handleMute} />
+                    <VolumeIcon icon={audio.isMute ? faVolumeMute : faVolumeUp} 
+                                onClick={audio.handleMute}
+                                />
                 </VolumeControllerBox>
 
                 <TabHandlerBox >
                     <Wrap rotate={handler.handleTab} >
-                        <TabHandler icon={faAngleDoubleLeft} onClick={handler.handleListBar} />
+                        <TabHandler icon={faAngleDoubleLeft}
+                                    onClick={handler.handleListBar}
+                                    />
                     </Wrap>
                 </TabHandlerBox>
             </Container>
-            <ListBar handletab={handler.handleTab} display={handler.display} />
+
+            <ListBar handletab={handler.handleTab}
+                     display={handler.display}
+                     />
             <Audio src={playList[musicStore.trackIndex]?.src}
-                       ref={audio.audio}
-                       crossOrigin='anonymous'
-                       autoPlay
-                       onEnded={musicStore.handleNext}
-                       onLoadedData={audio.setAudioData}
-                       onTimeUpdate={audio.setAudioTime}
-                       />
+                   ref={audio.audio}
+                   crossOrigin='anonymous'
+                   autoPlay
+                   onEnded={musicStore.handleNext}
+                   onLoadedData={audio.setAudioData}
+                   onTimeUpdate={audio.setAudioTime}
+                   />
         </>
     )
 });
@@ -96,9 +113,9 @@ const TrackBar = styled.div`
     }
 `;
 
-const TrackHandler = styled.div<{bg: string}>`
+const TrackHandler = styled.div<{percent: number}>`
     height: 100%;
-    background: ${props => props.bg};
+    background: linear-gradient(to right,rgb(192, 56, 56) ${props => props.percent}%,rgba(192, 56, 56, .25) ${props => props.percent}% 100%);
 `;
 
 const Container = styled.div`
@@ -175,6 +192,26 @@ const VolumeIcon = styled(FontAwesomeIcon)`
     cursor: pointer;
 `;
 
+const VolumeBar = styled.div`
+    position: fixed;
+    bottom: 110px;
+    width: 100%;
+    height: 5px;
+    background-color: rgba(192, 56, 56, .4);
+    overflow: hidden;
+    cursor: pointer;
+    transition: .2s ease;
+    transition-delay: .6s;
+    z-index: 10000;
+    &:hover {
+        height: 15px;
+    }
+`;
+
+const VolumeHandler = styled.div<{percent: number}>`
+    height: 100%;
+    background: linear-gradient(to right,rgb(192, 56, 56) ${props => props.percent}%,rgba(192, 56, 56, .25) ${props => props.percent}% 100%);
+`;
 const TabHandlerBox = styled.div`
     display: flex;
     justify-content: flex-end;
@@ -233,8 +270,7 @@ const STitle = styled(NavLink)`
     }
 `;
 
-const Artist = styled(NavLink)`
-    text-decoration: none;
+const Artist = styled.div`
     font-size: 13px;
     margin-left: 15px;
     color: white;

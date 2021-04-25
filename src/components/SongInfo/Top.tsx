@@ -20,14 +20,17 @@ const Top: React.FC = observer(() => {
 
     return (
         <Container>
+
             <Modal isopen={isOpen} >
                 <Ment>
                     이 곡은 이미 플레이 리스트에 있는 곡입니다
                 </Ment>
             </Modal>
+
             <ImgDiv>
                 <Img url={musicStore.selectedTrack.image} />
             </ImgDiv>
+
             <TABox>
                 <Title> {musicStore.selectedTrack.songTitle} </Title>
                 <Artist> {musicStore.selectedTrack.artist} </Artist>
@@ -41,6 +44,7 @@ const Top: React.FC = observer(() => {
                     </Btn>
                 </BtnBox>
             </TABox>
+            
         </Container>
     )
 })

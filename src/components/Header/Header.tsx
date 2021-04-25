@@ -14,8 +14,13 @@ const Header: React.FC = () => {
         <>
             <LogoContainer>
                     <Logo to='/' > INDIEBOB </Logo>
-                    <SearchBtn onClick={handleSearch.handleSearchBox} icon={handleSearch.animation ? faSearch : faTimes} />
-                    <SearchBox display={handleSearch.display} animation={handleSearch.animation} ref={handleSearch.searchInput} />
+                    <SearchBtn onClick={handleSearch.handleSearchBox}
+                               icon={handleSearch.animation ? faSearch : faTimes}
+                               />
+                    <SearchBox display={handleSearch.display}
+                               animation={handleSearch.animation}
+                               ref={handleSearch.searchInput}
+                               />
             </LogoContainer>
             <RedLine />
         </>
