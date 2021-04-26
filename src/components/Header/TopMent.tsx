@@ -22,6 +22,9 @@ const Text = styled.div<Prop>`
     font-size: 30px;
     color: #e8eaf0;
     letter-spacing: 5px;
+    @media only screen and (max-width: 700px) {
+        font-size: 20px;
+    }
 `;
 
 const BGContainer = styled.div`
@@ -31,7 +34,4 @@ const BGContainer = styled.div`
     align-items: center;
     margin-bottom: 30px;
     height: 120px;
-    @media only screen and (max-width: 700px) {
-        visibility: hidden;
-    }
 `;

@@ -141,6 +141,11 @@ const TrackBar = styled.div`
     &:hover {
         height: 15px;
     }
+    @media only screen and (max-width: 850px) {
+        position: fixed;
+        left: 0;
+        bottom: 159px;
+    }
 `;
 
 const TrackHandler = styled.div`
@@ -177,6 +182,15 @@ const TrackController = styled.div`
     align-items: center;
     width: 30%;
     height: 100px;
+    @media only screen and (max-width: 850px) {
+        justify-content: center;
+        position: fixed;
+        left: 0;
+        bottom: 110px;
+        width: 100%;
+        height: 50px;
+        background-color: rgba(0, 0, 0, 0.8);
+    }
 `;
 
 const ControlBtn = styled(FontAwesomeIcon)`
@@ -194,6 +208,9 @@ const TimeViewerBox = styled.div`
     align-items: center;
     width: 10%;
     height: 100px;
+    @media only screen and (max-width: 630px) {
+        justify-content: flex-start;   
+    }
 `;
 
 const TimeViewer = styled.div<{display: string;}>`
@@ -210,6 +227,10 @@ const VolumeControllerBox = styled.div`
     align-items: center;
     width: 20%;
     height: 100px;
+    @media only screen and (max-width: 630px) {
+        justify-content: flex-end;
+        width: 30px;
+    }
 `;
 
 const VolumeIconBox = styled.div`
@@ -235,16 +256,23 @@ const VolumeBar = styled.div`
     &:hover {
         height: 10px;
     }
+    @media only screen and (max-width: 630px) {
+        display: none;
+    }
 `;
 
 const VolumeHandler = styled.div`
 `;
+
 const TabHandlerBox = styled.div`
     display: flex;
     justify-content: flex-end;
     align-items: center;
     width: 100px;
     height: 100px;
+    @media only screen and (max-width: 630px) {
+        width: 30px;   
+    }
 `;
 
 const TablHandlerWrap = styled.div<{rotate: boolean}>`

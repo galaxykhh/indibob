@@ -14,9 +14,11 @@ const Header: React.FC = () => {
         <>
             <LogoContainer>
                     <Logo to='/' > INDIEBOB </Logo>
-                    <SearchBtn onClick={handleSearch.handleSearchBox}
-                               icon={handleSearch.animation ? faSearch : faTimes}
-                               />
+                    <SearchBtnWrap>
+                        <SearchBtn onClick={handleSearch.handleSearchBox}
+                                   icon={handleSearch.animation ? faSearch : faTimes}
+                                   />
+                    </SearchBtnWrap>
                     <SearchBox display={handleSearch.display}
                                animation={handleSearch.animation}
                                ref={handleSearch.searchInput}
@@ -78,6 +80,11 @@ const Logo = styled(NavLink)`
     @media only screen and (max-width: 850px) {
         font-size: 45px;
     }
+`;
+
+const SearchBtnWrap = styled.div`
+    width: 40px;
+    height: 40px;
 `;
 
 const SearchBtn = styled(FontAwesomeIcon)`
