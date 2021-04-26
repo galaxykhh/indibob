@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components/';
 import musicStore from '../../stores/musicStore';
+import Loader from 'react-loader-spinner';
 import { observer } from 'mobx-react';
 
 interface IListItem{
@@ -12,15 +13,22 @@ interface IListItem{
         bob: number;
         src: string;
     };
+    isPlaying: boolean;
 };
 
-const ListItem: React.FC<IListItem> = observer(({item}) => {
+const ListItem: React.FC<IListItem> = observer(({item, isPlaying}) => {
     const { image, songTitle, artist, bob } = item // eslint-disable-line
     return (
         <ItemBox >
-
             <ImgDiv onClick={() => musicStore.handleCurrentMusic(item)} >
-                <Img url={image} />
+                <Img url={image}>
+                    <PlayingLoader type="Audio"
+                                   color="rgba(255, 255, 255, 0.8)"
+                                   height={30}
+                                   width={30}
+                                   display={isPlaying ? 'block' : 'none'}
+                                   />
+                </Img>
             </ImgDiv>
 
             <TABox onClick={() => musicStore.handleCurrentMusic(item)} >
@@ -35,6 +43,12 @@ const ListItem: React.FC<IListItem> = observer(({item}) => {
 });
 
 export default ListItem;
+
+const PlayingLoader = styled(Loader)<{display: string}>`
+    display: ${props => props.display};
+    background-color: rgba(0, 0, 0, 0.75);
+    position: absolute;
+`;
 
 const ItemBox = styled.div`
     all: unset;

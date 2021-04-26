@@ -6,7 +6,7 @@ import musicStore from '../../stores/musicStore';
 import { NavLink } from 'react-router-dom';
 import { useHandleTab } from '../../Hooks/useHandleTab';
 import { usePlayer } from '../../Hooks/usePlayer';
-import { faAngleDoubleLeft, faPlay,faPause, faStepBackward, faStepForward, faVolumeUp, faVolumeMute } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDoubleLeft, faPlay,faPause, faStepBackward, faStepForward, faVolumeUp, faVolumeMute, faSync, faRandom } from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
 // import { useBob } from '../../Hooks/useBob';
 import { toJS } from 'mobx';
@@ -23,9 +23,9 @@ const PlayBar: React.FC = observer(() => {
     return (
         <>
             <TrackBar ref={audio.totalProgress}
-                      onMouseDown={audio.handleProgress}
                       >
-                <TrackHandler ref={audio.progressHandler} // MDN의 linear-gradient 참고하여 그라데이션 없이 구분선을 정해주어, 퍼센트값을 넣어준다.
+                <TrackHandler ref={audio.progressHandler} // MDN: linear-gradient 그라데이션 없이 구분선을 정해주어, 퍼센트값을 넣어준다.
+                              onMouseDown={audio.handleProgress}
                               style={{ 
                                 height: '100%',
                                 background: `linear-gradient(
@@ -55,14 +55,22 @@ const PlayBar: React.FC = observer(() => {
                 </CurrentPlay> 
 
                 <TrackController>
+                    <ControlBtn icon={faRandom}
+                                style={{color: audio.isRandom ? 'white' : 'grey'}}
+                                onClick={audio.handleRandom}
+                                />
                     <ControlBtn icon={faStepBackward}
-                                onClick={musicStore.handlePrev}
+                                onClick={() => audio.isLoop ?  audio.handleLoopPlay() : musicStore.handlePrev(audio.isRandom)}
                                 />
                     <ControlBtn icon={audio.isPlay ? faPause : faPlay}
                                 onClick={() => audio.handlePlayPause(playList ,musicStore.handleTrackAvailable)}
                                 />
                     <ControlBtn icon={faStepForward}
-                                onClick={musicStore.handleNext}
+                                onClick={() => audio.isLoop ?  audio.handleLoopPlay() : musicStore.handleNext(audio.isRandom)}
+                                />
+                    <ControlBtn icon={faSync}
+                                style={{color: audio.isLoop ? 'white' : 'grey'}}
+                                onClick={audio.handleLoop}
                                 />
                 </TrackController>
 
@@ -74,7 +82,7 @@ const PlayBar: React.FC = observer(() => {
 
                 <VolumeControllerBox>
                     <VolumeIconBox>
-                        <VolumeIcon icon={audio.isMute ? faVolumeMute : faVolumeUp}
+                        <VolumeIcon icon={audio.audio.current?.volume === 0 ? faVolumeMute : faVolumeUp}
                                     onClick={audio.handleMute}
                                     />
                     </VolumeIconBox>
@@ -109,7 +117,7 @@ const PlayBar: React.FC = observer(() => {
                    ref={audio.audio}
                    crossOrigin='anonymous'
                    preload='none'
-                   onEnded={musicStore.handleNext}
+                   onEnded={() => audio.isLoop ? audio.handleLoopPlay() : musicStore.handleNext(audio.isRandom)}
                    onLoadedData={audio.setAudioData}
                    onTimeUpdate={audio.setAudioTime}
                    onCanPlay={audio.setVolumeData}

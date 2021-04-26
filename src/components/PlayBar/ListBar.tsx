@@ -16,11 +16,14 @@ const ListBar: React.FC<IListBar> = observer((props) => {
                    display={props.display}
                    >
             <Top> 플레이리스트 </Top>
-            {musicStore.playList.map(item => (
-                <ListItem item={item}
-                          key={item.id}
-                          />
-            ))}
+            <ItemBox>
+                {musicStore.playList.map((item, index) => (
+                    <ListItem item={item}
+                              key={item.id}
+                              isPlaying={musicStore.trackIndex === index}
+                              />
+                ))}
+            </ItemBox>
         </Container>
     )
 });
@@ -36,6 +39,11 @@ const Container = styled.div<{ handletab: boolean, display: string }>`
     height: 100%;
     background-color: rgba(0, 0, 0, 0.9);
     animation: ${props => props.handletab ? tabOpen : tabClose} .6s forwards;
+`;
+
+const ItemBox = styled.div`
+    width: 400px;
+    height: 80%;
     overflow: auto;
 `;
 

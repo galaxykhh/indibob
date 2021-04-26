@@ -9,14 +9,11 @@ export interface MusicData {
     image: string;
     bob: number;
     src: string;
-
 }
 
 interface SelectedMusicData extends MusicData {
     albumTitle: string;
-    bob: number;
     date: number;
-    src: string;
 }
 
 class MusicStore {
@@ -78,7 +75,7 @@ class MusicStore {
         this.trackAvailable = !this.trackAvailable;
     }
     // 재생버튼을 누른 트랙을 재색목록 추가, 재생하고, 이미 리스트에 있을경우 재생만
-    handleCurrentMusic(song: MusicData) {
+    handleCurrentMusic(song: MusicData) { // cb1 : usePlayer.
         const duplicated = this.playList.find(list => list.id === song.id) // find 메서드로 같은 id를 가진 노래를 찾아서 리턴
 
             if (duplicated === undefined) { // 리턴받은것이 없으면 중복되는 노래가 없다는 의미이므로 바로 재생 후 push
@@ -111,19 +108,39 @@ class MusicStore {
         }
     };
     // 앞곡으로 변경
-    handlePrev() {
-        if (this.trackIndex - 1 < 0) { // 맨 첫곡에서 누르면 마지막 곡 재생
-            this.trackIndex = this.playList.length - 1;
+    handlePrev(isRandom: boolean) {
+        const randomNumber = Math.floor(Math.random() * this.playList?.length)
+        if (isRandom === false) {
+            if (this.trackIndex - 1 < 0) { // 맨 첫곡에서 누르면 마지막 곡 재생
+                this.trackIndex = this.playList.length - 1;
+            } else {
+                this.trackIndex = this.trackIndex - 1;
+            }
+        } else if (this.playList?.length === 1) {
+            return;
+        } else if (randomNumber === this.trackIndex) {
+            const lastTrackIndex = this.playList.length - 1;
+            this.trackIndex = randomNumber + 1 > lastTrackIndex ? randomNumber -1 : randomNumber + 1;
         } else {
-            this.trackIndex = this.trackIndex - 1;
+            this.trackIndex = randomNumber;
         }
     }
     // 뒷곡으로 변경
-    handleNext() {
-        if (this.trackIndex + 1 >= this.playList.length) { // 맨 마지막곡에서 누르면 첫곡 재생
-            this.trackIndex = 0;
+    handleNext(isRandom: boolean) {
+        const randomNumber = Math.floor(Math.random() * this.playList?.length)
+        if (isRandom === false) {
+            if (this.trackIndex + 1 >= this.playList.length) { // 맨 마지막곡에서 누르면 첫곡 재생
+                this.trackIndex = 0;
+            } else {
+                this.trackIndex = this.trackIndex + 1;
+            }
+        } else if (this.playList?.length === 1) {
+            return;
+        } else if (randomNumber === this.trackIndex) {
+            const lastTrackIndex = this.playList.length - 1;
+            this.trackIndex = randomNumber + 1 > lastTrackIndex ? randomNumber -1 : randomNumber + 1;
         } else {
-            this.trackIndex = this.trackIndex + 1;
+            this.trackIndex = randomNumber;
         }
     }
 

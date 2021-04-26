@@ -10,6 +10,8 @@ export const usePlayer = () => {
     const totalVolume = useRef<HTMLDivElement>(null);
     const volumeHandler = useRef<HTMLDivElement>(null);
     const isFirstRun = useRef<boolean>(true);
+    const [isRandom, setIsRandom] = useState<boolean>(false);
+    const [isLoop, setIsLoop] = useState<boolean>(false);
     const [isPlay, setIsPlay] = useState<boolean>(false);
     const [isMute, setIsMute] = useState<boolean>(false);
     const [duration, setDuration] = useState<number>();
@@ -79,10 +81,18 @@ export const usePlayer = () => {
         }
     }
 
+    const handleRandom = () => {
+        setIsRandom(!isRandom);
+    }
+
+    const handleLoop = () => {
+        setIsLoop(!isLoop);
+    }
+
     const handleProgress = (e: React.MouseEvent) => {
         if (duration && totalProgress.current && audio.current){
             let totalWidth = totalProgress.current.offsetWidth;
-            let clickPosition = e.pageX;
+            let clickPosition = e?.pageX;
             audio.current.currentTime = (clickPosition! / totalWidth) * audio.current.duration;
         } else {
             return;
@@ -101,6 +111,10 @@ export const usePlayer = () => {
         }
     }
 
+    const handleLoopPlay = () => {
+        audio.current!.currentTime = 0;
+    }
+
     return {
         audio,
         totalProgress,
@@ -108,8 +122,9 @@ export const usePlayer = () => {
         totalVolume,
         volumeHandler,
         volume,
+        isRandom,
+        isLoop,
         isPlay,
-        isMute,
         duration,
         currentTime,
         currentProgressPercent,
@@ -123,5 +138,8 @@ export const usePlayer = () => {
         handleMute,
         handleProgress,
         handleVolume,
+        handleRandom,
+        handleLoop,
+        handleLoopPlay,
     };
 }
