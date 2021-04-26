@@ -10,7 +10,7 @@ const Top: React.FC = observer(() => {
     const addBtn = useRef<HTMLButtonElement>(null)
     const { id }: { id: string } = useParams();
     useEffect(() => {
-        musicStore.getSelectedTrack(id);
+        musicStore.getSelectedTrackInfo(id);
     }, [id]);
 
     const showModal = () => {
@@ -55,7 +55,7 @@ const Ment = styled.div`
     color: white;
     font-size: 18px;
     text-align: center;
-    margin-top: 10px;
+    margin-top: 3px;
 `;
 
 export const Container = styled.div`

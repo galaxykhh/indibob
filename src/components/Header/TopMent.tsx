@@ -31,7 +31,7 @@ const BGContainer = styled.div`
     align-items: center;
     margin-bottom: 30px;
     height: 120px;
-    @media only screen and (max-width: 900px) {
+    @media only screen and (max-width: 700px) {
         visibility: hidden;
     }
 `;

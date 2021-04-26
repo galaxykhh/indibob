@@ -39,4 +39,9 @@ const Container = styled.div`
     width: 1000px;
     height: 350px;
     margin-top: 10px;
+    @media only screen and (max-width: 850px) {
+        grid-template-rows: repeat(10, 1fr);
+        width: 500px;
+        height: 700px;
+    }
 `;

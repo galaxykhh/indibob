@@ -75,6 +75,9 @@ const Logo = styled(NavLink)`
     font-size: 60px;
     font-weight: bold;
     letter-spacing: 10px;
+    @media only screen and (max-width: 850px) {
+        font-size: 45px;
+    }
 `;
 
 const SearchBtn = styled(FontAwesomeIcon)`

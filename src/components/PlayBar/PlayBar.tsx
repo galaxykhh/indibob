@@ -82,7 +82,7 @@ const PlayBar: React.FC = observer(() => {
 
                 <VolumeControllerBox>
                     <VolumeIconBox>
-                        <VolumeIcon icon={audio.audio.current?.volume === 0 ? faVolumeMute : faVolumeUp}
+                        <VolumeIcon icon={audio.isMute ? faVolumeMute : faVolumeUp}
                                     onClick={audio.handleMute}
                                     />
                     </VolumeIconBox>
@@ -102,11 +102,11 @@ const PlayBar: React.FC = observer(() => {
                 </VolumeControllerBox>
 
                 <TabHandlerBox >
-                    <Wrap rotate={progressHandler.handleTab} >
+                    <TablHandlerWrap rotate={progressHandler.handleTab} >
                         <TabHandler icon={faAngleDoubleLeft}
                                     onClick={progressHandler.handleListBar}
                                     />
-                    </Wrap>
+                    </TablHandlerWrap>
                 </TabHandlerBox>
             </Container>
 
@@ -175,7 +175,7 @@ const TrackController = styled.div`
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    width: 500px;
+    width: 30%;
     height: 100px;
 `;
 
@@ -192,7 +192,7 @@ const TimeViewerBox = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100px;
+    width: 10%;
     height: 100px;
 `;
 
@@ -208,7 +208,7 @@ const VolumeControllerBox = styled.div`
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 200px;
+    width: 20%;
     height: 100px;
 `;
 
@@ -247,7 +247,7 @@ const TabHandlerBox = styled.div`
     height: 100px;
 `;
 
-const Wrap = styled.div<{rotate: boolean}>`
+const TablHandlerWrap = styled.div<{rotate: boolean}>`
     transform: ${props => props.rotate ? 'rotate(180deg)' : 'rotate(0deg)'};
     transition: 0.4s ease;
     margin-right: 50px;
@@ -255,6 +255,7 @@ const Wrap = styled.div<{rotate: boolean}>`
 
 const TabHandler = styled(FontAwesomeIcon)`
     all: unset;
+    width: 10%;
     font-size: 30px;
     color: white;
     cursor: pointer;

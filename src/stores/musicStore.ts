@@ -33,7 +33,7 @@ class MusicStore {
             selectedTrack: observable,
             getHotList: action,
             getLastestList: action,
-            getSelectedTrack: action,
+            getSelectedTrackInfo: action,
             handleTrackAvailable: action.bound,
             handleCurrentMusic: action.bound,
             handleAddTrack: action.bound,
@@ -42,7 +42,6 @@ class MusicStore {
             handleNext: action.bound,
         });
     };
-
     // Hot10 곡 리스트를 서버에서 가져온다 [HotTen]
     async getHotList() {
         const response: AxiosResponse = await musicRepository.getData('/hot10');
@@ -51,7 +50,6 @@ class MusicStore {
             this.hotList = data;
         });
     };
-
     // Lastest10 곡 리스트를 서버에서 가져온다 [NewIndie]
     async getLastestList() {
         const response: AxiosResponse = await musicRepository.getData('/lastest10');
@@ -60,9 +58,8 @@ class MusicStore {
         this.lastestList = data;
         });
     };
-
     // 내가 클릭한 노래의 정보를 서버에서 받아온다. [SongInfo]
-    async getSelectedTrack(parameter: string) {
+    async getSelectedTrackInfo(parameter: string) {
         const track = { id: parameter }; // 곡 비교를 위해 곡의 고유 id를 담아서 전송
         const response: AxiosResponse = await musicRepository.findTrack('/findtrack', track); // findTrack = axios.post
         runInAction(() => {

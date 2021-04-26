@@ -70,14 +70,15 @@ export const usePlayer = () => {
     }
 
     const handleMute = () => { 
+        const savedVolume = audio.current?.volume; // 사용자가 지정했던 볼륨으로 다시 설정해주기 위해서 상수를 선언
         if (isMute && audio.current) {
             setIsMute(!isMute);
-            audio.current.volume = 1;
-            setVolume(1);
+            setVolume(savedVolume);
+            audio.current.muted = false;
         } else if (!isMute && audio.current) {
             setIsMute(!isMute);
-            audio.current.volume = 0;
             setVolume(0);
+            audio.current.muted = true;
         }
     }
 
@@ -125,6 +126,7 @@ export const usePlayer = () => {
         isRandom,
         isLoop,
         isPlay,
+        isMute,
         duration,
         currentTime,
         currentProgressPercent,

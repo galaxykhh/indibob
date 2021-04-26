@@ -33,7 +33,7 @@ const MainSongBox: React.FC<IMainSong> = ({ item, rank, mr, ml, width }) => {
             </Rank>
             <InfoFlex>
                 <Title to={`/song/${id}`}> {songTitle} </Title>
-                <Artist> {artist} </Artist>
+                <Artist to={`/artist`} > {artist} </Artist>
             </InfoFlex>
         </ItemBox>
     )
@@ -127,13 +127,14 @@ const Title = styled(NavLink)`
     text-decoration: none;
     font-size: 15px;
     color: #ffffff;
+`;
+
+const Artist = styled(NavLink)`
+    text-decoration: none;
+    font-size: 14px;
+    color: #c2bebe;
     cursor: pointer;
     &:hover {
     text-decoration: underline;
     }
-`;
-
-const Artist = styled.div`
-    font-size: 14px;
-    color: #c2bebe;
 `;
