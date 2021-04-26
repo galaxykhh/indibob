@@ -20,7 +20,7 @@ const ListBar: React.FC<IListBar> = observer((props) => {
                 {musicStore.playList.map((item, index) => (
                     <ListItem item={item}
                               key={item.id}
-                              isPlaying={musicStore.trackIndex === index}
+                              isPlaying={musicStore.trackIndex === index && musicStore.trackAvailable === true}
                               />
                 ))}
             </ItemBox>
