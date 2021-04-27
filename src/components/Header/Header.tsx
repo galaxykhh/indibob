@@ -22,7 +22,13 @@ const Header: React.FC = () => {
                     <SearchBox display={handleSearch.display}
                                animation={handleSearch.animation}
                                ref={handleSearch.searchInput}
+                               onChange={handleSearch.handleInput}
                                />
+                    <SearchResult visible={handleSearch.isExist ? 'visible' : 'hidden'}
+                                  animation={handleSearch.animation}
+                                  >
+                                      
+                    </SearchResult>
             </LogoContainer>
             <RedLine />
         </>
@@ -33,7 +39,8 @@ export default Header;
 
 interface SearchProp {
     animation: boolean,
-    display: string;
+    display?: string;
+    visible?: string,
 }
 
 const LogoContainer = styled.div`
@@ -63,11 +70,27 @@ const SearchBox = styled.input.attrs(({
     display: ${props => props.display};
     animation: ${props => props.animation ? slideUp : slideDown} .5s ease forwards;
     border-radius: 60px;
-    background-color: #ffffff;
+    background-color: #eeeaea;
     padding-left: 50px;
     width: 450px;
     height: 50px;
     font-size: 20px;
+    z-index: 3;
+`;
+
+const SearchResult = styled.div<SearchProp>`
+    border: 5px solid #52616a;
+    position: absolute;
+    left:50%; transform:translateX(-50%);
+    opacity: 0;
+    visibility: ${props => props.visible};
+    animation: ${props => props.animation ? slideUp : slideDown} .5s ease forwards;
+    border-radius: 40px;
+    background-color: #eeeaea;
+    padding-left: 50px;
+    width: 450px;
+    height: 200px;
+    z-index: 2;
 `;
 
 const Logo = styled(NavLink)`

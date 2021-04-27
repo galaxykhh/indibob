@@ -135,8 +135,7 @@ const TrackBar = styled.div`
     height: 6px;
     overflow: hidden;
     cursor: pointer;
-    transition: .2s ease;
-    transition-delay: .6s;
+    transition: height .2s ease;
     z-index: 10000;
     &:hover {
         height: 15px;
@@ -144,7 +143,7 @@ const TrackBar = styled.div`
     @media only screen and (max-width: 850px) {
         position: fixed;
         left: 0;
-        bottom: 159px;
+        bottom: 164px;
     }
 `;
 
@@ -188,7 +187,7 @@ const TrackController = styled.div`
         left: 0;
         bottom: 110px;
         width: 100%;
-        height: 50px;
+        height: 55px;
         background-color: rgba(0, 0, 0, 0.8);
     }
 `;
