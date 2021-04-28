@@ -13,6 +13,10 @@ class MusicRepository {
     findTrack(path: string, data: { id: string }): AxiosPromise {
         return indieInstance.post(path, data);
     }
+
+    searchTrack(path: string, data: { word: string }): AxiosPromise {
+        return indieInstance.post(path, data);
+    }
 }
 
 const musicRepository = new MusicRepository();

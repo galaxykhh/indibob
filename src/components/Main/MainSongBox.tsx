@@ -127,13 +127,15 @@ const Title = styled(NavLink)`
     text-decoration: none;
     font-size: 15px;
     color: #ffffff;
+    &:hover {
+    text-decoration: underline;
+    }
 `;
 
 const Artist = styled(NavLink)`
     text-decoration: none;
     font-size: 14px;
     color: #c2bebe;
-    cursor: pointer;
     &:hover {
     text-decoration: underline;
     }

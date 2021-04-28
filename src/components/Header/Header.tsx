@@ -5,8 +5,11 @@ import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { slideUp, slideDown } from '../style/keyframes';
 import { useSearch } from '../../Hooks/useSearch';
+import { observer } from 'mobx-react';
+import musicStore from '../../stores/musicStore';
+import ResultItem from './ResultItem';
 
-const Header: React.FC = () => {
+const Header: React.FC = observer(() => {
     
     const handleSearch = useSearch();
 
@@ -26,14 +29,23 @@ const Header: React.FC = () => {
                                />
                     <SearchResult visible={handleSearch.isExist ? 'visible' : 'hidden'}
                                   animation={handleSearch.animation}
+                                  height={`${(musicStore.searchResult.length * 40) + 50}px`}
                                   >
-                                      
+                        <div style={{ height: '50px' }} />
+                        {musicStore.searchResult?.map(x => (
+                            <ResultItem image={x.image}
+                                        songTitle={x.songTitle}
+                                        artist={x.artist}
+                                        key={x.id}
+                                        id={x.id}
+                                        />
+                        ))}
                     </SearchResult>
             </LogoContainer>
             <RedLine />
         </>
     );
-};
+});
 
 export default Header;
 
@@ -41,6 +53,7 @@ interface SearchProp {
     animation: boolean,
     display?: string;
     visible?: string,
+    height?: string,
 }
 
 const LogoContainer = styled.div`
@@ -63,14 +76,14 @@ const SearchBox = styled.input.attrs(({
     placeholder: '아티스트명 또는 곡명'
 }))<SearchProp>`
     all: unset;
-    border: 5px solid #52616a;
     position: absolute;
     left:50%; transform:translateX(-50%);
     opacity: 0;
     display: ${props => props.display};
     animation: ${props => props.animation ? slideUp : slideDown} .5s ease forwards;
     border-radius: 60px;
-    background-color: #eeeaea;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
     padding-left: 50px;
     width: 450px;
     height: 50px;
@@ -79,17 +92,18 @@ const SearchBox = styled.input.attrs(({
 `;
 
 const SearchResult = styled.div<SearchProp>`
-    border: 5px solid #52616a;
     position: absolute;
     left:50%; transform:translateX(-50%);
     opacity: 0;
     visibility: ${props => props.visible};
     animation: ${props => props.animation ? slideUp : slideDown} .5s ease forwards;
-    border-radius: 40px;
-    background-color: #eeeaea;
+    border-radius: 30px;
+    background-color: rgba(0, 0, 0, 0.8);
     padding-left: 50px;
     width: 450px;
-    height: 200px;
+    height: ${props => props.height};
+    max-height: 600px;
+    overflow: auto;
     z-index: 2;
 `;
 

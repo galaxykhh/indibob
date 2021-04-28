@@ -29,10 +29,13 @@ export const useSearch = () => {
     }
 
     const handleInput = () => {
-        if (searchInput.current?.value === '') {
-            setIsExist(false);
-        } else {
-            setIsExist(true);
+        if (searchInput.current) {
+            if (searchInput.current?.value.replace(/ /g,'') === '') {
+                setIsExist(false);
+            } else {
+                musicStore.getSearchResult(searchInput.current?.value);
+                setIsExist(true);
+            }
         }
     }
 
