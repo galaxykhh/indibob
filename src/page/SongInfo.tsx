@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import Top from '../components/SongInfo/Top';
+import Info from '../components/SongInfo/Info';
 
 const SongInfo: React.FC = () => {
     return (
         <Flex>
-            <Top />
+            <Info />
         </Flex>
     );
 };

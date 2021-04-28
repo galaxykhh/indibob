@@ -5,7 +5,7 @@ import Modal from '../Modal/Modal';
 import { observer } from 'mobx-react';
 import { useParams } from 'react-router-dom';
 
-const Top: React.FC = observer(() => {
+const Info: React.FC = observer(() => {
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const addBtn = useRef<HTMLButtonElement>(null)
     const { id }: { id: string } = useParams();
@@ -20,36 +20,36 @@ const Top: React.FC = observer(() => {
 
     return (
         <Container>
+            <TAContainer>
+                <Modal isopen={isOpen} >
+                    <Ment>
+                        이 곡은 이미 플레이 리스트에 있는 곡입니다
+                    </Ment>
+                </Modal>
 
-            <Modal isopen={isOpen} >
-                <Ment>
-                    이 곡은 이미 플레이 리스트에 있는 곡입니다
-                </Ment>
-            </Modal>
+                <ImgDiv>
+                    <Img url={musicStore.selectedTrack.image} />
+                </ImgDiv>
 
-            <ImgDiv>
-                <Img url={musicStore.selectedTrack.image} />
-            </ImgDiv>
-
-            <TABox>
-                <Title> {musicStore.selectedTrack.songTitle} </Title>
-                <Artist> {musicStore.selectedTrack.artist} </Artist>
-                <BtnBox>
-                    <Btn onClick={() => musicStore.handleCurrentMusic(musicStore.selectedTrack)} > ▶ 재생 </Btn>
-                    <Btn onClick={() => musicStore.handleAddTrack(musicStore.selectedTrack, showModal)}
-                         disabled={isOpen}
-                         ref={addBtn}
-                         >
-                             + 추가
-                    </Btn>
-                </BtnBox>
-            </TABox>
-            
+                <TABox>
+                    <Title> {musicStore.selectedTrack.songTitle} </Title>
+                    <Artist> {musicStore.selectedTrack.artist} </Artist>
+                    <BtnBox>
+                        <Btn onClick={() => musicStore.handleCurrentMusic(musicStore.selectedTrack)} > ▶ 재생 </Btn>
+                        <Btn onClick={() => musicStore.handleAddTrack(musicStore.selectedTrack, showModal)}
+                            disabled={isOpen}
+                            ref={addBtn}
+                            >
+                                + 추가
+                        </Btn>
+                    </BtnBox>
+                </TABox>
+            </TAContainer>
         </Container>
     )
 })
 
-export default Top;
+export default Info;
 
 const Ment = styled.div`
     color: white;
@@ -58,11 +58,16 @@ const Ment = styled.div`
     margin-top: 3px;
 `;
 
-export const Container = styled.div`
+const Container = styled.div`
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     margin-top: 100px;
     width: 1000px;
+`;
+
+const TAContainer = styled.div`
+    display: flex;
+    flex-direction: row;
     justify-content: flex-start;
     align-items: center;
 `;
@@ -98,14 +103,6 @@ const Title = styled.div`
     max-width: 200px;
     white-space: nowrap;
 `;
-
-// const AlbumTitle = styled.div`
-//     margin-bottom: 10px;
-//     font-size: 20px;
-//     color: white;
-//     max-width: 200px;
-//     white-space: nowrap;
-// `;
 
 const Artist = styled.div`
     margin-bottom: 10px;

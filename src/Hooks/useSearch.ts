@@ -30,10 +30,10 @@ export const useSearch = () => {
 
     const handleInput = () => {
         if (searchInput.current) {
-            if (searchInput.current?.value.replace(/ /g,'') === '') {
+            if (searchInput.current.value.replace(/ /g,'') === '') {
                 setIsExist(false);
             } else {
-                musicStore.getSearchResult(searchInput.current?.value);
+                musicStore.getSearchResult(searchInput.current.value);
                 setIsExist(true);
             }
         }

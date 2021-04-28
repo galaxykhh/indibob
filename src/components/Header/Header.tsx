@@ -38,6 +38,7 @@ const Header: React.FC = observer(() => {
                                         artist={x.artist}
                                         key={x.id}
                                         id={x.id}
+                                        onClick={handleSearch.handleSearchBox}
                                         />
                         ))}
                     </SearchResult>

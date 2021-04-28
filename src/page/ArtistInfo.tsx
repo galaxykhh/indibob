@@ -1,24 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
+import Info from '../components/ArtistInfo/Info';
 
 const ArtistInfo: React.FC = () => {
     return (
-        <Container>
-            <Test>
-                asdasd
-            </Test>
-        </Container>
+        <Flex>
+            <Info />
+        </Flex>
     );
 };
 
 export default ArtistInfo;
 
-const Container = styled.div`
+const Flex = styled.div`
     display: flex;
-    flex-direction: row;
-    margin-top: 100px;
-    width: 1000px;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
 `;
 

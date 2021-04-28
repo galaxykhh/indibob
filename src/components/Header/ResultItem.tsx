@@ -8,11 +8,14 @@ interface IResultItem {
     songTitle: string;
     artist: string;
     id: string;
+    onClick: () => void;
 }
 
-const ResultItem: React.FC<IResultItem> = observer(({id, image, songTitle, artist}) => {
+const ResultItem: React.FC<IResultItem> = observer(({id, image, songTitle, artist, onClick}) => {
     return (
-        <ItemBox to={`/song/${id}`} >
+        <ItemBox to={`/song/${id}`}
+                 onClick={onClick}
+                 >
             <Img img={image} />
             <Result> {artist} - {songTitle} </Result>
         </ItemBox>
