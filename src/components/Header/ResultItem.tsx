@@ -46,4 +46,7 @@ const ItemBox = styled(NavLink)`
 const Result = styled.span`
     font-size: 15px;
     color: white;
+    &:hover {
+        color: rgb(192, 72, 72);
+    }
 `;

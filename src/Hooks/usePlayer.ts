@@ -70,7 +70,7 @@ export const usePlayer = () => {
     }
 
     const handleMute = () => { 
-        const savedVolume = audio.current?.volume; // 사용자가 지정했던 볼륨으로 다시 설정해주기 위해서 상수를 선언
+        const savedVolume = audio.current?.volume; // 사용자가 지정했던 볼륨
         if (isMute && audio.current) {
             setIsMute(!isMute);
             setVolume(savedVolume);
@@ -103,7 +103,7 @@ export const usePlayer = () => {
     const handleVolume = (e: React.MouseEvent) => {
         if (totalVolume.current && audio.current) { // Progress와 달리 화면 중간에 위치해있기 때문에 클릭지점을 left 거리만큼 계산해야된다. 구글참고
             const clickedPositionInPage = e.pageX;
-            const progressStart = totalVolume.current.getBoundingClientRect().left + window.scrollX;
+            const progressStart = totalVolume.current.getBoundingClientRect().left;
             const progressWidth = totalVolume.current.offsetWidth
             const clickedPositionInBar = clickedPositionInPage - progressStart;
             const volume = (clickedPositionInBar / progressWidth);

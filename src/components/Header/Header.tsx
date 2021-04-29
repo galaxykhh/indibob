@@ -15,6 +15,9 @@ const Header: React.FC = observer(() => {
 
     return (
         <>
+            <SigninBtn to='/signin'>
+                로그인
+            </SigninBtn>
             <LogoContainer>
                     <Logo to='/' > INDIEBOB </Logo>
                     <SearchBtnWrap>
@@ -29,7 +32,7 @@ const Header: React.FC = observer(() => {
                                />
                     <SearchResult visible={handleSearch.isExist ? 'visible' : 'hidden'}
                                   animation={handleSearch.animation}
-                                  height={`${(musicStore.searchResult.length * 40) + 50}px`}
+                                  height={`${(musicStore.searchResult.length * 40) + 50}px`} // 결과물 한개당 40픽셀을 주고, 검색창 크기의 50px만큼 기본적으로 설정.
                                   >
                         <div style={{ height: '50px' }} />
                         {musicStore.searchResult?.map(x => (
@@ -43,7 +46,6 @@ const Header: React.FC = observer(() => {
                         ))}
                     </SearchResult>
             </LogoContainer>
-            <RedLine />
         </>
     );
 });
@@ -64,12 +66,7 @@ const LogoContainer = styled.div`
     width: 100%;
     height: 100px;
     background-color: #252c41;
-`;
-
-const RedLine = styled.div`
-    width: 100%;
-    height: 5px;
-    background-color: #f1404b;
+    border-bottom: #f1404b solid 5px;
 `;
 
 const SearchBox = styled.input.attrs(({
@@ -83,7 +80,7 @@ const SearchBox = styled.input.attrs(({
     display: ${props => props.display};
     animation: ${props => props.animation ? slideUp : slideDown} .5s ease forwards;
     border-radius: 60px;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 1);
     color: white;
     padding-left: 50px;
     width: 450px;
@@ -133,6 +130,26 @@ const SearchBtn = styled(FontAwesomeIcon)`
     cursor: pointer;
     transition: 0.5s ease;
     &:hover {
+        color: #f1404b;
+    }
+`;
+
+const SigninBtn = styled(NavLink)`
+    all: unset;
+    position: absolute;
+    top: 35px;
+    right: 25px;
+    border: solid white 1px; border-radius: 40px;
+    color: white;
+    text-align: center;
+    width: 70px;
+    height: 25px;
+    padding-top: 5px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    &:hover {
+        background-color: white;
+        border-color: #f1404b;
         color: #f1404b;
     }
 `;

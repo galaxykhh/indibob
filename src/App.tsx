@@ -6,7 +6,8 @@ import PlayBar from './components/PlayBar/PlayBar';
 import Main from './page/Main';
 import SongInfo from './page/SongInfo';
 import ArtistInfo from './page/ArtistInfo';
-
+import Signin from './page/Signin';
+import Signup from './page/Signup';
 
 const App = () => {
 
@@ -25,6 +26,12 @@ const App = () => {
                     </Route>
                     <Route exact path='/artist/:artist'>
                         <ArtistInfo />
+                    </Route>
+                    <Route exact path='/signin' >
+                        <Signin />
+                    </Route>
+                    <Route exact path='/signup' >
+                        <Signup />
                     </Route>
                 </Switch>
                 <PlayBar />

@@ -14,7 +14,7 @@ interface IInfoItem {
 
 const InfoItem: React.FC<IInfoItem>= ({item}) => {
     const {id, albumTitle, songTitle, date, image} = item;
-    const replacedDate = date.toString().replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3');
+    const replacedDate = date.toString().replace(/(\d{4})(\d{2})(\d{2})/g, '$1.$2.$3');　// 숫자 8자리를 날짜형식으로 표현
     return (
         <TAContainer>
             <TABox>
@@ -69,4 +69,7 @@ const SongTitle = styled(NavLink)`
     font-size: 15px;
     color: white;
     margin-top: 5px;
+    &:hover {
+        text-decoration: underline;
+    }
 `;

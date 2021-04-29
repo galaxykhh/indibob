@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import musicStore from '../../stores/musicStore';
 import Modal from '../Modal/Modal';
 import { observer } from 'mobx-react';
-import { useParams } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 
 const Info: React.FC = observer(() => {
     const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -33,7 +33,7 @@ const Info: React.FC = observer(() => {
 
                 <TABox>
                     <Title> {musicStore.selectedTrack.songTitle} </Title>
-                    <Artist> {musicStore.selectedTrack.artist} </Artist>
+                    <Artist to={`/artist/${musicStore.selectedTrack.artist}`}> {musicStore.selectedTrack.artist} </Artist>
                     <BtnBox>
                         <Btn onClick={() => musicStore.handleCurrentMusic(musicStore.selectedTrack)} > ▶ 재생 </Btn>
                         <Btn onClick={() => musicStore.handleAddTrack(musicStore.selectedTrack, showModal)}
@@ -104,12 +104,16 @@ const Title = styled.div`
     white-space: nowrap;
 `;
 
-const Artist = styled.div`
+const Artist = styled(NavLink)`
+    text-decoration: none;
     margin-bottom: 10px;
     font-size: 18px;
     color: white;
     max-width: 150px;
     white-space: nowrap;
+    &:hover {
+        text-decoration: underline;
+    }
 `;
 
 const Btn = styled.button.attrs(props =>({
