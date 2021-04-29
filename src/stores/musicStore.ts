@@ -118,13 +118,16 @@ class MusicStore {
         };
     };
     // 재생목록 선택 곡 삭제 [ListItem] --- 재생중인 곡이 바뀌지 않게 인덱스 핸들링
-    handleDelete(song: MusicData) {
+    handleDelete(song: MusicData, reset: () => void) {
         const index = this.playList.indexOf(song);
         if (index > this.trackIndex){
             this.playList.splice(this.playList.indexOf(song), 1);
         } else if (index < this.trackIndex) {
             this.playList.splice(this.playList.indexOf(song), 1);
             this.trackIndex = this.trackIndex - 1;
+        } else if (index === this.trackIndex) { // 마지막 한 곡까지 완전히 삭제할 경우에, 모든 음악을 종료한다.
+            this.playList.splice(this.playList.indexOf(song), 1);
+            reset();
         }
     };
     // 앞곡으로 변경

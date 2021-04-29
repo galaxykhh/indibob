@@ -4,16 +4,19 @@ import { tabClose, tabOpen } from '../style/keyframes';
 import musicStore from '../../stores/musicStore';
 import { observer } from 'mobx-react';
 import ListItem from './ListItem';
+import { usePlayer } from '../../Hooks/usePlayer';
 
 interface IListBar {
     handletab: boolean;
     display: string;
+    reset: () => void;
 }
 
-const ListBar: React.FC<IListBar> = observer((props) => {
+const ListBar: React.FC<IListBar> = observer(({handletab, display, reset}) => {
+    const audio = usePlayer();
     return (
-        <Container handletab={props.handletab}
-                   display={props.display}
+        <Container handletab={handletab}
+                   display={display}
                    >
             <Top> 플레이리스트 </Top>
             <ItemBox>
@@ -21,6 +24,7 @@ const ListBar: React.FC<IListBar> = observer((props) => {
                     <ListItem item={item}
                               key={item.id}
                               isPlaying={musicStore.trackIndex === index && musicStore.trackAvailable === true}
+                              reset={reset}
                               />
                 ))}
             </ItemBox>

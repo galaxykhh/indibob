@@ -112,6 +112,7 @@ const PlayBar: React.FC = observer(() => {
 
             <ListBar handletab={progressHandler.handleTab}
                      display={progressHandler.display}
+                     reset={() => audio.handlePlayPause(playList ,musicStore.handleTrackAvailable)}
                      />
             <Audio src={playList[musicStore.trackIndex]?.src}
                    ref={audio.audio}

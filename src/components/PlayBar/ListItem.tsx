@@ -14,9 +14,10 @@ interface IListItem{
         src: string;
     };
     isPlaying: boolean;
+    reset: () => void;
 };
 
-const ListItem: React.FC<IListItem> = observer(({item, isPlaying}) => {
+const ListItem: React.FC<IListItem> = observer(({item, isPlaying, reset}) => {
     const { image, songTitle, artist, bob } = item // eslint-disable-line
     return (
         <ItemBox >
@@ -36,7 +37,7 @@ const ListItem: React.FC<IListItem> = observer(({item, isPlaying}) => {
                 <Artist> {artist} </Artist>
             </TABox>
 
-            <DeleteBtn onClick={() => musicStore.handleDelete(item)} > × </DeleteBtn>
+            <DeleteBtn onClick={() => musicStore.handleDelete(item, reset)} > × </DeleteBtn>
             
         </ItemBox>
     )
