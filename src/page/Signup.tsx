@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
@@ -17,7 +17,6 @@ const Signup: React.FC = () => {
         }
     ]
     const { register, handleSubmit, trigger, watch, formState: { errors } } = useForm<Inputs>({ mode: 'onChange' });
-    const [ok, setOk] = useState<boolean | string>('');
 
     useEffect(() => {
         trigger('account')
@@ -25,14 +24,9 @@ const Signup: React.FC = () => {
 
     const checkDuplicate = (account: string) => {
         const tried = id.find(x => x.account === account);
-        if (account === '') {
-            return
-        }
         if (tried) {
-            setOk(false);
             return false;
-        } else if(!tried) {
-            setOk(true);
+        } else if(!tried){
             return true;
         }
     }
@@ -50,7 +44,7 @@ const Signup: React.FC = () => {
                         minLength: { value: 7, message: '아이디가 너무 짧습니다' },
                         maxLength: { value: 16, message: '아이디가 너무 깁니다' },
                         validate: {
-                            checkAccount: async(account) => await checkDuplicate(account) ||'이미 사용중인 아이디입니다'
+                            checkAccount: async(account) => await checkDuplicate(account) || '이미 사용중인 아이디입니다'
                         }
                    })}
                    />

@@ -9,10 +9,16 @@ interface Inputs {
 }
 
 const Signin: React.FC = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>({ mode: 'onChange' })
+    const { register, handleSubmit, setError, formState: { errors } } = useForm<Inputs>({ mode: 'onChange' })
 
     const signIn = (data: Inputs) => {
-        alert(JSON.stringify(data));
+        if (data.account === 'hankoon' && data.password === 'z1x2c3z1x2c3') {
+            alert(JSON.stringify(data));
+        } else {
+            setError('password', {
+                message: '가입되지 않은 계정이거나 잘못된 비밀번호입니다'
+            });
+        }
     }
 
     return (
