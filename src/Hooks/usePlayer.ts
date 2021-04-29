@@ -4,9 +4,9 @@ import 'moment-duration-format';
 import { MusicData } from '../stores/musicStore';
 
 export const usePlayer = () => {
-    const audio = useRef<HTMLAudioElement>(null);
-    const totalProgress = useRef<HTMLDivElement>(null);
-    const progressHandler = useRef<HTMLDivElement>(null);
+    const audio = useRef<HTMLAudioElement>(null); // 오디오 엘리먼트 ref
+    const totalProgress = useRef<HTMLDivElement>(null); 
+    const progressHandler = useRef<HTMLDivElement>(null); 
     const totalVolume = useRef<HTMLDivElement>(null);
     const volumeHandler = useRef<HTMLDivElement>(null);
     const isFirstRun = useRef<boolean>(true);

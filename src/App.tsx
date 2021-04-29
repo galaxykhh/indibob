@@ -23,7 +23,7 @@ const App = () => {
                     <Route exact path='/song/:id'>
                         <SongInfo />
                     </Route>
-                    <Route path='/artist'>
+                    <Route exact path='/artist/:artist'>
                         <ArtistInfo />
                     </Route>
                 </Switch>

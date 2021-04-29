@@ -33,7 +33,7 @@ const MainSongBox: React.FC<IMainSong> = ({ item, rank, mr, ml, width }) => {
             </Rank>
             <InfoFlex>
                 <Title to={`/song/${id}`}> {songTitle} </Title>
-                <Artist to={`/artist`} > {artist} </Artist>
+                <Artist to={`/artist/${artist}`} > {artist} </Artist>
             </InfoFlex>
         </ItemBox>
     )

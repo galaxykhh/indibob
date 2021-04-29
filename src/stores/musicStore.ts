@@ -11,7 +11,7 @@ export interface MusicData {
     src: string;
 }
 
-interface SelectedMusicData extends MusicData {
+interface SelectedData extends MusicData {
     albumTitle: string;
     date: number;
 }
@@ -23,7 +23,8 @@ class MusicStore {
     searchResult: MusicData[] = [];
     hotList: MusicData[] | '' = ''; // Array.isArray(array) ?... => 데이터를 받아오지 못했을 때 '' 로 초기화 시켜주어 스피너 활성화
     lastestList: MusicData[] | '' = '';
-    selectedTrack: SelectedMusicData = {id: '', albumTitle: '', songTitle: '', artist: '', image: '', bob: 0, date: 0, src: ''};
+    selectedTrack: SelectedData = {id: '', albumTitle: '', songTitle: '', artist: '', image: '', bob: 0, date: 0, src: ''};
+    selectedArtist: SelectedData[] = [];
     constructor() {
         makeObservable(this, {
             trackAvailable: observable,
@@ -33,10 +34,12 @@ class MusicStore {
             hotList: observable,
             lastestList: observable,
             selectedTrack: observable,
+            selectedArtist: observable,
             getHotList: action,
             getLastestList: action,
             getSelectedTrackInfo: action,
-            getSearchResult: action.bound,
+            getSelectedArtistInfo: action,
+            getSearchResult: action,
             handleTrackAvailable: action.bound,
             handleCurrentMusic: action.bound,
             handleAddTrack: action.bound,
@@ -63,17 +66,23 @@ class MusicStore {
     };
     // 내가 클릭한 노래의 정보를 서버에서 받아온다. [SongInfo]
     async getSelectedTrackInfo(parameter: string) {
-        const track = { id: parameter }; // 곡 비교를 위해 곡의 고유 id를 담아서 전송
-        const response: AxiosResponse = await musicRepository.findTrack('/findtrack', track); // findTrack = axios.post
+        const response: AxiosResponse = await musicRepository.findTrack('/findtrack', parameter);
         runInAction(() => {
             const data = response.data;
             this.selectedTrack = data;
         });
     };
+    // 클릭한 아티스트의 곡 목록을 받아온다. [ArtistInfo]
+    async getSelectedArtistInfo(parameter: string) {
+        const response: AxiosResponse = await musicRepository.fintArtist('/findartist', parameter);
+        runInAction(() => {
+            const data = response.data;
+            this.selectedArtist = data;
+        })
+    }
     // 검색어가 포함되는 노래 정보를 서버에서 받아온다 [Header, ResultItem]
     async getSearchResult(parameter: string) {
-        const word = { word: parameter };
-        const replacedWord = { word: word.word.replace(/ /g,'')};
+        const replacedWord =  parameter.replace(/ /g,'');
         const response: AxiosResponse = await musicRepository.searchTrack('/searchtrack', replacedWord);
         runInAction(() => {
             const data = response.data;
@@ -81,7 +90,7 @@ class MusicStore {
         })
     }
 
-    // 오디오 재생이 가능하게, 또는 가능하지 않게
+    // 오디오 재생 가능 상태관리
     handleTrackAvailable() {
         this.trackAvailable = !this.trackAvailable;
     }

@@ -17,7 +17,3 @@ const Flex = styled.div`
     justify-content: center;
     align-items: center;
 `;
-
-const Test = styled.div`
-    color: white;
-`;
