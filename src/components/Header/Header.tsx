@@ -8,10 +8,20 @@ import { useSearch } from '../../Hooks/useSearch';
 import { observer } from 'mobx-react';
 import musicStore from '../../stores/musicStore';
 import ResultItem from './ResultItem';
+import { useForm, SubmitHandler } from 'react-hook-form';
+
+type word = {
+    word: string;
+}
 
 const Header: React.FC = observer(() => {
     
     const handleSearch = useSearch();
+    const { register, handleSubmit } = useForm<word>();
+
+    const onSubmit: SubmitHandler<word> = () => {
+        handleSearch.handleInput();
+    }
 
     return (
         <>
@@ -25,10 +35,11 @@ const Header: React.FC = observer(() => {
                                    icon={handleSearch.animation ? faSearch : faTimes}
                                    />
                     </SearchBtnWrap>
-                    <SearchBox display={handleSearch.display}
+                    <SearchBox {...register('word')}
+                               display={handleSearch.display}
                                animation={handleSearch.animation}
                                ref={handleSearch.searchInput}
-                               onChange={handleSearch.handleInput}
+                               onChange={handleSubmit(onSubmit)}
                                />
                     <SearchResult visible={handleSearch.isExist ? 'visible' : 'hidden'}
                                   animation={handleSearch.animation}

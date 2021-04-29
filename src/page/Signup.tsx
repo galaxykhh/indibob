@@ -1,18 +1,12 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import AlertMsg from '../AlertMsg';
 
 const Signup: React.FC = () => {
+
     return (
         <Flex>
             <Input placeholder='아이디' />
-            <AlertMsg color='#f1404b'
-                      animation='none'
-                      visible='block'
-                      >
-                가능 or 중복 알림
-            </AlertMsg>
             <CheckBtn> 중복확인 </CheckBtn>
             <Input placeholder='비밀번호'
                    type='password'
@@ -20,12 +14,6 @@ const Signup: React.FC = () => {
             <Input placeholder='비밀번호확인'
                    type='password'
                    />
-            <AlertMsg color='#f1404b'
-                      animation='none'
-                      visible='block'
-                      >
-                일치 or 불일치 알림
-            </AlertMsg>
             <NavLink to='signup' >
                 <SignupBtn>
                     회원가입
