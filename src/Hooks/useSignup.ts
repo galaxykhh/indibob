@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import authRepository from '../Repository/authRepository';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { AxiosResponse } from 'axios';
@@ -16,6 +16,7 @@ export const useSignup = () => {
     const { register, handleSubmit, trigger, clearErrors, watch, getValues, formState: { errors } } = useForm<Inputs>({ mode: 'onChange' });
     const [duplicated, setDuplicated] = useState<boolean | null>(null);
     const history = useHistory();
+    const signUpBtn = useRef<HTMLButtonElement>(null);
 
     useEffect(() => {
         clearErrors();
@@ -56,6 +57,12 @@ export const useSignup = () => {
         }
     }
 
+    const handleEnterPress = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            signUpBtn.current?.click();
+        }
+    }
+
     return {
         register,
         handleSubmit,
@@ -64,8 +71,10 @@ export const useSignup = () => {
         getValues,
         errors,
         duplicated,
+        signUpBtn,
         signUp,
         onChange,
         checkDuplicated,
+        handleEnterPress,
     }
 }

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { NavLink, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
@@ -12,11 +12,18 @@ interface Inputs {
 
 const Signin: React.FC = observer(() => {
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
+    const loginBtn = useRef<HTMLButtonElement>(null);
     const history = useHistory();
 
     const goMain = () => {
         if (authStore.isSignIn === true) {
             history.push('/');
+        }
+    }
+
+    const handleEnterPress = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            loginBtn.current?.click();
         }
     }
 
@@ -41,9 +48,13 @@ const Signin: React.FC = observer(() => {
                        minLength: { value: 8, message: '비밀번호가 너무 짧습니다' },
                        maxLength: { value: 19, message: '비밀번호가 너무 깁니다' }})}
                        type='password'
+                       onKeyDown={handleEnterPress}
                    />
             {errors.password && <ErrorMsg> {errors.password.message} </ErrorMsg>}
-            <SigninBtn onClick={handleSubmit(authStore.signIn)}>
+            <SigninBtn onClick={handleSubmit(authStore.signIn)}
+                       ref={loginBtn} 
+                       >
+                       
                 로그인
             </SigninBtn>
             <div style={{color: '#ffffff', marginBottom: '12px'}} > 아직 회원이 아니신가요? </div>

@@ -14,7 +14,7 @@ const Signup: React.FC = () => {
                            mr='15px'
                            placeholder='성'
                            {...signup.register('lastName', {
-                                pattern: { value:  /[가-힣]/, message: '한글로 정확히 입력해주세요' },
+                                pattern: { value:  /[가-힣]+$/, message: '한글로 정확히 입력해주세요' },
                                 required: '성을 입력해주세요'
                                 })}
                             />
@@ -73,6 +73,7 @@ const Signup: React.FC = () => {
                        validate: check => check === signup.getValues('password')
                    })}
                    type='password'
+                   onKeyDown={signup.handleEnterPress}
                    />
             {signup.errors.passwordCheck && <ErrorMsg> 비밀번호가 일치하지 않습니다 </ErrorMsg>}
             {!signup.errors.password && signup.getValues('password') !== '' && signup.getValues('password') === signup.getValues('passwordCheck') &&
@@ -80,6 +81,7 @@ const Signup: React.FC = () => {
             
             <NavLink to='signup' >
                 <SignupBtn onClick={signup.handleSubmit(signup.signUp)}
+                           ref={signup.signUpBtn}
                            width='415px'
                            >
                     확인
