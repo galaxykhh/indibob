@@ -3,7 +3,6 @@ import { NavLink } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import styled from 'styled-components/';
 import musicStore from '../../stores/musicStore';
-import { usePlayer } from '../../Hooks/usePlayer';
 
 interface IMainSong {
     rank?: number;
@@ -22,7 +21,6 @@ interface IMainSong {
 
 const MainSongBox: React.FC<IMainSong> = ({ item, rank, mr, ml, width }) => {
     const { image, songTitle, artist, id, src, bob } = item; // eslint-disable-line
-    const audio = usePlayer();
     return (
         <ItemBox>
             <AlbumCover url={image} onClick={() => musicStore.handleCurrentMusic(item)} />

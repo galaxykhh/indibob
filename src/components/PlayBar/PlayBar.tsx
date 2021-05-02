@@ -11,6 +11,7 @@ import { useEffect } from 'react';
 // import { useBob } from '../../Hooks/useBob';
 import { toJS } from 'mobx';
 import Modal from '../Modal/Modal';
+import authStore from '../../stores/authStore';
 
 const PlayBar: React.FC = observer(() => {
     // const bob = useBob();
@@ -23,7 +24,11 @@ const PlayBar: React.FC = observer(() => {
 
     useEffect(() => {
         audio.showModal(musicStore.trackAvailable);
-    }, [musicStore.trackIndex]);
+    }, [musicStore.trackIndex]); // eslint-disable-line
+
+    useEffect(() => { // 로그인 상태에 따른 재생가능한 시간 변경
+        audio.setAudioData();
+    }, [authStore.user]) // eslint-disable-line
 
     return (
         <>  
