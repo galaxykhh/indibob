@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import moment from 'moment';
 import 'moment-duration-format';
 import { MusicData } from '../stores/musicStore';
+import authStore from '../stores/authStore';
 
 export const usePlayer = () => {
     const audio = useRef<HTMLAudioElement>(null); // 오디오 엘리먼트 ref
@@ -10,6 +11,7 @@ export const usePlayer = () => {
     const totalVolume = useRef<HTMLDivElement>(null);
     const volumeHandler = useRef<HTMLDivElement>(null);
     const isFirstRun = useRef<boolean>(true);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isRandom, setIsRandom] = useState<boolean>(false);
     const [isLoop, setIsLoop] = useState<boolean>(false);
     const [isPlay, setIsPlay] = useState<boolean>(false);
@@ -25,11 +27,26 @@ export const usePlayer = () => {
     }
 
     const setAudioData = () => {
-        setDuration(audio.current?.duration);
-        setCurrentTime(audio.current?.currentTime);
+        if (authStore.user === null) {
+            setDuration(60);
+        } else {
+            setDuration(audio.current?.duration);
+            setCurrentTime(audio.current?.currentTime);
+        }
     }
 
-    const setAudioTime = () => setCurrentTime(audio.current?.currentTime);
+    const setAudioTime = (playNext: any, playList: MusicData[]) => {
+        if (authStore.user === null && audio.current!.currentTime >= 60 && playList.length === 1) {
+            handleLoopPlay();
+            return
+        } else if ((authStore.user === null && audio.current!.currentTime >= 60)) {
+            playNext();
+            return
+        } else {
+            setCurrentTime(audio.current?.currentTime);
+            return
+        }
+    }
 
     const setVolumeData = () => {
         setVolume(audio.current?.volume);
@@ -37,6 +54,16 @@ export const usePlayer = () => {
 
     const playBack = () => {
         return audio.current?.play();
+    }
+
+    const showModal = (trackAvailable: boolean) => {
+        if (trackAvailable === false) {
+            return;
+        }
+        if (authStore.user === null) {
+            setTimeout(() => setIsOpen(false), 1500);
+            setIsOpen(true);
+        }
     }
 
     const handleAutoPlay = (trackAvailable: boolean) => {
@@ -94,7 +121,11 @@ export const usePlayer = () => {
         if (duration && totalProgress.current && audio.current){
             let totalWidth = totalProgress.current.offsetWidth;
             let clickPosition = e?.pageX;
-            audio.current.currentTime = (clickPosition! / totalWidth) * audio.current.duration;
+            if (authStore.user === null) {
+                audio.current.currentTime = (clickPosition! / totalWidth) * 60;
+            } else {
+                audio.current.currentTime = (clickPosition! / totalWidth) * audio.current.duration;
+            }
         } else {
             return;
         }
@@ -124,6 +155,7 @@ export const usePlayer = () => {
         volumeHandler,
         volume,
         isRandom,
+        isOpen,
         isLoop,
         isPlay,
         isMute,
@@ -135,6 +167,7 @@ export const usePlayer = () => {
         setAudioData,
         setAudioTime,
         setVolumeData,
+        showModal,
         handleAutoPlay,
         handlePlayPause,
         handleMute,

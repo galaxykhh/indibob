@@ -36,9 +36,14 @@ export const useSignup = () => {
             return
         } else {
             try {
-                await authRepository.signUp(data);
-                alert('회원가입이 완료되었습니다');
-                history.push('/signin');
+                const saved = await authRepository.signUp(data);
+                if (saved.status === 200) {
+                    alert('회원가입이 완료되었습니다');
+                    history.push('/signin');
+                }
+                else if (saved.status === 400) {
+                    alert(`서버에 문제가 있습니다.\n잠시 후 다시 시도해주세요`);
+                }
             } catch(err) {
                 console.log(err);
             }

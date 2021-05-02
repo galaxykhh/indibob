@@ -17,6 +17,7 @@ class AuthStore {
             user: observable,
             signIn: action.bound,
             signOut: action.bound,
+            deleteAccount: action.bound,
         })
     }
 
@@ -36,6 +37,15 @@ class AuthStore {
     signOut() {
         this.user = null;
         this.isSignIn = false;
+    }
+
+    async deleteAccount(push: () => void) {
+        await authRepository.deleteAccount(this.user!.account);
+        runInAction(() => {
+            this.isSignIn = false;
+            this.user = null;
+            push();
+        })
     }
 }
 

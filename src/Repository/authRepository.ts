@@ -1,17 +1,31 @@
 import { indieInstance } from './musicRepository';
 
+export interface IsignIn {
+    account: string;
+    password: string;
+}
+
+interface IsignUp extends IsignIn {
+    lastName: string;
+    firstName: string;
+}
+
 class AuthRepository {
 
     checkDuplicated(account: string) {
         return indieInstance.get(`/api/auth/duplicate/${account}`);
     }
 
-    signUp(data: object) {
+    signUp(data: IsignUp) {
         return indieInstance.post('/api/auth/signup', data);
     }
 
-    signIn(data: any) {
+    signIn(data: IsignIn) {
         return indieInstance.post('/api/auth/signin', data);
+    }
+
+    deleteAccount(data: string) {
+        return indieInstance.delete('/api/auth/delete', {data: { account: data }});
     }
 }
 

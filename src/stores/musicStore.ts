@@ -1,6 +1,7 @@
 import { AxiosResponse } from 'axios';
 import { action, makeObservable, observable, runInAction } from 'mobx';
 import musicRepository from '../Repository/musicRepository';
+import authStore from './authStore';
 
 export interface MusicData {
     id: string;
@@ -19,7 +20,7 @@ interface SelectedData extends MusicData {
 class MusicStore {
     trackAvailable: boolean = false;
     playList: MusicData[] = [];
-    trackIndex: number = 0;
+    trackIndex: number = -1;
     searchResult: MusicData[] = [];
     hotList: MusicData[] | '' = ''; // Array.isArray(array) ?... => 데이터를 받아오지 못했을 때 '' 로 초기화 시켜주어 스피너 활성화
     lastestList: MusicData[] | '' = '';
@@ -152,8 +153,8 @@ class MusicStore {
     handleNext(isRandom: boolean) {
         const randomNumber = Math.floor(Math.random() * this.playList?.length)
         if (isRandom === false) {
-            if (this.trackIndex + 1 >= this.playList.length) { // 맨 마지막곡에서 누르면 첫곡 재생
-                this.trackIndex = 0;
+            if (this.trackIndex + 1 >= this.playList.length) {
+                this.trackIndex = 0; // 맨 마지막곡에서 누르면 첫곡 재생
             } else {
                 this.trackIndex = this.trackIndex + 1;
             }

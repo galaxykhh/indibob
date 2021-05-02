@@ -10,6 +10,7 @@ import { faAngleDoubleLeft, faPlay,faPause, faStepBackward, faStepForward, faVol
 import { useEffect } from 'react';
 // import { useBob } from '../../Hooks/useBob';
 import { toJS } from 'mobx';
+import Modal from '../Modal/Modal';
 
 const PlayBar: React.FC = observer(() => {
     // const bob = useBob();
@@ -20,8 +21,17 @@ const PlayBar: React.FC = observer(() => {
         audio.handleAutoPlay(musicStore.trackAvailable);
     }, [playList]); // eslint-disable-line
 
+    useEffect(() => {
+        audio.showModal(musicStore.trackAvailable);
+    }, [musicStore.trackIndex]);
+
     return (
-        <>
+        <>  
+            <Modal isopen={audio.isOpen}>
+                <Ment>
+                    로그인 정보가 없어 1분 미리듣기만 가능합니다.
+                </Ment>
+            </Modal>
             <TrackBar ref={audio.totalProgress}
                       >
                 <TrackHandler ref={audio.progressHandler} // MDN: linear-gradient 그라데이션 없이 구분선을 정해주어, 퍼센트값을 넣어준다.
@@ -120,7 +130,7 @@ const PlayBar: React.FC = observer(() => {
                    preload='none'
                    onEnded={() => audio.isLoop ? audio.handleLoopPlay() : musicStore.handleNext(audio.isRandom)}
                    onLoadedData={audio.setAudioData}
-                   onTimeUpdate={audio.setAudioTime}
+                   onTimeUpdate={() => audio.setAudioTime(() => musicStore.handleNext(audio.isRandom), playList)}
                    onCanPlay={audio.setVolumeData}
                    />
         </>
@@ -353,4 +363,11 @@ const Artist = styled.div`
 // `;
 
 const Audio = styled.audio`
+`;
+
+const Ment = styled.div`
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    margin-top: 3px;
 `;
