@@ -1,6 +1,6 @@
 import axios, { AxiosPromise } from 'axios';
 
-const indieInstance = axios.create({
+export const indieInstance = axios.create({
     baseURL: 'http://localhost:8000'
 });
 

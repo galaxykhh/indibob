@@ -149,13 +149,14 @@ const SigninBtn = styled(NavLink)`
     all: unset;
     position: absolute;
     top: 35px;
-    right: 25px;
+    right: 40px;
     border: solid white 1px; border-radius: 40px;
     color: white;
     text-align: center;
-    width: 70px;
+    font-size: 14px;
+    width: 60px;
     height: 25px;
-    padding-top: 5px;
+    padding-top: 8px;
     cursor: pointer;
     transition: 0.3s ease;
     &:hover {

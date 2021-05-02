@@ -12,7 +12,7 @@ const Signin: React.FC = () => {
     const { register, handleSubmit, setError, formState: { errors } } = useForm<Inputs>({ mode: 'onChange' })
 
     const signIn = (data: Inputs) => {
-        if (data.account === 'hankoon' && data.password === 'z1x2c3z1x2c3') {
+        if (data.account === 'hankoon' && data.password === 'z1x2c3z1x2c3') { // test
             alert(JSON.stringify(data));
         } else {
             setError('password', {
@@ -31,7 +31,7 @@ const Signin: React.FC = () => {
                        maxLength: { value: 19, message: '아이디가 너무 깁니다' },
                    })}
                    />
-            {errors.account && <div style={{color: '#f1404b', fontSize: '15px'}}> {errors.account.message} </div>}
+            {errors.account && <ErrorMsg> {errors.account.message} </ErrorMsg>}
             <Input placeholder='비밀번호'
                    {...register('password', {
                        required: '비밀번호를 입력해주세요',
@@ -39,12 +39,12 @@ const Signin: React.FC = () => {
                        maxLength: { value: 19, message: '비밀번호가 너무 깁니다' }})}
                        type='password'
                    />
-            {errors.password && <p style={{color: '#f1404b', fontSize: '15px'}} > {errors.password.message} </p>}
+            {errors.password && <ErrorMsg> {errors.password.message} </ErrorMsg>}
             <SigninBtn onClick={handleSubmit(signIn)} >
                 로그인
             </SigninBtn>
             <div style={{color: '#ffffff', marginBottom: '12px'}} > 아직 회원이 아니신가요? </div>
-            <div style={{color: '#ffffff'}} > 인디밥 회원이 되어 전체 노래를 감상하세요! </div>
+            <div style={{color: '#ffffff'}} > 인디밥 회원이 되어 전체 노래를 감상해보세요! </div>
             <NavLink to='signup' >
                 <SignupBtn>
                     회원가입
@@ -92,6 +92,11 @@ const SigninBtn = styled.button`
     cursor: pointer;
     margin-top: 12px;
     margin-bottom: 20px;
+`;
+
+const ErrorMsg = styled.div`
+    font-size: 15px;
+    color: #dd3d3d;
 `;
 
 const SignupBtn = styled(SigninBtn)`

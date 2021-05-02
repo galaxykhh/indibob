@@ -1,5 +1,4 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
 interface CateProp {
@@ -11,7 +10,7 @@ const CategoryContainer: React.FC<CateProp> = (props) => {
     return (
         <Flex>
             <Container>
-                <Category to={props.to}> {props.category} </Category>
+                <Category> {props.category} </Category>
                 {props.children}
             </Container>
         </Flex>
@@ -35,10 +34,7 @@ const Flex = styled.div`
     align-items: center;
 `;
 
-const Category = styled(NavLink).attrs(props => ({
-    to: props.to
-}))`
-    text-decoration: none;
+const Category = styled.div`
     color: #ffffff;
     font-size: 24px;
     margin-bottom: 20px;

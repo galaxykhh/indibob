@@ -50,7 +50,7 @@ class MusicStore {
     };
     // Hot10 곡 리스트를 서버에서 가져온다 [HotTen]
     async getHotList() {
-        const response: AxiosResponse = await musicRepository.getData('/hot10');
+        const response: AxiosResponse = await musicRepository.getData('/api/track/hot10');
         runInAction(() => {
         const data = response.data;
             this.hotList = data;
@@ -58,7 +58,7 @@ class MusicStore {
     };
     // Lastest10 곡 리스트를 서버에서 받아온다 [NewIndie]
     async getLastestList() {
-        const response: AxiosResponse = await musicRepository.getData('/lastest10');
+        const response: AxiosResponse = await musicRepository.getData('/api/track/lastest10');
         runInAction(() => {
         const data = response.data;
         this.lastestList = data;
@@ -66,7 +66,7 @@ class MusicStore {
     };
     // 내가 클릭한 노래의 정보를 서버에서 받아온다. [SongInfo]
     async getSelectedTrackInfo(parameter: string) {
-        const response: AxiosResponse = await musicRepository.findTrack('/findtrack', parameter);
+        const response: AxiosResponse = await musicRepository.findTrack('/api/track/findtrack', parameter);
         runInAction(() => {
             const data = response.data;
             this.selectedTrack = data;
@@ -74,7 +74,7 @@ class MusicStore {
     };
     // 클릭한 아티스트의 곡 목록을 받아온다. [ArtistInfo]
     async getSelectedArtistInfo(parameter: string) {
-        const response: AxiosResponse = await musicRepository.fintArtist('/findartist', parameter);
+        const response: AxiosResponse = await musicRepository.fintArtist('/api/track/findartist', parameter);
         runInAction(() => {
             const data = response.data;
             this.selectedArtist = data;
@@ -83,7 +83,7 @@ class MusicStore {
     // 검색어가 포함되는 노래 정보를 서버에서 받아온다 [Header, ResultItem]
     async getSearchResult(parameter: string) {
         const replacedWord =  parameter.replace(/ /g,'');
-        const response: AxiosResponse = await musicRepository.searchTrack('/searchtrack', replacedWord);
+        const response: AxiosResponse = await musicRepository.searchTrack('/api/track/search', replacedWord);
         runInAction(() => {
             const data = response.data;
             this.searchResult = data;
