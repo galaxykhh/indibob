@@ -17,6 +17,7 @@ export const useSignup = () => {
     const [duplicated, setDuplicated] = useState<boolean | null>(null);
     const history = useHistory();
     const signUpBtn = useRef<HTMLButtonElement>(null);
+    const checkBtn = useRef<HTMLButtonElement>(null);
 
     useEffect(() => {
         clearErrors();
@@ -57,12 +58,17 @@ export const useSignup = () => {
         }
     }
 
-    const handleEnterPress = (e: React.KeyboardEvent) => {
+    const enterToSignup = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
             signUpBtn.current?.click();
         }
     }
 
+    const enterToCheck = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            checkBtn.current?.click();
+        }
+    }
     return {
         register,
         handleSubmit,
@@ -72,9 +78,11 @@ export const useSignup = () => {
         errors,
         duplicated,
         signUpBtn,
+        checkBtn,
         signUp,
         onChange,
         checkDuplicated,
-        handleEnterPress,
+        enterToSignup,
+        enterToCheck,
     }
 }

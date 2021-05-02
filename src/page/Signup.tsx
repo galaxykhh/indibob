@@ -25,16 +25,13 @@ const Signup: React.FC = () => {
                            ml='15px'
                            placeholder='이름'
                            {...signup.register('firstName', {
-                                pattern: { value:  /[가-힣]/, message: '한글로 정확히 입력해주세요' },
+                                pattern: { value:  /[가-힣]+$/, message: '한글로 정확히 입력해주세요' },
                                 required: '이름을 입력해주세요'
                             })}
                             />
                     {signup.errors.firstName && <ErrorMsg> {signup.errors.firstName.message} </ErrorMsg>}
                 </Column>
             </Row>
-            <Row jc='flex-start'
-                 style={{transform: "translateX(+45px)"}}
-                 >
                 <Input width='385px'
                        placeholder='아이디 (영어 대소문자, 숫자 조합 7~16자)'
                        {...signup.register('account', {
@@ -44,19 +41,19 @@ const Signup: React.FC = () => {
                             maxLength: { value: 16, message: '아이디가 너무 깁니다' },
                             
                        })}
+                       onKeyDown={signup.enterToCheck}
                         />
-                <CheckBtn width='80px'
+                {signup.errors.account && <ErrorMsg> {signup.errors.account?.message} </ErrorMsg>}
+                {signup.getValues('account') !== '' && !signup.errors.account && signup.duplicated === false &&
+                <div style={{color: '#8CD790', fontSize: '15px'  }}> 사용 가능한 아이디입니다 </div>}
+                {signup.getValues('account') !== '' && !signup.errors.account && signup.duplicated === true &&
+                <ErrorMsg> 이미 사용중인 아이디입니다 </ErrorMsg>}
+                <CheckBtn width='415px'
                           onClick={() => signup.checkDuplicated(signup.getValues('account'))}
+                          ref={signup.checkBtn}
                           >
                     중복확인
                 </CheckBtn>
-            </Row>
-            {signup.errors.account && <ErrorMsg> {signup.errors.account?.message} </ErrorMsg>}
-            {signup.getValues('account') !== '' && !signup.errors.account && signup.duplicated === false &&
-            <div style={{color: '#8CD790', fontSize: '15px'  }}> 사용 가능한 아이디입니다 </div>}
-            {signup.getValues('account') !== '' && !signup.errors.account && signup.duplicated === true &&
-            <ErrorMsg> 이미 사용중인 아이디입니다 </ErrorMsg>}
-
             <Input width='385px'
                    placeholder='비밀번호 (조합 상관없이 8~19자)'
                    {...signup.register('password', {
@@ -73,7 +70,7 @@ const Signup: React.FC = () => {
                        validate: check => check === signup.getValues('password')
                    })}
                    type='password'
-                   onKeyDown={signup.handleEnterPress}
+                   onKeyDown={signup.enterToSignup}
                    />
             {signup.errors.passwordCheck && <ErrorMsg> 비밀번호가 일치하지 않습니다 </ErrorMsg>}
             {!signup.errors.password && signup.getValues('password') !== '' && signup.getValues('password') === signup.getValues('passwordCheck') &&
@@ -144,7 +141,6 @@ const SignupBtn = styled.button<{width: string}>`
 
 const CheckBtn = styled(SignupBtn)`
     background-color: #4a74ce;
-    margin-left: 10px;
 `;
 
 const ErrorMsg = styled.div`

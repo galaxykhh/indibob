@@ -8,6 +8,8 @@ import SongInfo from './page/SongInfo';
 import ArtistInfo from './page/ArtistInfo';
 import Signin from './page/Signin';
 import Signup from './page/Signup';
+import MyPage from './page/MyPage'
+import PrivateRoute from './components/PrivateRoute';
 
 const App = () => {
 
@@ -33,6 +35,9 @@ const App = () => {
                     <Route exact path='/signup' >
                         <Signup />
                     </Route>
+                    <PrivateRoute exact path='/mypage'>
+                        <MyPage />
+                    </PrivateRoute>
                 </Switch>
                 <PlayBar />
             </BrowserRouter>

@@ -10,30 +10,33 @@ interface IUser {
 
 class AuthStore {
     isSignIn: boolean = false;
-    User: IUser = {lastName: '', firstName: '', account: ''};
+    user: IUser | null = null;
     constructor() {
         makeObservable(this,{
             isSignIn: observable,
-            User: observable,
+            user: observable,
             signIn: action.bound,
+            signOut: action.bound,
         })
     }
 
     // 로그인
     async signIn(data: { account: string, password: string }) {
-
         const response: AxiosResponse =  await authRepository.signIn(data);
         runInAction(() => {
             if (response.data === false) {
                 alert('아이디 또는 비밀번호 오류입니다');
             } else if (response) {
-                this.User = response.data;
+                this.user = response.data;
                 this.isSignIn = true;
-                alert(`${this.User.firstName}님, 반갑습니다!`);
             }
         })
     }
 
+    signOut() {
+        this.user = null;
+        this.isSignIn = false;
+    }
 }
 
 const authStore = new AuthStore();

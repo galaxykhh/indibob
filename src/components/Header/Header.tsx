@@ -7,6 +7,7 @@ import { slideUp, slideDown } from '../style/keyframes';
 import { useSearch } from '../../Hooks/useSearch';
 import { observer } from 'mobx-react';
 import musicStore from '../../stores/musicStore';
+import authStore from '../../stores/authStore';
 import ResultItem from './ResultItem';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
@@ -25,9 +26,20 @@ const Header: React.FC = observer(() => {
 
     return (
         <>
-            <SigninBtn to='/signin'>
-                로그인
-            </SigninBtn>
+            {authStore.isSignIn ? 
+                <>
+                    <SignoutBtn to='/'
+                                onClick={authStore.signOut}
+                                >
+                        로그아웃
+                    </SignoutBtn>
+                    <InfoBtn to='/mypage'>
+                        내 정보
+                    </InfoBtn> 
+                </> :
+                <SigninBtn to='/signin'>
+                    로그인
+                </SigninBtn>}
             <LogoContainer>
                     <Logo to='/' > INDIEBOB </Logo>
                     <SearchBtnWrap>
@@ -164,4 +176,11 @@ const SigninBtn = styled(NavLink)`
         border-color: #f1404b;
         color: #f1404b;
     }
+`;
+
+const SignoutBtn = styled(SigninBtn)`
+`;
+
+const InfoBtn = styled(SigninBtn)`
+    right: 115px;
 `;
