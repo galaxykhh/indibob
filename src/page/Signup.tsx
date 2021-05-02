@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react'
-import { useForm, SubmitHandler } from 'react-hook-form';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { useSignup } from '../Hooks/useSignup';

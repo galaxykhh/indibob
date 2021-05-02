@@ -1,25 +1,28 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom';
+import React, { useEffect } from 'react'
+import { NavLink, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
+import authStore from '../stores/authStore';
+import { observer } from 'mobx-react';
 
 interface Inputs {
     account: string;
     password: string;
 }
 
-const Signin: React.FC = () => {
-    const { register, handleSubmit, setError, formState: { errors } } = useForm<Inputs>({ mode: 'onChange' })
+const Signin: React.FC = observer(() => {
+    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
+    const history = useHistory();
 
-    const signIn = (data: Inputs) => {
-        if (data.account === 'hankoon' && data.password === 'z1x2c3z1x2c3') { // test
-            alert(JSON.stringify(data));
-        } else {
-            setError('password', {
-                message: '가입되지 않은 계정이거나 잘못된 비밀번호입니다'
-            });
+    const goMain = () => {
+        if (authStore.isSignIn === true) {
+            history.push('/');
         }
     }
+
+    useEffect(() => { // mobx store 에서 history push를 어떻게 해야될지 몰라서
+        goMain();     // useEffect로 비슷하게 구현.
+    }, [authStore.isSignIn]) // eslint-disable-line
 
     return (
         <Flex>
@@ -40,7 +43,7 @@ const Signin: React.FC = () => {
                        type='password'
                    />
             {errors.password && <ErrorMsg> {errors.password.message} </ErrorMsg>}
-            <SigninBtn onClick={handleSubmit(signIn)} >
+            <SigninBtn onClick={handleSubmit(authStore.signIn)}>
                 로그인
             </SigninBtn>
             <div style={{color: '#ffffff', marginBottom: '12px'}} > 아직 회원이 아니신가요? </div>
@@ -52,7 +55,7 @@ const Signin: React.FC = () => {
             </NavLink>
         </Flex>
     )
-}
+});
 
 export default Signin;
 

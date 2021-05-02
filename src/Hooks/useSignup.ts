@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import authRepository from '../Repository/authRepository';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { AxiosResponse } from 'axios';
+import { useHistory } from 'react-router';
 
 interface Inputs {
     firstName: string;
@@ -14,6 +15,7 @@ interface Inputs {
 export const useSignup = () => {
     const { register, handleSubmit, trigger, clearErrors, watch, getValues, formState: { errors } } = useForm<Inputs>({ mode: 'onChange' });
     const [duplicated, setDuplicated] = useState<boolean | null>(null);
+    const history = useHistory();
 
     useEffect(() => {
         clearErrors();
@@ -24,14 +26,20 @@ export const useSignup = () => {
     }, [watch('account')]) // eslint-disable-line
 
 
-    const signUp: SubmitHandler<Inputs> = (data) => {
+    const signUp: SubmitHandler<Inputs> = async (data) => {
         if (duplicated === null) {
             alert('아이디 중복확인이 되지 않았습니다');
             return;
         } else if (duplicated === true) {
             return
         } else {
-            alert(JSON.stringify(data));
+            try {
+                await authRepository.signUp(data);
+                alert('회원가입이 완료되었습니다');
+                history.push('/signin');
+            } catch(err) {
+                console.log(err);
+            }
         }
     }
 

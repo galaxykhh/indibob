@@ -10,16 +10,16 @@ class MusicRepository {
         return indieInstance.get(path);
     }
 
-    findTrack(path: string, id: string): AxiosPromise {
-        return indieInstance.get(`${path}/${id}`);
+    findTrack(id: string): AxiosPromise {
+        return indieInstance.get(`/api/track/findtrack/${id}`);
     }
 
-    fintArtist(path: string, artist: string): AxiosPromise { // findTrack과 코드는 똑같지만 이름으로 구별하기 쉽기 위해서..
-        return indieInstance.get(`${path}/${artist}`);
+    fintArtist(artist: string): AxiosPromise { // findTrack과 코드는 똑같지만 이름으로 구별하기 쉽기 위해서..
+        return indieInstance.get(`/api/track/findartist/${artist}`);
     }
 
-    searchTrack(path: string, word: string): AxiosPromise {
-        return indieInstance.get(`${path}/${word}`);
+    searchTrack(word: string): AxiosPromise {
+        return indieInstance.get(`/api/track/search/${word}`);
     }
 }
 

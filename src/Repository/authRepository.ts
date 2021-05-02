@@ -6,12 +6,12 @@ class AuthRepository {
         return indieInstance.get(`/api/auth/duplicate/${account}`);
     }
 
-    signUp(path: string, data: any) {
-        return indieInstance.post(path, data);
+    signUp(data: object) {
+        return indieInstance.post('/api/auth/signup', data);
     }
 
-    signIn(path: string, data: any) {
-        return indieInstance.post(path, data);
+    signIn(data: any) {
+        return indieInstance.post('/api/auth/signin', data);
     }
 }
 
