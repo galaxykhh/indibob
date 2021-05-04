@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Info from '../components/SongInfo/Info';
 
 const SongInfo: React.FC = () => {
+
     return (
         <Flex>
             <Info />

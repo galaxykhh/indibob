@@ -1,4 +1,4 @@
-import { indieInstance } from './musicRepository';
+import {indieInstance} from './musicRepository';
 
 export interface IsignIn {
     account: string;
@@ -11,6 +11,10 @@ interface IsignUp extends IsignIn {
 }
 
 class AuthRepository {
+
+    autoLogin() {
+        return indieInstance.get(`/api/auth/autologin`)
+    }
 
     checkDuplicated(account: string) {
         return indieInstance.get(`/api/auth/duplicate/${account}`);

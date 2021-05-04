@@ -3,6 +3,7 @@ import axios, { AxiosPromise } from 'axios';
 export const indieInstance = axios.create({
     baseURL: 'http://localhost:8000'
 });
+indieInstance.defaults.headers.common['authorization'] = localStorage.getItem('IndieToken');
 
 class MusicRepository {
 

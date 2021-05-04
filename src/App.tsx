@@ -2,6 +2,8 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import GlobalStyle from './components/style/global';
 import Header from './components/Header/Header';
 import PlayBar from './components/PlayBar/PlayBar';
+// login
+import { useJWT } from './Hooks/useJWT';
 // pages
 import Main from './page/Main';
 import SongInfo from './page/SongInfo';
@@ -13,9 +15,10 @@ import PrivateRoute from './components/PrivateRoute';
 
 const App = () => {
 
+    useJWT();
 
     return (
-        <>
+        <>  
             <GlobalStyle />
             <BrowserRouter>
                 <Header />

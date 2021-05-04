@@ -6,7 +6,6 @@ import { useHistory } from 'react-router';
 
 const MyPage: React.FC = observer(() => {
     const history = useHistory();
-
     const pushHistory = () => {
         history.push('/');
     }

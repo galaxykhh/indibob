@@ -24,7 +24,7 @@ interface BOOLEAN {
 
 const Form = styled.div<BOOLEAN>`
     display: ${props => props.isopen ? 'block' : 'none'};
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     width: 500px;

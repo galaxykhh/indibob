@@ -13,7 +13,7 @@ interface Inputs {
 }
 
 export const useSignup = () => {
-    const { register, handleSubmit, trigger, clearErrors, watch, getValues, formState: { errors } } = useForm<Inputs>({ mode: 'onChange' });
+    const { register, handleSubmit, trigger, clearErrors, watch, getValues, formState: { errors } } = useForm<Inputs>();
     const [duplicated, setDuplicated] = useState<boolean | null>(null);
     const history = useHistory();
     const signUpBtn = useRef<HTMLButtonElement>(null);

@@ -8,13 +8,11 @@ import { useHandleTab } from '../../Hooks/useHandleTab';
 import { usePlayer } from '../../Hooks/usePlayer';
 import { faAngleDoubleLeft, faPlay,faPause, faStepBackward, faStepForward, faVolumeUp, faVolumeMute, faSync, faRandom } from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
-// import { useBob } from '../../Hooks/useBob';
 import { toJS } from 'mobx';
 import Modal from '../Modal/Modal';
 import authStore from '../../stores/authStore';
 
 const PlayBar: React.FC = observer(() => {
-    // const bob = useBob();
     const audio = usePlayer();
     const progressHandler = useHandleTab();
     const playList = toJS(musicStore.playList);
@@ -187,7 +185,7 @@ const CurrentPlay = styled.div`
     justify-content: flex-start;
     align-items: center;
     margin-left: 15px;
-    width: 30%;
+    width: 35%;
     height: 110px;
 `;
 
@@ -353,19 +351,6 @@ const Artist = styled.div`
         text-decoration: underline;
     }
 `;
-
-// const Bob = styled.div`
-//     font-size: 13px;
-//     margin-left: 10px;
-//     color: white;
-// `;
-
-// const BobBtn = styled(FontAwesomeIcon)`
-//     font-size: 25px;
-//     color: ${props => props.color};
-//     cursor: pointer;
-//     margin-left: 20px;
-// `;
 
 const Audio = styled.audio`
 `;
