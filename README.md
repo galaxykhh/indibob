@@ -8,6 +8,7 @@
 ## Server
 * Express
 * Mongoose
+* JWT
 
 ## Database
 * MongoDB
