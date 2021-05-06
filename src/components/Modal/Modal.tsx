@@ -10,7 +10,9 @@ const Modal: React.FC<IModal>= ({ children, isopen }) => {
     return (
             <Form isopen={isopen}>
                 <Flex>
-                    {children}
+                    <Ment>
+                        {children}
+                    </Ment>
                 </Flex>
             </Form>
     )
@@ -42,5 +44,12 @@ const Flex = styled.div`
     align-items: center;
     width: 500px;
     height: 50px;
+`;
+
+const Ment = styled.div`
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    margin-top: 3px;
 `;
 

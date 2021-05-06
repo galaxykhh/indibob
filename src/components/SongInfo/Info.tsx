@@ -22,9 +22,7 @@ const Info: React.FC = observer(() => {
         <Container>
             <TAContainer>
                 <Modal isopen={isOpen} >
-                    <Ment>
-                        이 곡은 이미 플레이 리스트에 있는 곡입니다
-                    </Ment>
+                    이 곡은 이미 플레이 리스트에 있는 곡입니다
                 </Modal>
 
                 <ImgDiv>
@@ -50,13 +48,6 @@ const Info: React.FC = observer(() => {
 })
 
 export default Info;
-
-const Ment = styled.div`
-    color: white;
-    font-size: 18px;
-    text-align: center;
-    margin-top: 3px;
-`;
 
 const Container = styled.div`
     display: flex;

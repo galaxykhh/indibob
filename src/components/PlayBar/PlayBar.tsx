@@ -31,13 +31,12 @@ const PlayBar: React.FC = observer(() => {
     return (
         <>  
             <Modal isopen={audio.isOpen}>
-                <Ment>
-                    로그인 정보가 없어 1분 미리듣기만 가능합니다.
-                </Ment>
+                로그인 정보가 없어 1분 미리듣기만 가능합니다.
             </Modal>
-            <TrackBar ref={audio.totalProgress}
+
+            <ProgressBar ref={audio.totalProgress}
                       >
-                <TrackHandler ref={audio.progressHandler} // MDN: linear-gradient 그라데이션 없이 구분선을 정해주어, 퍼센트값을 넣어준다.
+                <ProgressHandler ref={audio.progressHandler} // MDN: linear-gradient 그라데이션 없이 구분선을 정해주어, 퍼센트값을 넣어준다.
                               onMouseDown={audio.handleProgress}
                               style={{ 
                                 height: '100%',
@@ -47,11 +46,11 @@ const PlayBar: React.FC = observer(() => {
                                                 rgba(192, 56, 56, .5) ${audio.currentProgressPercent}% 100%)`,
                              }}
                                />
-            </TrackBar>
+            </ProgressBar>
 
             <Container>
-                <CurrentPlay>
 
+                <CurrentPlay>
                     <ImgDiv>
                         <Img url={playList[musicStore.trackIndex]?.image} />
                     </ImgDiv>
@@ -62,11 +61,8 @@ const PlayBar: React.FC = observer(() => {
                         </STitle>
                         <Artist> {playList[musicStore.trackIndex]?.artist} </Artist>
                     </TABox>
-
-                    {/* <Bob> {musicStore.playList[audio.index]?.bob} </Bob>
-                    <BobBtn icon={faHeart} color={bob.bob ? 'white' : 'red'} onClick={bob.PBob} /> */}
                 </CurrentPlay> 
-
+                
                 <TrackController>
                     <ControlBtn icon={faRandom}
                                 style={{color: audio.isRandom ? 'white' : 'grey'}}
@@ -86,7 +82,7 @@ const PlayBar: React.FC = observer(() => {
                                 onClick={audio.handleLoop}
                                 />
                 </TrackController>
-
+            
                 <TimeViewerBox>
                         <TimeViewer display={playList.length === 0 ? 'none' : 'block'} >
                             {audio.formatDuration(audio.currentTime)} / {audio.formatDuration(audio.duration)}
@@ -113,7 +109,7 @@ const PlayBar: React.FC = observer(() => {
                                        />
                     </VolumeBar>
                 </VolumeControllerBox>
-
+                
                 <TabHandlerBox >
                     <TablHandlerWrap rotate={progressHandler.handleTab} >
                         <TabHandler icon={faAngleDoubleLeft}
@@ -121,8 +117,9 @@ const PlayBar: React.FC = observer(() => {
                                     />
                     </TablHandlerWrap>
                 </TabHandlerBox>
-            </Container>
 
+            </Container>
+            
             <ListBar handletab={progressHandler.handleTab}
                      display={progressHandler.display}
                      reset={() => audio.handlePlayPause(playList ,musicStore.handleTrackAvailable)}
@@ -142,7 +139,7 @@ const PlayBar: React.FC = observer(() => {
 
 export default PlayBar;
 
-const TrackBar = styled.div`
+const ProgressBar = styled.div`
     position: fixed;
     bottom: 110px;
     width: 100%;
@@ -161,7 +158,7 @@ const TrackBar = styled.div`
     }
 `;
 
-const TrackHandler = styled.div`
+const ProgressHandler = styled.div`
 `;
 
 const Container = styled.div`
@@ -353,11 +350,4 @@ const Artist = styled.div`
 `;
 
 const Audio = styled.audio`
-`;
-
-const Ment = styled.div`
-    color: white;
-    font-size: 18px;
-    text-align: center;
-    margin-top: 3px;
 `;

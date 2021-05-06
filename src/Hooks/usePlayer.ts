@@ -35,7 +35,7 @@ export const usePlayer = () => {
         }
     }
 
-    const setAudioTime = (playNext: any, playList: MusicData[]) => {
+    const setAudioTime = (playNext: () => void, playList: MusicData[]) => {
         if (authStore.user === null && audio.current!.currentTime >= 60 && playList.length === 1) {
             handleLoopPlay();
             return
