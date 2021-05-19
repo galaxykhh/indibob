@@ -161,7 +161,7 @@ const SigninBtn = styled(NavLink)`
     all: unset;
     position: absolute;
     top: 35px;
-    right: 40px;
+    right: 20px;
     border: solid white 1px; border-radius: 40px;
     color: white;
     text-align: center;

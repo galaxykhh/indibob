@@ -1,7 +1,7 @@
-# Practice typescript
+# Indiebob
 
 ## Client
-* React JS
+* React + TypeScript
 * Styled Components
 * MobX
 

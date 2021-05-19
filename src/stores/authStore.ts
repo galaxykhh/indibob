@@ -43,7 +43,7 @@ class AuthStore {
                     alert('아이디 또는 비밀번호 오류입니다');
                 } else if (response.status === 200 && response.data.message === 'success') {
                     this.user = response.data.user;
-                    localStorage.setItem('IndieToken' ,response.data.token);
+                    localStorage.setItem('IndieToken', response.data.token);
                     this.isSignIn = true;
                 }
             })

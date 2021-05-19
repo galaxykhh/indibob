@@ -10,8 +10,8 @@ export const useSearch = () => {
 
     const toggleSearchBtn = () => {
         if (animation) { 
-        setAnimation(!animation); // 애니메이션을 boolean 트리거
-        setTimeout(() => searchInput.current?.focus(), 400); // 애니메이션이 끝날쯤에 인풋에 포커스
+            setAnimation(!animation); // 애니메이션을 boolean 트리거
+            searchInput.current?.focus(); // 애니메이션이 끝날쯤에 인풋에 포커스
         } else {
             setAnimation(!animation);
         }

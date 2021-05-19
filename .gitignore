@@ -3,6 +3,7 @@
 # dependencies
 /node_modules
 /public/AudioTest
+/server
 /.pnp
 .pnp.js
 
