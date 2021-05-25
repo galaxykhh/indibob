@@ -11,26 +11,26 @@ interface IResultItem {
     onClick: () => void;
 };
 
-const ResultItem: React.FC<IResultItem> = observer(({id, image, songTitle, artist, onClick}) => {
+const ResultItem: React.FC<IResultItem> = observer(({ id, image, songTitle, artist, onClick }) => {
     return (
         <ItemBox to={`/song/${id}`}
             onClick={onClick}
         >
-            <Img img={image} />
-            <Result> {artist} - {songTitle} </Result>
+            <Img image={image} />
+            <Result>{artist} - {songTitle}</Result>
         </ItemBox>
     );
 });
 
 export default ResultItem;
 
-const Img = styled.div<{img: string}>`
+const Img = styled.div<{ image: string }>`
     width: 20px;
     height: 20px;
     margin-right: 10px;
     background-size: cover;
     background-position: center;
-    background-image: url(${props => props.img})
+    background-image: url(${({ image }) => image})
 `;
 
 const ItemBox = styled(NavLink)`

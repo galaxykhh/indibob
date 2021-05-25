@@ -1,24 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const TopMent: React.FC<{first: string, second: string}> = (props) => {
+const TopMent: React.FC<{ first: string, second: string }> = ({ first, second }) => {
     return (
         <BGContainer>
-            <Text> {props.first} </Text>
-            <Text ml='30px' > {props.second} </Text>
+            <Text>{first}</Text>
+            <Text ml='30px' >{second}</Text>
         </BGContainer>
     );
 };
 export default TopMent;
 
-interface Prop {
-    ml?: string
-    src?: string;
-};
-
-const Text = styled.div<Prop>`
+const Text = styled.div<{ ml?: string }>`
     font-family: 'Kalam', cursive;
-    margin-left: ${props => props.ml};
+    margin-left: ${({ ml }) => ml};
     font-size: 30px;
     color: #e8eaf0;
     letter-spacing: 5px;

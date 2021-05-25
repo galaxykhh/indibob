@@ -62,7 +62,7 @@ class AuthStore implements IAuthStore {
                     this.setUser(userData);
                 } else {
                     return;
-                }
+                };
             });
         } catch(err) {
             console.log(err);
@@ -76,17 +76,19 @@ class AuthStore implements IAuthStore {
             runInAction(() => {
                 if (message === 'error') {
                     alert('아이디 또는 비밀번호 오류입니다');
-                } else if (message === 'success') {
+                    return;
+                }
+                if (message === 'success') {
                     this.setUser(userData);
                     localStorage.setItem('IndieToken', token);
                     this.setIsSignIn(true);
-                }
-            })
+                };
+            });
         } catch(err) {
             alert(`서버가 점검중입니다\n잠시 후 시도해주세요`);
             setTimeout(() => console.clear(), 100);
-        }
-    }
+        };
+    };
 
     public signOut(): void {
         this.setUser(null);

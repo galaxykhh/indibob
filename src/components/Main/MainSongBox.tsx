@@ -38,13 +38,13 @@ const MainSongBox: React.FC<IMainSong> = observer(({ item, rank, mr, ml, width }
     );
 });
 
-const AlbumCover: React.FC<IProp> = (props) => {
+const AlbumCover: React.FC<IProp> = ({ onClick, url }) => {
     return (
-        <CoverBox onClick={props.onClick} >
+        <CoverBox onClick={onClick} >
             <PlayIcon>
                 ▶
             </PlayIcon>
-            <Cover url={props.url} />
+            <Cover url={url} />
         </CoverBox>
     );
 };
@@ -74,7 +74,7 @@ const InfoFlex = styled.div`
 interface IProp {
     url: string;
     onClick: () => void;
-}
+};
 
 const CoverBox = styled.div`
     display: flex;
@@ -99,7 +99,7 @@ const PlayIcon = styled.div`
             rgba(0, 0, 0, 0.8),
             rgba(0, 0, 0, 0.8));
         font-size: 30px;
-    }
+    };
 `;
 
 const Cover = styled.div<{ url: string }>`
@@ -107,13 +107,13 @@ const Cover = styled.div<{ url: string }>`
     height: 50px;
     background-size: cover;
     background-position: center;
-    background-image: url(${props => props.url});
+    background-image: url(${({ url }) => url});
 `;
 
 const Rank = styled.div<{ width?: string, ml?: string, mr?: string }>`
-    width: ${props => props.width};
-    margin-left: ${props => props.ml};
-    margin-right: ${props => props.mr};
+    width: ${({ width }) => width};
+    margin-left: ${({ ml }) => ml};
+    margin-right: ${({ mr }) => mr};
     text-align: center;
     font-size: 16px;
     color: #e7616a;

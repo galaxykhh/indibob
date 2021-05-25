@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import musicStore from '../../stores/musicStore';
 
 const Info: React.FC = observer(() => {
-    const { artist } : {artist : string} = useParams();
+    const { artist } : { artist : string } = useParams();
 
     useEffect(() => {
         musicStore.getSelectedArtistInfo(artist);

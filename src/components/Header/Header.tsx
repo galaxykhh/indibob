@@ -11,10 +11,6 @@ import ResultItem from './ResultItem';
 
 type DisplayType = 'none' | 'block';
 
-interface word {
-    word: string;
-};
-
 const Header: React.FC = observer(() => {
     const [animation, setAnimation] = useState<boolean>(true); // 검색 애니메이션 boolean
     const [display, setDisplay] = useState<DisplayType>('none'); // 맨 처음 애니메이션이 작동하는걸 보여주지 않기위해 기본값으로 none 설정
@@ -56,18 +52,18 @@ const Header: React.FC = observer(() => {
         <>
             {authStore.isSignIn ? 
                 <>
-                    <SignoutBtn to='/'
+                    <SignOutBtn to='/'
                         onClick={authStore.signOut}
                     >
                         로그아웃
-                    </SignoutBtn>
+                    </SignOutBtn>
                     <InfoBtn to='/mypage'>
                         내 정보
                     </InfoBtn> 
                 </> :
-                <SigninBtn to='/signin'>
+                <SignInBtn to='/signin'>
                     로그인
-                </SigninBtn>
+                </SignInBtn>
             }
             <LogoContainer>
                     <Logo to='/' >INDIEBOB</Logo>
@@ -128,8 +124,8 @@ const SearchBox = styled.input.attrs(({
     position: absolute;
     left:50%; transform:translateX(-50%);
     opacity: 0;
-    display: ${props => props.display};
-    animation: ${props => props.animation ? slideUp : slideDown} .5s ease forwards;
+    display: ${props => props.display };
+    animation: ${({ animation }) => animation ? slideUp : slideDown} .5s ease forwards;
     border-radius: 60px;
     background-color: rgba(0, 0, 0, 1);
     color: white;
@@ -144,13 +140,13 @@ const SearchResult = styled.div<SearchProp>`
     position: absolute;
     left:50%; transform:translateX(-50%);
     opacity: 0;
-    visibility: ${props => props.visible};
-    animation: ${props => props.animation ? slideUp : slideDown} .5s ease forwards;
+    visibility: ${({ visible }) => visible };
+    animation: ${({ animation }) => animation ? slideUp : slideDown} .5s ease forwards;
     border-radius: 30px;
     background-color: rgba(0, 0, 0, 0.8);
     padding-left: 50px;
     width: 450px;
-    height: ${props => props.height};
+    height: ${({ height }) => height };
     max-height: 600px;
     overflow: auto;
     z-index: 2;
@@ -185,7 +181,7 @@ const SearchBtn = styled(FontAwesomeIcon)`
     }
 `;
 
-const SigninBtn = styled(NavLink)`
+const SignInBtn = styled(NavLink)`
     all: unset;
     position: absolute;
     top: 35px;
@@ -206,9 +202,9 @@ const SigninBtn = styled(NavLink)`
     }
 `;
 
-const SignoutBtn = styled(SigninBtn)`
+const SignOutBtn = styled(SignInBtn)`
 `;
 
-const InfoBtn = styled(SigninBtn)`
+const InfoBtn = styled(SignInBtn)`
     right: 115px;
 `;

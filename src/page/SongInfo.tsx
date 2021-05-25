@@ -5,15 +5,15 @@ import Info from '../components/SongInfo/Info';
 const SongInfo: React.FC = () => {
 
     return (
-        <Flex>
+        <FlexBox>
             <Info />
-        </Flex>
+        </FlexBox>
     );
 };
 
 export default SongInfo;
 
-const Flex = styled.div`
+const FlexBox = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;

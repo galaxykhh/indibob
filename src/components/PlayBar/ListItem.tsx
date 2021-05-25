@@ -16,7 +16,7 @@ interface IListItem{
     reset: () => void;
 };
 
-const ListItem: React.FC<IListItem> = observer(({item, isPlaying, reset}) => {
+const ListItem: React.FC<IListItem> = observer(({ item, isPlaying, reset }) => {
     const { image, songTitle, artist } = item;
     return (
         <ItemBox >
@@ -44,8 +44,8 @@ const ListItem: React.FC<IListItem> = observer(({item, isPlaying, reset}) => {
 
 export default ListItem;
 
-const PlayingLoader = styled(Loader)<{display: string}>`
-    display: ${props => props.display};
+const PlayingLoader = styled(Loader)<{ display: string }>`
+    display: ${({ display }) => display};
     background-color: rgba(0, 0, 0, 0.75);
     position: absolute;
 `;
@@ -78,7 +78,7 @@ const Img = styled.div<{ url: string }>`
     height: 30px;
     background-size: cover;
     background-position: center;
-    background-image: url(${props => props.url});
+    background-image: url(${({ url }) => url});
 `;
 
 const TABox = styled.div`

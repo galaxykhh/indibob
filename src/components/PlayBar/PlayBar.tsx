@@ -113,8 +113,7 @@ const PlayBar: React.FC = observer(() => {
                     <VolumeBar ref={audio.totalVolume}
                         onClick={audio.handleVolume}
                     >
-                        <VolumeHandler ref={audio.volumeHandler}
-                            style={{
+                        <VolumeHandler style={{
                                 height: '100%',
                                 background: `linear-gradient(to right,
                                     rgb(255, 255, 255) ${audio.currentVolumePercent}%,
@@ -237,8 +236,8 @@ const TimeViewerBox = styled.div`
     }
 `;
 
-const TimeViewer = styled.div<{display: string;}>`
-    display: ${props => props.display};
+const TimeViewer = styled.div<{ display: string }>`
+    display: ${({ display }) => display};
     white-space: nowrap;
     font-size: 15px;
     color: #dbd7d7;
@@ -299,7 +298,7 @@ const TabHandlerBox = styled.div`
     }
 `;
 
-const TablHandlerWrap = styled.div<{$rotate: boolean}>`
+const TablHandlerWrap = styled.div<{ $rotate: boolean }>`
     transform: ${props => props.$rotate ? 'rotate(180deg)' : 'rotate(0deg)'};
     transition: 0.4s ease;
     margin-right: 50px;
@@ -320,12 +319,12 @@ const ImgDiv = styled.div`
     height: 70px;
 `;
 
-const Img = styled.div<{ url?: string }>`
+const Img = styled.div<{ url: string }>`
     width: 70px;
     height: 70px;
     background-size: cover;
     background-position: center;
-    background-image: url(${props => props.url});
+    background-image: url(${({ url }) => url});
 `;
 
 const TABox = styled.div`

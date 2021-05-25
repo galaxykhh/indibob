@@ -12,7 +12,7 @@ interface IInfoItem {
     }
 }
 
-const InfoItem: React.FC<IInfoItem>= ({item}) => {
+const InfoItem: React.FC<IInfoItem>= ({ item }) => {
     const {id, albumTitle, songTitle, date, image} = item;
     const replacedDate = date.toString().replace(/(\d{4})(\d{2})(\d{2})/g, '$1.$2.$3');　// 숫자 8자리를 날짜형식으로 표현
     return (
@@ -29,11 +29,11 @@ const InfoItem: React.FC<IInfoItem>= ({item}) => {
 
 export default InfoItem
 
-const AlbumCover = styled.div<{image: string}>`
+const AlbumCover = styled.div<{ image: string }>`
     text-decoration: none;
     width: 150px;
     height: 150px;
-    background-image: url(${props => props.image});
+    background-image: url(${({ image }) => image});
     background-size: cover;
     background-position: center;
 `;

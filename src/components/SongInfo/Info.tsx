@@ -9,6 +9,7 @@ const Info: React.FC = observer(() => {
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const addBtn = useRef<HTMLButtonElement>(null)
     const { id }: { id: string } = useParams();
+    
     useEffect(() => {
         musicStore.getSelectedTrackInfo(id);
     }, [id]);
@@ -16,7 +17,7 @@ const Info: React.FC = observer(() => {
     const showModal = () => {
         setIsOpen(true);
         setTimeout(() => setIsOpen(false), 1500)
-    }
+    };
 
     return (
         <Container>
@@ -73,7 +74,7 @@ const Img = styled.div<{ url: string }>`
     height: 200px;
     background-size: cover;
     background-position: center;
-    background-image: url(${props => props.url});
+    background-image: url(${({ url }) => url});
 `;
 
 const BtnBox = styled.div`

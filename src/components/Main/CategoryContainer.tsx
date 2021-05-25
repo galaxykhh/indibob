@@ -6,12 +6,12 @@ interface ICategory {
     category: string;
 };
 
-const CategoryContainer: React.FC<ICategory> = (props) => {
+const CategoryContainer: React.FC<ICategory> = ({ category, children }) => {
     return (
         <Flex>
             <Container>
-                <Category> {props.category} </Category>
-                {props.children}
+                <Category>{category}</Category>
+                {children}
             </Container>
         </Flex>
     );

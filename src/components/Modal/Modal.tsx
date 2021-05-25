@@ -21,7 +21,7 @@ const Modal: React.FC<IModal>= ({ children, isopen }) => {
 export default Modal;
 
 const Form = styled.div<{ isopen: boolean }>`
-    display: ${props => props.isopen ? 'block' : 'none'};
+    display: ${({ isopen }) => isopen ? 'block' : 'none'};
     position: fixed;
     top: 50%;
     left: 50%;
@@ -30,7 +30,7 @@ const Form = styled.div<{ isopen: boolean }>`
     margin: -250px;
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 40px;
-    animation: ${props => props.isopen ? modalOpen : modalClose} 1.5s ease;
+    animation: ${({ isopen }) => isopen ? modalOpen : modalClose} 1.5s ease;
 `;
 
 const Flex = styled.div`

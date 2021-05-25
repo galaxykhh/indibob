@@ -7,9 +7,8 @@ import authStore from '../stores/authStore';
 export const usePlayer = () => {
     const audio = useRef<HTMLAudioElement>(null);
     const totalProgress = useRef<HTMLDivElement>(null); 
-    const progressHandler = useRef<HTMLDivElement>(null); 
+    const progressHandler = useRef<HTMLDivElement>(null);
     const totalVolume = useRef<HTMLDivElement>(null);
-    const volumeHandler = useRef<HTMLDivElement>(null);
     const isFirstRun = useRef<boolean>(true);
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isRandom, setIsRandom] = useState<boolean>(false);
@@ -151,7 +150,6 @@ export const usePlayer = () => {
         totalProgress,
         progressHandler,
         totalVolume,
-        volumeHandler,
         volume,
         isRandom,
         isOpen,

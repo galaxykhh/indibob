@@ -49,7 +49,7 @@ const Signup: React.FC = () => {
     return (
         <form onSubmit={handleSubmit(onSubmit)} >
             <Column marginTop='80px' >
-                <Row jc='space-between' >
+                <Row>
                     <Column>
                         <Input width='160px'
                             mr='15px'
@@ -124,41 +124,35 @@ const Signup: React.FC = () => {
 
 export default Signup;
 
-const Column = styled.div<{marginTop?: string}>`
+const Column = styled.div<{ marginTop?: string }>`
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: ${props => props.marginTop};
+    margin-top: ${({ marginTop }) => marginTop};
 `;
 
-const Row = styled.div<{jc: string}>`
+const Row = styled.div`
     display: flex;
     flex-direction: row;
-    justify-content: ${props => props.jc};
+    justify-content: space-between;
     align-items: center;
 `;
 
-interface IInput {
-    width: string;
-    mr?: string;
-    ml?: string;
-}
-
-const Input = styled.input<IInput>`
+const Input = styled.input<{ width: string, mr?: string, ml?: string }>`
     all: unset;
     border: 1px solid #ffffff; border-radius: 50px;
-    width: ${props => props.width};
+    width: ${({ width }) => width};
     height: 50px;
     padding-left: 30px;
     margin-bottom: 12px;
     margin-top: 12px;
-    margin-right: ${props => props.mr};
-    margin-left: ${props => props.ml};
+    margin-right: ${({ mr }) => mr};
+    margin-left: ${({ ml }) => ml};
     color: white;
     &:focus {
         border-color: #f1404b;
-    }
+    };
 `;
 
 const SignupBtn = styled.button`

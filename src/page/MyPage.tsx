@@ -6,16 +6,17 @@ import { useHistory } from 'react-router';
 
 const MyPage: React.FC = observer(() => {
     const history = useHistory();
-    const pushHistory = () => {
+    const pushMain = () => {
         history.push('/');
-    }
+    };
+
     return (
         <Flex>
             <Box>
                 <div style={{fontSize: '20px', color: 'white', marginBottom: '20px'}}> 내 정보</div>
                 <div style={{fontSize: '20px', color: 'white'}}> 아이디 : {authStore.user?.account} </div>
                 <div style={{fontSize: '20px', color: 'white'}}> 이름 : {authStore.user?.lastName}{authStore.user?.firstName} </div>
-                <DeleteAccount onClick={() => authStore.deleteAccount(pushHistory)} >
+                <DeleteAccount onClick={() => authStore.deleteAccount(pushMain)} >
                     회원탈퇴
                 </DeleteAccount>
             </Box>
@@ -47,7 +48,8 @@ const DeleteAccount = styled.button`
     width: 90px;
     height: 30px;
     background-color: #bd4343;
-    border: 1px solid white; border-radius: 90px;
+    border: 1px solid white;
+    border-radius: 90px;
     text-align: center;
     color: white;
     cursor: pointer;

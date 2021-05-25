@@ -11,7 +11,7 @@ interface IListBar {
     reset: () => void;
 };
 
-const ListBar: React.FC<IListBar> = observer(({handletab, display, reset}) => {
+const ListBar: React.FC<IListBar> = observer(({ handletab, display, reset }) => {
     return (
         <Container handletab={handletab}
             display={display}
@@ -32,15 +32,15 @@ const ListBar: React.FC<IListBar> = observer(({handletab, display, reset}) => {
 
 export default ListBar;
 
-const Container = styled.div<{handletab: boolean, display: string }>`
+const Container = styled.div<{ handletab: boolean, display: string }>`
     position: fixed;
     right: 0;
     top: 0;
-    display: ${props => props.display};
+    display: ${({ display }) => display};
     width: 400px;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.9);
-    animation: ${props => props.handletab ? tabOpen : tabClose} .6s forwards;
+    animation: ${({ handletab}) => handletab ? tabOpen : tabClose} .6s forwards;
 `;
 
 const ItemBox = styled.div`
