@@ -8,16 +8,16 @@ export const useSearch = () => {
     const [isExist, setIsExist] = useState<boolean>(false);
     const searchInput = useRef<HTMLInputElement>(null); // 검색창 인풋
 
-    const toggleSearchBtn = () => {
+    const toggleSearchBtn = (): void => {
         if (animation) { 
             setAnimation(!animation); // 애니메이션을 boolean 트리거
             searchInput.current?.focus(); // 애니메이션이 끝날쯤에 인풋에 포커스
         } else {
             setAnimation(!animation);
-        }
-    }
+        };
+    };
 
-    const handleSearchBox = () => {
+    const handleSearchBox = (): void => {
         if (display === 'none') { // 최초 display가 none일 경우에 block으로 설정
             setDisplay('block');
             toggleSearchBtn();
@@ -25,19 +25,19 @@ export const useSearch = () => {
             toggleSearchBtn();
             searchInput.current!.value = ''; // 검색창 초기화
             setIsExist(false);
-        }
-    }
+        };
+    };
 
-    const handleInput = () => {
+    const handleInput = (): void => {
         if (searchInput.current) {
             if (searchInput.current.value.replace(/ /g,'') === '') {
                 setIsExist(false);
             } else {
                 musicStore.getSearchResult(searchInput.current.value);
                 setIsExist(true);
-            }
-        }
-    }
+            };
+        };
+    };
 
     return {
         animation,

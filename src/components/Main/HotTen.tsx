@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import MainSonBoxObserver from './MainSongBox';
+import MainSongBox from './MainSongBox';
 import LoadingSpinner from '../../LoadingSpinener'
 import musicStore from '../../stores/musicStore';
 import { observer } from 'mobx-react';
@@ -9,26 +9,26 @@ const HotTen: React.FC = observer(() => {
 
     useEffect(() => {
         musicStore.getHotList();
-    }, []);
+    }, []); // eslint-disabled-line
 
     return (
         <>
             {Array.isArray(musicStore.hotList) ?
                 <Container>
                     {musicStore.hotList.map((item, index) => (
-                        <MainSonBoxObserver mr='15px'
-                                            ml='15px'
-                                            width='50px'
-                                            item={item}
-                                            rank={index + 1}
-                                            key={item.id}
-                                            />
+                        <MainSongBox mr='15px'
+                            ml='15px'
+                            width='50px'
+                            item={item}
+                            rank={index + 1}
+                            key={item.id}
+                        />
                     ))}
                 </Container> :
                 <LoadingSpinner />}
         </>
-    )
-})
+    );
+});
 
 export default HotTen;
 

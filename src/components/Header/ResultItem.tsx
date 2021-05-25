@@ -9,18 +9,18 @@ interface IResultItem {
     artist: string;
     id: string;
     onClick: () => void;
-}
+};
 
 const ResultItem: React.FC<IResultItem> = observer(({id, image, songTitle, artist, onClick}) => {
     return (
         <ItemBox to={`/song/${id}`}
-                 onClick={onClick}
-                 >
+            onClick={onClick}
+        >
             <Img img={image} />
             <Result> {artist} - {songTitle} </Result>
         </ItemBox>
-    )
-})
+    );
+});
 
 export default ResultItem;
 
@@ -48,5 +48,5 @@ const Result = styled.span`
     color: white;
     &:hover {
         color: rgb(192, 72, 72);
-    }
+    };
 `;

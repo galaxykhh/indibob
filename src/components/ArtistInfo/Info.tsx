@@ -10,16 +10,17 @@ const Info: React.FC = observer(() => {
 
     useEffect(() => {
         musicStore.getSelectedArtistInfo(artist);
-    }, [artist])
+    }, [artist]);
+    
     return (
         <Container>
             <Artist> {artist} </Artist>
-            <SongList> {artist} 노래 목록 </SongList>
+            <SongList>{artist} 노래 목록</SongList>
             <TAContainer>
                 {musicStore.selectedArtist.map(item => (
                     <InfoItem item={item}
-                            key={item.id}
-                            />
+                        key={item.id}
+                    />
                 ))}
             </TAContainer>
         </Container>

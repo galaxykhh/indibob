@@ -1,30 +1,31 @@
 import { AxiosResponse } from 'axios';
 import { action, makeObservable, observable, runInAction } from 'mobx';
-import musicRepository from '../Repository/musicRepository';
-
+import musicRepository from '../repository/musicRepository';
+import { HOT10, LASTEST10 } from '../config';
 export interface MusicData {
     id: string;
     songTitle: string;
     artist: string;
     image: string;
-    bob: number;
+    bob?: number;
     src: string;
-}
+};
 
 interface SelectedData extends MusicData {
     albumTitle: string;
     date: number;
-}
+};
 
 class MusicStore {
-    trackAvailable: boolean = false;
-    playList: MusicData[] = [];
-    trackIndex: number = -1;
-    searchResult: MusicData[] = [];
-    hotList: MusicData[] | '' = ''; // Array.isArray(array) ?... => 데이터를 받아오지 못했을 때 '' 로 초기화 시켜주어 스피너 활성화
-    lastestList: MusicData[] | '' = '';
-    selectedTrack: SelectedData = {id: '', albumTitle: '', songTitle: '', artist: '', image: '', bob: 0, date: 0, src: ''};
-    selectedArtist: SelectedData[] = [];
+    public trackAvailable: boolean = false;
+    public playList: MusicData[] = [];
+    public trackIndex: number = 0;
+    public searchResult: MusicData[] = [];
+    public hotList: MusicData[] | '' = ''; // Array.isArray(array) ?... => 데이터를 받아오지 못했을 때 '' 로 초기화 시켜주어 스피너 활성화
+    public lastestList: MusicData[] | '' = '';
+    public selectedTrack: SelectedData = {id: '', albumTitle: '', songTitle: '', artist: '', image: '', bob: 0, date: 0, src: ''};
+    public selectedArtist: SelectedData[] = [];
+
     constructor() {
         makeObservable(this, {
             trackAvailable: observable,
@@ -49,23 +50,23 @@ class MusicStore {
         });
     };
     // Hot10 곡 리스트를 서버에서 가져온다 [HotTen]
-    async getHotList() {
-        const response: AxiosResponse = await musicRepository.getData('/api/track/hot10');
+    public async getHotList(): Promise<void> {
+        const response: AxiosResponse = await musicRepository.getData(HOT10);
         runInAction(() => {
         const data = response.data;
             this.hotList = data;
         });
     };
     // Lastest10 곡 리스트를 서버에서 받아온다 [NewIndie]
-    async getLastestList() {
-        const response: AxiosResponse = await musicRepository.getData('/api/track/lastest10');
+    public async getLastestList(): Promise<void> {
+        const response: AxiosResponse = await musicRepository.getData(LASTEST10);
         runInAction(() => {
         const data = response.data;
         this.lastestList = data;
         });
     };
     // 내가 클릭한 노래의 정보를 서버에서 받아온다. [SongInfo]
-    async getSelectedTrackInfo(parameter: string) {
+    public async getSelectedTrackInfo(parameter: string): Promise<void> {
         const response: AxiosResponse = await musicRepository.findTrack(parameter);
         runInAction(() => {
             const data = response.data;
@@ -73,29 +74,29 @@ class MusicStore {
         });
     };
     // 클릭한 아티스트의 곡 목록을 받아온다. [ArtistInfo]
-    async getSelectedArtistInfo(parameter: string) {
+    public async getSelectedArtistInfo(parameter: string): Promise<void> {
         const response: AxiosResponse = await musicRepository.fintArtist(parameter);
         runInAction(() => {
             const data = response.data;
             this.selectedArtist = data;
-        })
-    }
+        });
+    };
     // 검색어가 포함되는 노래 정보를 서버에서 받아온다 [Header, ResultItem]
-    async getSearchResult(parameter: string) {
+    public async getSearchResult(parameter: string): Promise<void> {
         const replacedWord =  parameter.replace(/ /g,'');
         const response: AxiosResponse = await musicRepository.searchTrack(replacedWord);
         runInAction(() => {
             const data = response.data;
             this.searchResult = data;
-        })
-    }
+        });
+    };
 
     // 오디오 재생 가능 상태관리
-    handleTrackAvailable() {
+    public handleTrackAvailable() {
         this.trackAvailable = !this.trackAvailable;
-    }
+    };
     // 재생버튼을 누른 트랙을 재색목록 추가, 재생하고, 이미 리스트에 있을경우 재생만
-    handleCurrentMusic(song: MusicData) { // cb1 : usePlayer.
+    public handleCurrentMusic(song: MusicData) { // cb1 : usePlayer.
         const duplicated = this.playList.find(list => list.id === song.id) // find 메서드로 같은 id를 가진 노래를 찾아서 리턴
 
             if (duplicated === undefined) { // 리턴받은것이 없으면 중복되는 노래가 없다는 의미이므로 바로 재생 후 push
@@ -109,7 +110,7 @@ class MusicStore {
             }
     };
     // 재생목록에 선택 곡 추가 [Top]
-    handleAddTrack(song: MusicData, showModal: () => void) {
+    public handleAddTrack(song: MusicData, showModal: () => void) {
         const duplicated= this.playList.find(list => list.id === song.id);
         if (duplicated === undefined) {
             this.playList.push(song);
@@ -118,7 +119,7 @@ class MusicStore {
         };
     };
     // 재생목록 선택 곡 삭제 [ListItem] --- 재생중인 곡이 바뀌지 않게 인덱스 핸들링
-    handleDelete(song: MusicData, reset: () => void) {
+    public handleDelete(song: MusicData, reset: () => void) {
         const index = this.playList.indexOf(song);
         if (index > this.trackIndex){
             this.playList.splice(this.playList.indexOf(song), 1);
@@ -131,7 +132,7 @@ class MusicStore {
         }
     };
     // 앞곡으로 변경
-    handlePrev(isRandom: boolean) {
+    public handlePrev(isRandom: boolean) {
         const randomNumber = Math.floor(Math.random() * this.playList?.length)
         if (isRandom === false) {
             if (this.trackIndex - 1 < 0) { // 맨 첫곡에서 누르면 마지막 곡 재생
@@ -149,7 +150,7 @@ class MusicStore {
         }
     }
     // 뒷곡으로 변경
-    handleNext(isRandom: boolean) {
+    public handleNext(isRandom: boolean) {
         const randomNumber = Math.floor(Math.random() * this.playList?.length)
         if (isRandom === false) {
             if (this.trackIndex + 1 >= this.playList.length) {

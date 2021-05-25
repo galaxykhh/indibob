@@ -14,20 +14,20 @@ interface IMainSong {
         image: string;
         songTitle: string;
         artist: string;
-        bob: number;
+        bob?: number;
         src: string;
     };
 };
 
-const MainSongBox: React.FC<IMainSong> = ({ item, rank, mr, ml, width }) => {
-    const { image, songTitle, artist, id, src, bob } = item; // eslint-disable-line
+const MainSongBox: React.FC<IMainSong> = observer(({ item, rank, mr, ml, width }) => {
+    const { image, songTitle, artist, id } = item;
     return (
         <ItemBox>
             <AlbumCover url={image} onClick={() => musicStore.handleCurrentMusic(item)} />
             <Rank mr={mr}
-                  ml={ml}
-                  width={width}
-                  >
+                ml={ml}
+                width={width}
+            >
                 {rank}
             </Rank>
             <InfoFlex>
@@ -35,8 +35,8 @@ const MainSongBox: React.FC<IMainSong> = ({ item, rank, mr, ml, width }) => {
                 <Artist to={`/artist/${artist}`} > {artist} </Artist>
             </InfoFlex>
         </ItemBox>
-    )
-}
+    );
+});
 
 const AlbumCover: React.FC<IProp> = (props) => {
     return (
@@ -46,12 +46,10 @@ const AlbumCover: React.FC<IProp> = (props) => {
             </PlayIcon>
             <Cover url={props.url} />
         </CoverBox>
-    )
-}
+    );
+};
 
-const MainSongBoxObserver = observer(MainSongBox);
-
-export default MainSongBoxObserver;
+export default MainSongBox;
 
 const ItemBox = styled.div`
     display: flex;

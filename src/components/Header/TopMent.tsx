@@ -7,14 +7,14 @@ const TopMent: React.FC<{first: string, second: string}> = (props) => {
             <Text> {props.first} </Text>
             <Text ml='30px' > {props.second} </Text>
         </BGContainer>
-    )
-}
+    );
+};
 export default TopMent;
 
 interface Prop {
     ml?: string
     src?: string;
-}
+};
 
 const Text = styled.div<Prop>`
     font-family: 'Kalam', cursive;
@@ -24,7 +24,7 @@ const Text = styled.div<Prop>`
     letter-spacing: 5px;
     @media only screen and (max-width: 700px) {
         font-size: 20px;
-    }
+    };
 `;
 
 const BGContainer = styled.div`

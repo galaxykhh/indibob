@@ -1,9 +1,7 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import GlobalStyle from './components/style/global';
+import GlobalStyle from './style/global';
 import Header from './components/Header/Header';
 import PlayBar from './components/PlayBar/PlayBar';
-// login
-import { useJWT } from './Hooks/useJWT';
 // pages
 import Main from './page/Main';
 import SongInfo from './page/SongInfo';
@@ -12,10 +10,14 @@ import Signin from './page/Signin';
 import Signup from './page/Signup';
 import MyPage from './page/MyPage'
 import PrivateRoute from './components/PrivateRoute';
+import { useEffect } from 'react';
+import authStore from './stores/authStore';
 
 const App = () => {
 
-    useJWT();
+    useEffect(() => {
+        authStore.autoLogin();
+    }, []) // eslint-disable-line
 
     return (
         <>  

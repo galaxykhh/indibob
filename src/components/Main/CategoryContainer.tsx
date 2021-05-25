@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
-interface CateProp {
+interface ICategory {
     to: string;
     category: string;
-}
+};
 
-const CategoryContainer: React.FC<CateProp> = (props) => {
+const CategoryContainer: React.FC<ICategory> = (props) => {
     return (
         <Flex>
             <Container>
@@ -15,7 +15,7 @@ const CategoryContainer: React.FC<CateProp> = (props) => {
             </Container>
         </Flex>
     );
-}
+};
 export default CategoryContainer;
 
 const Container = styled.div`

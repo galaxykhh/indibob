@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import authRepository from '../Repository/authRepository';
+import authRepository from '../repository/authRepository';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { AxiosResponse } from 'axios';
 import { useHistory } from 'react-router';
@@ -52,7 +52,7 @@ export const useSignup = () => {
 
     const onChange = () => {
         setDuplicated(null);
-    }
+    };
 
     const checkDuplicated = async (account: string) => {
         const response: AxiosResponse = await authRepository.checkDuplicated(account);

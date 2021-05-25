@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { tabClose, tabOpen } from '../style/keyframes';
+import { tabClose, tabOpen } from '../../style/keyframes';
 import musicStore from '../../stores/musicStore';
 import { observer } from 'mobx-react';
 import ListItem from './ListItem';
@@ -9,30 +9,30 @@ interface IListBar {
     handletab: boolean;
     display: string;
     reset: () => void;
-}
+};
 
 const ListBar: React.FC<IListBar> = observer(({handletab, display, reset}) => {
     return (
         <Container handletab={handletab}
-                   display={display}
-                   >
+            display={display}
+        >
             <Top> 플레이리스트 </Top>
             <ItemBox>
                 {musicStore.playList.map((item, index) => (
                     <ListItem item={item}
-                              key={item.id}
-                              isPlaying={musicStore.trackIndex === index && musicStore.trackAvailable === true}
-                              reset={reset}
-                              />
+                        key={item.id}
+                        isPlaying={musicStore.trackIndex === index && musicStore.trackAvailable === true}
+                        reset={reset}
+                    />
                 ))}
             </ItemBox>
         </Container>
-    )
+    );
 });
 
 export default ListBar;
 
-const Container = styled.div<{ handletab: boolean, display: string }>`
+const Container = styled.div<{handletab: boolean, display: string }>`
     position: fixed;
     right: 0;
     top: 0;

@@ -1,37 +1,39 @@
-import {indieInstance} from './musicRepository';
+import { AxiosResponse } from 'axios';
+import { indieInstance } from './indieInstance';
 
-export interface IsignIn {
+interface ISignIn {
     account: string;
     password: string;
-}
+};
 
-interface IsignUp extends IsignIn {
+interface ISignUp extends ISignIn {
     lastName: string;
     firstName: string;
-}
+};
 
 class AuthRepository {
+    private path = '/api/auth';
 
-    autoLogin() {
-        return indieInstance.get(`/api/auth/autologin`)
-    }
+    public autoLogin(): Promise<AxiosResponse> {
+        return indieInstance.get(`${this.path}/autologin`)
+    };
 
-    checkDuplicated(account: string) {
-        return indieInstance.get(`/api/auth/duplicate/${account}`);
-    }
+    public checkDuplicated(account: string): Promise<AxiosResponse> {
+        return indieInstance.get(`${this.path}/duplicate/${account}`);
+    };
 
-    signUp(data: IsignUp) {
-        return indieInstance.post('/api/auth/signup', data);
-    }
+    public signUp(data: ISignUp): Promise<AxiosResponse> {
+        return indieInstance.post(`${this.path}/signup`, data);
+    };
 
-    signIn(data: IsignIn) {
-        return indieInstance.post('/api/auth/signin', data);
-    }
+    public signIn(data: ISignIn): Promise<AxiosResponse> {
+        return indieInstance.post(`${this.path}/signin`, data);
+    };
 
-    deleteAccount(data: string) {
-        return indieInstance.delete('/api/auth/delete', {data: { account: data }});
-    }
-}
+    public deleteAccount(data: string): Promise<AxiosResponse> {
+        return indieInstance.delete(`${this.path}/delete`, {data: { account: data }});
+    };
+};
 
 const authRepository = new AuthRepository();
 export default authRepository;

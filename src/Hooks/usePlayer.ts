@@ -24,53 +24,52 @@ export const usePlayer = () => {
 
     const formatDuration = (duration: number | undefined) => {
         return moment.duration(duration, 'seconds').format('mm:ss', { trim: false });
-    }
+    };
 
-    const setAudioData = () => {
+    const setAudioData = (): void => {
         if (authStore.user === null) {
             setDuration(60);
         } else {
             setDuration(audio.current?.duration);
             setCurrentTime(audio.current?.currentTime);
-        }
-    }
+        };
+    };
 
-    const setAudioTime = (playNext: () => void, playList: MusicData[]) => {
+    const setAudioTime = (playNext: () => void, playList: MusicData[]): void => {
         if (authStore.user === null && audio.current!.currentTime >= 60 && playList.length === 1) {
             handleLoopPlay();
-            return
-        } else if ((authStore.user === null && audio.current!.currentTime >= 60)) {
+            return;
+        };
+        if ((authStore.user === null && audio.current!.currentTime >= 60)) {
             playNext();
-            return
         } else {
             setCurrentTime(audio.current?.currentTime);
-            return
-        }
-    }
+        };
+    };
 
-    const setVolumeData = () => {
+    const setVolumeData = (): void => {
         setVolume(audio.current?.volume);
-    }
+    };
 
-    const playBack = () => {
+    const playBack = (): Promise<void> | undefined => {
         return audio.current?.play();
-    }
+    };
 
-    const showModal = (trackAvailable: boolean) => {
+    const showModal = (trackAvailable: boolean): void => {
         if (trackAvailable === false) {
             return;
-        }
+        };
         if (authStore.user === null) {
             setTimeout(() => setIsOpen(false), 1500);
             setIsOpen(true);
-        }
-    }
+        };
+    };
 
-    const handleAutoPlay = (trackAvailable: boolean) => {
+    const handleAutoPlay = (trackAvailable: boolean): void => {
         if (isFirstRun.current) {
             isFirstRun.current = false; // componentDidMount
             return;
-        }
+        };
         if (trackAvailable === false) { // 곡을 추가하는 동시에 trackAvailable가 활성화 (musicStore.handleCurrentTrack => handleTrackAvailable)
             audio.current?.pause();
         } else {
@@ -78,11 +77,11 @@ export const usePlayer = () => {
             playBack()?.then(() => {
             })
             .catch(error => {
-            })
-        }
-    }
+            });
+        };
+    };
 
-    const handlePlayPause = (playList: MusicData[], progressHandler: () => void) => { // progressHandler = musicStore.handleTrackAvailable
+    const handlePlayPause = (playList: MusicData[], progressHandler: () => void): void => { // progressHandler = musicStore.handleTrackAvailable
         if (playList.length === 0) {
             return
         } else if (isPlay) {
@@ -93,10 +92,10 @@ export const usePlayer = () => {
             progressHandler();
             setIsPlay(!isPlay);
             audio.current?.play();
-        }
-    }
+        };
+    };
 
-    const handleMute = () => { 
+    const handleMute = (): void => { 
         const savedVolume = audio.current?.volume; // 사용자가 지정했던 볼륨
         if (isMute && audio.current) {
             setIsMute(!isMute);
@@ -106,18 +105,18 @@ export const usePlayer = () => {
             setIsMute(!isMute);
             setVolume(0);
             audio.current.muted = true;
-        }
-    }
+        };
+    };
 
-    const handleRandom = () => {
+    const handleRandom = (): void => {
         setIsRandom(!isRandom);
-    }
+    };
 
-    const handleLoop = () => {
+    const handleLoop = (): void => {
         setIsLoop(!isLoop);
-    }
+    };
 
-    const handleProgress = (e: React.MouseEvent) => {
+    const handleProgress = (e: React.MouseEvent): void => {
         if (duration && totalProgress.current && audio.current){
             let totalWidth = totalProgress.current.offsetWidth;
             let clickPosition = e?.pageX;
@@ -131,7 +130,7 @@ export const usePlayer = () => {
         }
     }
 
-    const handleVolume = (e: React.MouseEvent) => {
+    const handleVolume = (e: React.MouseEvent): void => {
         if (totalVolume.current && audio.current) { // Progress와 달리 화면 중간에 위치해있기 때문에 클릭지점을 left 거리만큼 계산해야된다. 구글참고
             const clickedPositionInPage = e.pageX;
             const progressStart = totalVolume.current.getBoundingClientRect().left;
@@ -140,12 +139,12 @@ export const usePlayer = () => {
             const volume = (clickedPositionInBar / progressWidth);
             audio.current.volume = volume;
             setVolume(volume);
-        }
-    }
+        };
+    };
 
-    const handleLoopPlay = () => {
+    const handleLoopPlay = (): void => {
         audio.current!.currentTime = 0;
-    }
+    };
 
     return {
         audio,

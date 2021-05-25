@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { modalOpen, modalClose } from '../style/keyframes';
+import { modalOpen, modalClose } from '../../style/keyframes';
 
 interface IModal {
     isopen: boolean
@@ -8,23 +8,19 @@ interface IModal {
 
 const Modal: React.FC<IModal>= ({ children, isopen }) => {
     return (
-            <Form isopen={isopen}>
-                <Flex>
-                    <Ment>
-                        {children}
-                    </Ment>
-                </Flex>
-            </Form>
-    )
-}
+        <Form isopen={isopen}>
+            <Flex>
+                <Ment>
+                    {children}
+                </Ment>
+            </Flex>
+        </Form>
+    );
+};
 
 export default Modal;
 
-interface BOOLEAN {
-    isopen: boolean;
-}
-
-const Form = styled.div<BOOLEAN>`
+const Form = styled.div<{ isopen: boolean }>`
     display: ${props => props.isopen ? 'block' : 'none'};
     position: fixed;
     top: 50%;

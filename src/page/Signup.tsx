@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { useSignup } from '../Hooks/useSignup';
+import { useSignup } from '../hooks/useSignup';
 
 const Signup: React.FC = () => {
     const signup = useSignup();
@@ -11,76 +11,78 @@ const Signup: React.FC = () => {
             <Row jc='space-between' >
                 <Column>
                     <Input width='160px'
-                           mr='15px'
-                           placeholder='성'
-                           {...signup.register('lastName', {
-                                pattern: { value:  /[가-힣]+$/, message: '한글로 정확히 입력해주세요' },
-                                required: '성을 입력해주세요'
-                                })}
-                            />
+                        mr='15px'
+                        placeholder='성'
+                        {...signup.register('lastName', {
+                            pattern: { value:  /[가-힣]+$/, message: '한글로 정확히 입력해주세요' },
+                            required: '성을 입력해주세요'
+                        })}
+                    />
                     {signup.errors.lastName && <ErrorMsg> {signup.errors.lastName.message} </ErrorMsg>}
                 </Column>
                 <Column>
                     <Input width='160px'
-                           ml='15px'
-                           placeholder='이름'
-                           {...signup.register('firstName', {
-                                pattern: { value:  /[가-힣]+$/, message: '한글로 정확히 입력해주세요' },
-                                required: '이름을 입력해주세요'
-                            })}
-                            />
+                        ml='15px'
+                        placeholder='이름'
+                        {...signup.register('firstName', {
+                            pattern: { value:  /[가-힣]+$/, message: '한글로 정확히 입력해주세요' },
+                            required: '이름을 입력해주세요'
+                        })}
+                    />
                     {signup.errors.firstName && <ErrorMsg> {signup.errors.firstName.message} </ErrorMsg>}
                 </Column>
             </Row>
                 <Input width='385px'
-                       placeholder='아이디 (영어 대소문자, 숫자 조합 7~16자)'
-                       {...signup.register('account', {
-                            required: '아이디를 입력해주세요',
-                            pattern: { value: /^[a-zA-Z0-9]+$/, message: '영어, 숫자만을 조합하여 입력해주세요'},
-                            minLength: { value: 7, message: '아이디가 너무 짧습니다' },
-                            maxLength: { value: 16, message: '아이디가 너무 깁니다' },
-                            
-                       })}
-                       onKeyDown={signup.enterToCheck}
-                        />
+                    placeholder='아이디 (영어 대소문자, 숫자 조합 7~16자)'
+                    {...signup.register('account', {
+                        required: '아이디를 입력해주세요',
+                        pattern: { value: /^[a-zA-Z0-9]+$/, message: '영어, 숫자만을 조합하여 입력해주세요'},
+                        minLength: { value: 7, message: '아이디가 너무 짧습니다' },
+                        maxLength: { value: 16, message: '아이디가 너무 깁니다' },
+                    })}
+                    onKeyPress={signup.enterToCheck}
+                />
                 {signup.errors.account && <ErrorMsg> {signup.errors.account?.message} </ErrorMsg>}
                 {signup.getValues('account') !== '' && !signup.errors.account && signup.duplicated === false &&
                 <div style={{color: '#8CD790', fontSize: '15px'  }}> 사용 가능한 아이디입니다 </div>}
                 {signup.getValues('account') !== '' && !signup.errors.account && signup.duplicated === true &&
                 <ErrorMsg> 이미 사용중인 아이디입니다 </ErrorMsg>}
                 <CheckBtn width='415px'
-                          onClick={() => signup.checkDuplicated(signup.getValues('account'))}
-                          ref={signup.checkBtn}
-                          >
+                    onClick={() => signup.checkDuplicated(signup.getValues('account'))}
+                    ref={signup.checkBtn}
+                >
                     중복확인
                 </CheckBtn>
             <Input width='385px'
-                   placeholder='비밀번호 (조합 상관없이 8~19자)'
-                   {...signup.register('password', {
-                       required: '비밀번호를 입력해주세요',
-                       minLength: { value: 8, message: '비밀번호가 너무 짧습니다' },
-                       maxLength: { value: 19, message: '비밀번호가 너무 깁니다' }})}
-                       type='password'
-                   />
+                placeholder='비밀번호 (조합 상관없이 8~19자)'
+                autoComplete='off'
+                type='password'
+                {...signup.register('password', {
+                    required: '비밀번호를 입력해주세요',
+                    minLength: { value: 8, message: '비밀번호가 너무 짧습니다' },
+                    maxLength: { value: 19, message: '비밀번호가 너무 깁니다' }
+                })}
+            />
             {signup.errors.password && <ErrorMsg> {signup.errors.password.message} </ErrorMsg>}
 
             <Input width='385px'
-                   placeholder='비밀번호확인'
-                   {...signup.register('passwordCheck', {
-                       validate: check => check === signup.getValues('password')
-                   })}
-                   type='password'
-                   onKeyDown={signup.enterToSignup}
-                   />
+                placeholder='비밀번호확인'
+                autoComplete='off'
+                type='password'
+                {...signup.register('passwordCheck', {
+                    validate: check => check === signup.getValues('password')
+                })}
+                onKeyDown={signup.enterToSignup}
+            />
             {signup.errors.passwordCheck && <ErrorMsg> 비밀번호가 일치하지 않습니다 </ErrorMsg>}
             {!signup.errors.password && signup.getValues('password') !== '' && signup.getValues('password') === signup.getValues('passwordCheck') &&
             <div style={{color: '#8CD790', fontSize: '15px'  }}> 비밀번호가 일치합니다 </div>}
             
             <NavLink to='signup' >
                 <SignupBtn onClick={signup.handleSubmit(signup.signUp)}
-                           ref={signup.signUpBtn}
-                           width='415px'
-                           >
+                    ref={signup.signUpBtn}
+                    width='415px'
+                >
                     확인
                 </SignupBtn>
             </NavLink>
@@ -95,7 +97,7 @@ const Column = styled.div<{marginTop?: string}>`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: ${props => props.marginTop}
+    margin-top: ${props => props.marginTop};
 `;
 
 const Row = styled.div<{jc: string}>`

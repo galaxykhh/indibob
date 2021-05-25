@@ -10,7 +10,6 @@ interface IListItem{
         image: string;
         songTitle: string;
         artist: string;
-        bob: number;
         src: string;
     };
     isPlaying: boolean;
@@ -18,17 +17,17 @@ interface IListItem{
 };
 
 const ListItem: React.FC<IListItem> = observer(({item, isPlaying, reset}) => {
-    const { image, songTitle, artist, bob } = item // eslint-disable-line
+    const { image, songTitle, artist } = item;
     return (
         <ItemBox >
             <ImgDiv onClick={() => musicStore.handleCurrentMusic(item)} >
                 <Img url={image}>
                     <PlayingLoader type="Audio"
-                                   color="rgba(255, 255, 255, 0.8)"
-                                   height={30}
-                                   width={30}
-                                   display={isPlaying ? 'block' : 'none'}
-                                   />
+                        color="rgba(255, 255, 255, 0.8)"
+                        height={30}
+                        width={30}
+                        display={isPlaying ? 'block' : 'none'}
+                    />
                 </Img>
             </ImgDiv>
 
@@ -40,7 +39,7 @@ const ListItem: React.FC<IListItem> = observer(({item, isPlaying, reset}) => {
             <DeleteBtn onClick={() => musicStore.handleDelete(item, reset)} > × </DeleteBtn>
             
         </ItemBox>
-    )
+    );
 });
 
 export default ListItem;

@@ -3,17 +3,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { slideUp, slideDown } from '../style/keyframes';
-import { useSearch } from '../../Hooks/useSearch';
+import { slideUp, slideDown } from '../../style/keyframes';
+import { useSearch } from '../../hooks/useSearch';
 import { observer } from 'mobx-react';
 import musicStore from '../../stores/musicStore';
 import authStore from '../../stores/authStore';
 import ResultItem from './ResultItem';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
-type word = {
+interface word {
     word: string;
-}
+};
 
 const Header: React.FC = observer(() => {
     
@@ -22,15 +22,15 @@ const Header: React.FC = observer(() => {
 
     const onSubmit: SubmitHandler<word> = () => {
         handleSearch.handleInput();
-    }
+    };
 
     return (
         <>
             {authStore.isSignIn ? 
                 <>
                     <SignoutBtn to='/'
-                                onClick={authStore.signOut}
-                                >
+                        onClick={authStore.signOut}
+                    >
                         로그아웃
                     </SignoutBtn>
                     <InfoBtn to='/mypage'>
@@ -39,33 +39,34 @@ const Header: React.FC = observer(() => {
                 </> :
                 <SigninBtn to='/signin'>
                     로그인
-                </SigninBtn>}
+                </SigninBtn>
+            }
             <LogoContainer>
-                    <Logo to='/' > INDIEBOB </Logo>
+                    <Logo to='/' >INDIEBOB</Logo>
                     <SearchBtnWrap>
                         <SearchBtn onClick={handleSearch.handleSearchBox}
-                                   icon={handleSearch.animation ? faSearch : faTimes}
-                                   />
+                            icon={handleSearch.animation ? faSearch : faTimes}
+                        />
                     </SearchBtnWrap>
                     <SearchBox {...register('word')}
-                               display={handleSearch.display}
-                               animation={handleSearch.animation}
-                               ref={handleSearch.searchInput}
-                               onChange={handleSubmit(onSubmit)}
-                               />
+                        display={handleSearch.display}
+                        animation={handleSearch.animation}
+                        ref={handleSearch.searchInput}
+                        onChange={handleSubmit(onSubmit)}
+                    />
                     <SearchResult visible={handleSearch.isExist ? 'visible' : 'hidden'}
-                                  animation={handleSearch.animation}
-                                  height={`${(musicStore.searchResult.length * 40) + 50}px`} // 결과물 한개당 40픽셀을 주고, 검색창 크기의 50px만큼 기본적으로 설정.
-                                  >
+                        animation={handleSearch.animation}
+                        height={`${(musicStore.searchResult.length * 40) + 50}px`} // 결과물 한개당 40픽셀을 주고, 검색창 크기의 50px만큼 기본적으로 설정.
+                    >
                         <div style={{ height: '50px' }} />
                         {musicStore.searchResult?.map(x => (
                             <ResultItem image={x.image}
-                                        songTitle={x.songTitle}
-                                        artist={x.artist}
-                                        key={x.id}
-                                        id={x.id}
-                                        onClick={handleSearch.handleSearchBox}
-                                        />
+                                songTitle={x.songTitle}
+                                artist={x.artist}
+                                key={x.id}
+                                id={x.id}
+                                onClick={handleSearch.handleSearchBox}
+                            />
                         ))}
                     </SearchResult>
             </LogoContainer>
@@ -80,7 +81,7 @@ interface SearchProp {
     display?: string;
     visible?: string,
     height?: string,
-}
+};
 
 const LogoContainer = styled.div`
     display: flex;

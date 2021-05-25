@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import musicStore from '../../stores/musicStore';
-import MainSongBoxObserver from './MainSongBox';
+import MainSongBox from './MainSongBox';
 import LoadingSpinner from '../../LoadingSpinener'
 import { observer } from 'mobx-react';
 
@@ -16,13 +16,14 @@ const NewIndie: React.FC= observer(() => {
         {Array.isArray(musicStore.lastestList) ?
             <Container>
                 {musicStore.lastestList.map(item => (
-                    <MainSongBoxObserver width='30px'
-                                         item={item}
-                                         key={item.id}
-                                         />
+                    <MainSongBox width='30px'
+                        item={item}
+                        key={item.id}
+                    />
                 ))}
             </Container> : 
-             <LoadingSpinner />}
+            <LoadingSpinner />
+        }
         </>
     );
 });
