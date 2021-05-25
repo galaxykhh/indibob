@@ -5,7 +5,7 @@ import { MusicData } from '../stores/musicStore';
 import authStore from '../stores/authStore';
 
 export const usePlayer = () => {
-    const audio = useRef<HTMLAudioElement>(null); // 오디오 엘리먼트 ref
+    const audio = useRef<HTMLAudioElement>(null);
     const totalProgress = useRef<HTMLDivElement>(null); 
     const progressHandler = useRef<HTMLDivElement>(null); 
     const totalVolume = useRef<HTMLDivElement>(null);

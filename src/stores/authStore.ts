@@ -28,8 +28,8 @@ class AuthStore implements IAuthStore {
             signOut: action.bound,
             deleteAccount: action.bound,
             signUp: action,
-        })
-    }
+        });
+    };
 
     //유효한 토큰을 가지고 있을 경우에, 자동으로 로그인 + 토큰 재발급
 

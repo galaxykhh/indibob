@@ -1,27 +1,55 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { slideUp, slideDown } from '../../style/keyframes';
-import { useSearch } from '../../hooks/useSearch';
 import { observer } from 'mobx-react';
 import musicStore from '../../stores/musicStore';
 import authStore from '../../stores/authStore';
 import ResultItem from './ResultItem';
-import { useForm, SubmitHandler } from 'react-hook-form';
+
+type DisplayType = 'none' | 'block';
 
 interface word {
     word: string;
 };
 
 const Header: React.FC = observer(() => {
-    
-    const handleSearch = useSearch();
-    const { register, handleSubmit } = useForm<word>();
+    const [animation, setAnimation] = useState<boolean>(true); // 검색 애니메이션 boolean
+    const [display, setDisplay] = useState<DisplayType>('none'); // 맨 처음 애니메이션이 작동하는걸 보여주지 않기위해 기본값으로 none 설정
+    const [isExist, setIsExist] = useState<boolean>(false);
+    const searchInput = useRef<HTMLInputElement>(null); // 검색창 인풋
 
-    const onSubmit: SubmitHandler<word> = () => {
-        handleSearch.handleInput();
+    const toggleSearchBtn = (): void => {
+        if (animation) { 
+            setAnimation(!animation); // 애니메이션을 boolean 트리거
+            searchInput.current?.focus(); // 애니메이션이 끝날쯤에 인풋에 포커스
+        } else {
+            setAnimation(!animation);
+        };
+    };
+
+    const handleSearchBox = (): void => {
+        if (display === 'none') { // 최초 display가 none일 경우에 block으로 설정
+            setDisplay('block');
+            toggleSearchBtn();
+        } else {
+            toggleSearchBtn();
+            searchInput.current!.value = ''; // 검색창 초기화
+            setIsExist(false);
+        };
+    };
+
+    const handleInput = (): void => {
+        if (searchInput.current) {
+            if (searchInput.current.value.replace(/ /g,'') === '') {
+                setIsExist(false);
+            } else {
+                musicStore.getSearchResult(searchInput.current.value);
+                setIsExist(true);
+            };
+        };
     };
 
     return (
@@ -44,18 +72,17 @@ const Header: React.FC = observer(() => {
             <LogoContainer>
                     <Logo to='/' >INDIEBOB</Logo>
                     <SearchBtnWrap>
-                        <SearchBtn onClick={handleSearch.handleSearchBox}
-                            icon={handleSearch.animation ? faSearch : faTimes}
+                        <SearchBtn onClick={handleSearchBox}
+                            icon={animation ? faSearch : faTimes}
                         />
                     </SearchBtnWrap>
-                    <SearchBox {...register('word')}
-                        display={handleSearch.display}
-                        animation={handleSearch.animation}
-                        ref={handleSearch.searchInput}
-                        onChange={handleSubmit(onSubmit)}
+                    <SearchBox display={display}
+                        animation={animation}
+                        ref={searchInput}
+                        onChange={handleInput}
                     />
-                    <SearchResult visible={handleSearch.isExist ? 'visible' : 'hidden'}
-                        animation={handleSearch.animation}
+                    <SearchResult visible={isExist ? 'visible' : 'hidden'}
+                        animation={animation}
                         height={`${(musicStore.searchResult.length * 40) + 50}px`} // 결과물 한개당 40픽셀을 주고, 검색창 크기의 50px만큼 기본적으로 설정.
                     >
                         <div style={{ height: '50px' }} />
@@ -65,7 +92,7 @@ const Header: React.FC = observer(() => {
                                 artist={x.artist}
                                 key={x.id}
                                 id={x.id}
-                                onClick={handleSearch.handleSearchBox}
+                                onClick={handleSearchBox}
                             />
                         ))}
                     </SearchResult>

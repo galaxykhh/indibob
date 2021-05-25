@@ -1,21 +1,37 @@
+import React, { useState } from 'react'
 import styled from 'styled-components';
 import ListBar from './ListBar';
 import { observer } from 'mobx-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import musicStore from '../../stores/musicStore';
 import { NavLink } from 'react-router-dom';
-import { useHandleTab } from '../../hooks/useHandleTab';
-import { usePlayer } from '../../hooks/usePlayer';
+import { usePlayer } from '../../hook/usePlayer';
 import { faAngleDoubleLeft, faPlay,faPause, faStepBackward, faStepForward, faVolumeUp, faVolumeMute, faSync, faRandom } from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
 import { toJS } from 'mobx';
 import Modal from '../Modal/Modal';
 import authStore from '../../stores/authStore';
 
+type DisplayType = 'none' | 'block';
+
 const PlayBar: React.FC = observer(() => {
-    const audio = usePlayer();
-    const progressHandler = useHandleTab();
+    const [handleTab, setHandleTab] = useState<boolean>(false);
+    const [display, setDisplay] = useState<DisplayType>('none');
     const playList = toJS(musicStore.playList);
+    const audio = usePlayer();
+
+    const toggleList = (): void => {
+        setHandleTab(!handleTab);
+    };
+
+    const handleListBar = (): void => {
+        if (display === 'none') {
+            setDisplay('block');
+            toggleList();
+        } else {
+            toggleList();
+        };
+    };
 
     useEffect(() => {
         audio.handleAutoPlay(musicStore.trackAvailable);
@@ -109,17 +125,17 @@ const PlayBar: React.FC = observer(() => {
                 </VolumeControllerBox>
                 
                 <TabHandlerBox >
-                    <TablHandlerWrap rotate={progressHandler.handleTab} >
+                    <TablHandlerWrap $rotate={handleTab} >
                         <TabHandler icon={faAngleDoubleLeft}
-                                    onClick={progressHandler.handleListBar}
+                                    onClick={handleListBar}
                                     />
                     </TablHandlerWrap>
                 </TabHandlerBox>
 
             </Container>
             
-            <ListBar handletab={progressHandler.handleTab}
-                display={progressHandler.display}
+            <ListBar handletab={handleTab}
+                display={display}
                 reset={() => audio.handlePlayPause(playList ,musicStore.handleTrackAvailable)}
             />
             <Audio src={playList[musicStore.trackIndex]?.src}
@@ -283,8 +299,8 @@ const TabHandlerBox = styled.div`
     }
 `;
 
-const TablHandlerWrap = styled.div<{rotate: boolean}>`
-    transform: ${props => props.rotate ? 'rotate(180deg)' : 'rotate(0deg)'};
+const TablHandlerWrap = styled.div<{$rotate: boolean}>`
+    transform: ${props => props.$rotate ? 'rotate(180deg)' : 'rotate(0deg)'};
     transition: 0.4s ease;
     margin-right: 50px;
 `;
