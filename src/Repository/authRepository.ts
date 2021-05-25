@@ -1,12 +1,12 @@
 import { AxiosResponse } from 'axios';
 import { indieInstance } from './indieInstance';
 
-interface ISignIn {
+export interface ISignIn {
     account: string;
     password: string;
 };
 
-interface ISignUp extends ISignIn {
+export interface ISignUp extends ISignIn {
     lastName: string;
     firstName: string;
 };

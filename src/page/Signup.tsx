@@ -1,92 +1,124 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { useHistory } from 'react-router-dom';
+import authRepository from '../repository/authRepository';
 import styled from 'styled-components';
-import { useSignup } from '../hooks/useSignup';
+import authStore from '../stores/authStore';
+
+interface Inputs {
+    firstName: string;
+    lastName: string;
+    account: string;
+    password: string;
+    passwordCheck: string;
+}
 
 const Signup: React.FC = () => {
-    const signup = useSignup();
+        const { register, handleSubmit, setError, watch, formState: { errors } } = useForm<Inputs>();
+        const [isChecked, setIsChecked] = useState<boolean>(false);
+        const history = useHistory();
+    
+        useEffect(() => { // 계정 중복확인을 받고나서, input 내용이 달라질 경우 다시 스테이트에 null값을 준다.
+            setIsChecked(false);
+        }, [watch('account')]) // eslint-disable-line
+    
+        const pushSignIn = (): void => {
+            history.push('/signin');
+        };
+    
+        const onSubmit: SubmitHandler<Inputs> = async (data) => {
+            if (!isChecked) {
+                setError('account', { type: 'notChecked' });
+                return;
+            };
+            authStore.signUp(data, pushSignIn);
+        };
+    
+        const checkDuplicated = async (account: string): Promise<void> => {
+            const { data: { message } } = await authRepository.checkDuplicated(account);
+            if (message === 'duplicated') {
+                setError('account', { type: 'duplicated' });
+                return
+            };
+            if (message === 'notExist') {
+                setError('account', { type: 'notExist' });
+                setIsChecked(true)
+            };
+        };
 
     return (
-        <Column marginTop='80px' >
-            <Row jc='space-between' >
-                <Column>
-                    <Input width='160px'
-                        mr='15px'
-                        placeholder='성'
-                        {...signup.register('lastName', {
-                            pattern: { value:  /[가-힣]+$/, message: '한글로 정확히 입력해주세요' },
-                            required: '성을 입력해주세요'
+        <form onSubmit={handleSubmit(onSubmit)} >
+            <Column marginTop='80px' >
+                <Row jc='space-between' >
+                    <Column>
+                        <Input width='160px'
+                            mr='15px'
+                            placeholder='성'
+                            {...register('lastName', {
+                                pattern: { value:  /[가-힣]+$/, message: '한글로 정확히 입력해주세요' },
+                                required: '성을 입력해주세요'
+                            })}
+                        />
+                        {errors.lastName && <ErrorMsg> {errors.lastName.message} </ErrorMsg>}
+                    </Column>
+                    <Column>
+                        <Input width='160px'
+                            ml='15px'
+                            placeholder='이름'
+                            {...register('firstName', {
+                                pattern: { value:  /[가-힣]+$/, message: '한글로 정확히 입력해주세요' },
+                                required: '이름을 입력해주세요'
+                            })}
+                        />
+                        {errors.firstName && <ErrorMsg> {errors.firstName.message} </ErrorMsg>}
+                    </Column>
+                </Row>
+                    <Input width='385px'
+                        placeholder='아이디 (영어 대소문자, 숫자 조합 7~16자)'
+                        {...register('account', {
+                            required: '아이디를 입력해주세요',
+                            pattern: { value: /^[a-zA-Z0-9]+$/, message: '영어, 숫자만을 조합하여 입력해주세요'},
+                            minLength: { value: 7, message: '아이디가 너무 짧습니다' },
+                            maxLength: { value: 16, message: '아이디가 너무 깁니다' },
                         })}
                     />
-                    {signup.errors.lastName && <ErrorMsg> {signup.errors.lastName.message} </ErrorMsg>}
-                </Column>
-                <Column>
-                    <Input width='160px'
-                        ml='15px'
-                        placeholder='이름'
-                        {...signup.register('firstName', {
-                            pattern: { value:  /[가-힣]+$/, message: '한글로 정확히 입력해주세요' },
-                            required: '이름을 입력해주세요'
-                        })}
-                    />
-                    {signup.errors.firstName && <ErrorMsg> {signup.errors.firstName.message} </ErrorMsg>}
-                </Column>
-            </Row>
+                    {errors.account && <ErrorMsg> {errors.account.message} </ErrorMsg>}
+                    {errors.account && errors.account.type === 'duplicated' && <ErrorMsg> 이미 사용중인 아이디입니다 </ErrorMsg>}
+                    {errors.account && errors.account.type === 'notChecked' && <ErrorMsg> 아이디 중복확인을 해주세요 </ErrorMsg>}
+                    {errors.account && errors.account.type === 'notExist' && <Msg> 사용 가능한 아이디입니다 </Msg>}
+                    <CheckBtn onClick={() => checkDuplicated(watch('account'))}>
+                        중복확인
+                    </CheckBtn>
                 <Input width='385px'
-                    placeholder='아이디 (영어 대소문자, 숫자 조합 7~16자)'
-                    {...signup.register('account', {
-                        required: '아이디를 입력해주세요',
-                        pattern: { value: /^[a-zA-Z0-9]+$/, message: '영어, 숫자만을 조합하여 입력해주세요'},
-                        minLength: { value: 7, message: '아이디가 너무 짧습니다' },
-                        maxLength: { value: 16, message: '아이디가 너무 깁니다' },
+                    placeholder='비밀번호 (조합 상관없이 8~19자)'
+                    autoComplete='off'
+                    type='password'
+                    {...register('password', {
+                        required: '비밀번호를 입력해주세요',
+                        minLength: { value: 8, message: '비밀번호가 너무 짧습니다' },
+                        maxLength: { value: 19, message: '비밀번호가 너무 깁니다' }
                     })}
-                    onKeyPress={signup.enterToCheck}
                 />
-                {signup.errors.account && <ErrorMsg> {signup.errors.account?.message} </ErrorMsg>}
-                {signup.getValues('account') !== '' && !signup.errors.account && signup.duplicated === false &&
-                <div style={{color: '#8CD790', fontSize: '15px'  }}> 사용 가능한 아이디입니다 </div>}
-                {signup.getValues('account') !== '' && !signup.errors.account && signup.duplicated === true &&
-                <ErrorMsg> 이미 사용중인 아이디입니다 </ErrorMsg>}
-                <CheckBtn width='415px'
-                    onClick={() => signup.checkDuplicated(signup.getValues('account'))}
-                    ref={signup.checkBtn}
-                >
-                    중복확인
-                </CheckBtn>
-            <Input width='385px'
-                placeholder='비밀번호 (조합 상관없이 8~19자)'
-                autoComplete='off'
-                type='password'
-                {...signup.register('password', {
-                    required: '비밀번호를 입력해주세요',
-                    minLength: { value: 8, message: '비밀번호가 너무 짧습니다' },
-                    maxLength: { value: 19, message: '비밀번호가 너무 깁니다' }
-                })}
-            />
-            {signup.errors.password && <ErrorMsg> {signup.errors.password.message} </ErrorMsg>}
+                {errors.password && <ErrorMsg> {errors.password.message} </ErrorMsg>}
 
-            <Input width='385px'
-                placeholder='비밀번호확인'
-                autoComplete='off'
-                type='password'
-                {...signup.register('passwordCheck', {
-                    validate: check => check === signup.getValues('password')
-                })}
-                onKeyDown={signup.enterToSignup}
-            />
-            {signup.errors.passwordCheck && <ErrorMsg> 비밀번호가 일치하지 않습니다 </ErrorMsg>}
-            {!signup.errors.password && signup.getValues('password') !== '' && signup.getValues('password') === signup.getValues('passwordCheck') &&
-            <div style={{color: '#8CD790', fontSize: '15px'  }}> 비밀번호가 일치합니다 </div>}
-            
-            <NavLink to='signup' >
-                <SignupBtn onClick={signup.handleSubmit(signup.signUp)}
-                    ref={signup.signUpBtn}
-                    width='415px'
-                >
-                    확인
-                </SignupBtn>
-            </NavLink>
-        </Column>
+                <Input width='385px'
+                    placeholder='비밀번호확인'
+                    autoComplete='off'
+                    type='password'
+                    {...register('passwordCheck', {
+                        required: '비밀번호를 입력해주세요',
+                        validate: check => check === watch('password')
+                    })}
+                />
+                {errors.passwordCheck && <ErrorMsg> {errors.passwordCheck.message} </ErrorMsg>}
+                {errors.passwordCheck && errors.passwordCheck.type === 'validate' && <ErrorMsg> 비밀번호가 일치하지 않습니다 </ErrorMsg>}
+                    <SignupBtn onClick={handleSubmit(onSubmit)}
+                        type='submit'
+                    >
+                        확인
+                    </SignupBtn>
+            </Column>
+        </form>
     )
 }
 
@@ -129,11 +161,11 @@ const Input = styled.input<IInput>`
     }
 `;
 
-const SignupBtn = styled.button<{width: string}>`
+const SignupBtn = styled.button`
     border: 1px solid white; border-radius: 50px;
     font-size: 17px;
     color: white;
-    width: ${props => props.width};
+    width: 415px;
     height: 50px;
     cursor: pointer;
     margin-bottom: 12px;
@@ -149,4 +181,8 @@ const ErrorMsg = styled.div`
     font-size: 15px;
     color: #dd3d3d;
     text-align: center;
+`;
+
+const Msg = styled(ErrorMsg)`
+    color: #8CD790;
 `;

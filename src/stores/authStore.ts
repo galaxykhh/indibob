@@ -1,5 +1,5 @@
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
-import authRepository from '../repository/authRepository';
+import authRepository, { ISignIn, ISignUp } from '../repository/authRepository';
 
 interface IUser {
     lastName: string;
@@ -27,6 +27,7 @@ class AuthStore implements IAuthStore {
             signIn: action.bound,
             signOut: action.bound,
             deleteAccount: action.bound,
+            signUp: action,
         })
     }
 
@@ -69,7 +70,7 @@ class AuthStore implements IAuthStore {
     };
 
     // 로그인
-    public async signIn(data: { account: string, password: string }): Promise<void> {
+    public async signIn(data: ISignIn): Promise<void> {
         try {
             const { data: { message, userData, token }} =  await authRepository.signIn(data);
             runInAction(() => {
@@ -100,6 +101,21 @@ class AuthStore implements IAuthStore {
             this.setUser(null);
             push();
         });
+    };
+
+    public async signUp(data: ISignUp, push: () => void): Promise<void> {
+        try {
+            const { data: { message } } = await authRepository.signUp(data);
+            runInAction(() => {
+                if (message === 'success') {
+                    alert('회원가입이 완료되었습니다');
+                    push();
+                };
+            });
+        } catch(err) {
+            console.log(err);
+            alert('서버에 오류가 있습니다');
+        };
     };
 };
 
