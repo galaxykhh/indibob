@@ -1,7 +1,9 @@
-import { AxiosResponse } from 'axios';
 import { action, makeObservable, observable, runInAction } from 'mobx';
 import musicRepository from '../repository/musicRepository';
 import { HOT10, LASTEST10 } from '../config';
+import authStore from './authStore';
+import React from 'react';
+
 export interface MusicData {
     id: string;
     songTitle: string;
@@ -25,6 +27,9 @@ class MusicStore {
     public lastestList: MusicData[] | '' = '';
     public selectedTrack: SelectedData = {id: '', albumTitle: '', songTitle: '', artist: '', image: '', bob: 0, date: 0, src: ''};
     public selectedArtist: SelectedData[] = [];
+    public duration: number | undefined = undefined;
+    public currentTime: number | undefined = undefined;
+    public volume: number | undefined = undefined;
 
     constructor() {
         makeObservable(this, {
@@ -36,6 +41,9 @@ class MusicStore {
             lastestList: observable,
             selectedTrack: observable,
             selectedArtist: observable,
+            duration: observable,
+            currentTime: observable,
+            volume: observable,
             setTrackAvailable: action,
             setTrackIndex: action,
             setSearchResult: action,
@@ -43,6 +51,10 @@ class MusicStore {
             setLastestList: action,
             setSelectedTrack: action,
             setSelectedArtist: action,
+            setDuration: action,
+            setCurrentTime: action,
+            setVolume: action,
+            handleCurrentTime: action,
             getHotList: action,
             getLastestList: action,
             getSelectedTrackInfo: action,
@@ -51,9 +63,10 @@ class MusicStore {
             handleTrackAvailable: action.bound,
             handleCurrentMusic: action,
             handleAddTrack: action,
+            handlePlayPause: action,
             handleDelete: action,
-            handlePrev: action,
-            handleNext: action,
+            playPrev: action,
+            playNext: action,
         });
     };
 
@@ -83,6 +96,30 @@ class MusicStore {
 
     public setSearchResult(data: MusicData[]): void {
         this.searchResult = data;
+    };
+
+    public setDuration(duration: number | undefined): void {
+        if (authStore.user === null) {
+            this.duration = 60;
+        } else {
+            this.duration = duration;
+        };
+    };
+
+    public setCurrentTime(currentTime: number | undefined): void {
+        this.currentTime = currentTime;
+    };
+
+    public setVolume(volume: number | undefined): void {
+        this.volume = volume;
+    };
+
+    public handleCurrentTime(isRandom: boolean, currentTime: number | undefined): void {
+        if (authStore.user === null && currentTime! >= 60) {
+            this.playNext(isRandom);
+        } else {
+            this.setCurrentTime(currentTime);
+        };
     };
     // Hot10 곡 리스트를 서버에서 가져온다 [HotTen]
     public async getHotList(): Promise<void> {
@@ -147,6 +184,19 @@ class MusicStore {
             showModal();
         };
     };
+
+    public handlePlayPause(handleAudio: () => void): void {
+        if (this.playList.length === 0) {
+            return;
+        };
+        if (this.trackAvailable) {
+            this.setTrackAvailable(false);
+            handleAudio();
+        } else {
+            this.setTrackAvailable(true);
+            handleAudio();
+        };
+    };
     // 재생목록 선택 곡 삭제 [ListItem] --- 재생중인 곡이 바뀌지 않게 인덱스 핸들링
     public handleDelete(song: MusicData, reset: () => void) {
         const index = this.playList.indexOf(song);
@@ -161,7 +211,7 @@ class MusicStore {
         };
     };
     // 앞곡으로 변경
-    public handlePrev(isRandom: boolean) {
+    public playPrev(isRandom: boolean) {
         const randomNumber = Math.floor(Math.random() * this.playList?.length);
         if (isRandom === false) {
             if (this.trackIndex - 1 < 0) { // 맨 첫곡에서 누르면 마지막 곡 재생
@@ -179,7 +229,7 @@ class MusicStore {
         };
     };
     // 뒷곡으로 변경
-    public handleNext(isRandom: boolean) {
+    public playNext(isRandom: boolean) {
         const randomNumber = Math.floor(Math.random() * this.playList?.length);
         if (isRandom === false) {
             if (this.trackIndex + 1 >= this.playList.length) {
@@ -188,7 +238,6 @@ class MusicStore {
                 this.setTrackIndex(this.trackIndex + 1);
             };
         } else if (this.playList?.length === 1) {
-            return;
         } else if (randomNumber === this.trackIndex) {
             const lastTrackIndex = this.playList.length - 1;
             this.setTrackIndex(randomNumber + 1 > lastTrackIndex ? randomNumber - 1 : randomNumber + 1);
@@ -196,7 +245,8 @@ class MusicStore {
             this.setTrackIndex(randomNumber);
         };
     };
-    // handlePrev, handleNext를 usePlayer 내부 함수로 사용하지 않는 이유는
+
+    // playPrev, handleNext를 usePlayer 내부 함수로 사용하지 않는 이유는
     // musicStore의 변수를 사용하지 않는 기본적인 정지, 다시 재생하는 기능은 usePlayer에서 관리를 하고,
     // 변수를 사용하여 핸들링 해주는 기능은 musicStore 내부 메소드로 적어둠.
 };
