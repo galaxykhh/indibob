@@ -1,14 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import styled from 'styled-components';
-import ListBar from './ListBar';
 import { observer } from 'mobx-react';
+import { faAngleDoubleLeft, faPlay,faPause, faStepBackward, faStepForward, faVolumeUp, faVolumeMute, faSync, faRandom } from '@fortawesome/free-solid-svg-icons';
+import moment from 'moment';
+import 'moment-duration-format';
+import ListBar from './ListBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import musicStore from '../../stores/musicStore';
 import { NavLink } from 'react-router-dom';
-import { usePlayer } from '../../hook/usePlayer';
-import { faAngleDoubleLeft, faPlay,faPause, faStepBackward, faStepForward, faVolumeUp, faVolumeMute, faSync, faRandom } from '@fortawesome/free-solid-svg-icons';
 import { useEffect } from 'react';
 import { toJS } from 'mobx';
+import { MusicData } from '../../stores/musicStore';
 import Modal from '../Modal/Modal';
 import authStore from '../../stores/authStore';
 
@@ -18,7 +20,145 @@ const PlayBar: React.FC = observer(() => {
     const [handleTab, setHandleTab] = useState<boolean>(false);
     const [display, setDisplay] = useState<DisplayType>('none');
     const playList = toJS(musicStore.playList);
-    const audio = usePlayer();
+    const audio = useRef<HTMLAudioElement>(null);
+    const totalProgress = useRef<HTMLDivElement>(null); 
+    const progressHandler = useRef<HTMLDivElement>(null);
+    const totalVolume = useRef<HTMLDivElement>(null);
+    const isFirstRun = useRef<boolean>(true);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isRandom, setIsRandom] = useState<boolean>(false);
+    const [isLoop, setIsLoop] = useState<boolean>(false);
+    const [isPlay, setIsPlay] = useState<boolean>(false);
+    const [isMute, setIsMute] = useState<boolean>(false);
+    const [duration, setDuration] = useState<number>();
+    const [currentTime, setCurrentTime] = useState<number>();
+    const [volume, setVolume] = useState<number>();
+    const currentProgressPercent = (currentTime! / duration!) * 100;
+    const currentVolumePercent = (volume!) * 100;
+    
+    const formatDuration = (duration: number | undefined) => {
+        return moment.duration(duration, 'seconds').format('mm:ss', { trim: false });
+    };
+    
+    const setAudioData = (): void => {
+        if (authStore.user === null) {
+            setDuration(60);
+        } else {
+            setDuration(audio.current?.duration);
+            setCurrentTime(audio.current?.currentTime);
+        };
+    };
+    
+    const setAudioTime = (playNext: () => void, playList: MusicData[]): void => {
+        if (authStore.user === null && audio.current!.currentTime >= 60 && playList.length === 1) {
+            handleLoopPlay();
+            return;
+        };
+        if ((authStore.user === null && audio.current!.currentTime >= 60)) {
+            playNext();
+        } else {
+            setCurrentTime(audio.current?.currentTime);
+        };
+    };
+    
+    const setVolumeData = (): void => {
+        setVolume(audio.current?.volume);
+    };
+    
+    const playBack = (): Promise<void> | undefined => {
+        return audio.current?.play();
+    };
+    
+    const showModal = (trackAvailable: boolean): void => {
+        if (trackAvailable === false) {
+            return;
+        };
+        if (authStore.user === null) {
+            setTimeout(() => setIsOpen(false), 1500);
+            setIsOpen(true);
+        };
+    };
+    
+    const handleAutoPlay = (trackAvailable: boolean): void => {
+        if (isFirstRun.current) {
+            isFirstRun.current = false;
+            return;
+        };
+        if (trackAvailable === false) { // 곡을 추가하는 동시에 trackAvailable가 활성화 (musicStore.handleCurrentTrack => handleTrackAvailable)
+            audio.current?.pause();
+        } else {
+            setIsPlay(true); // 가 반환하는 promise => 재생이 가능한 수준까지 로딩이 되면 트랙을 재생
+            playBack()?.then(() => {
+            })
+            .catch(error => {
+            });
+        };
+    };
+    
+    const handlePlayPause = (playList: MusicData[], progressHandler: () => void): void => { // progressHandler = musicStore.handleTrackAvailable
+        if (playList.length === 0) {
+            return
+        } else if (isPlay) {
+            progressHandler(); 
+            setIsPlay(!isPlay);
+            audio.current?.pause();
+        } else {
+            progressHandler();
+            setIsPlay(!isPlay);
+            audio.current?.play();
+        };
+    };
+    
+    const handleMute = (): void => { 
+        const savedVolume = audio.current?.volume; // 사용자가 지정했던 볼륨
+        if (isMute && audio.current) {
+            setIsMute(!isMute);
+            setVolume(savedVolume);
+            audio.current.muted = false;
+        } else if (!isMute && audio.current) {
+            setIsMute(!isMute);
+            setVolume(0);
+            audio.current.muted = true;
+        };
+    };
+    
+    const handleRandom = (): void => {
+        setIsRandom(!isRandom);
+    };
+    
+    const handleLoop = (): void => {
+        setIsLoop(!isLoop);
+    };
+    
+    const handleProgress = (e: React.MouseEvent): void => {
+        if (duration && totalProgress.current && audio.current){
+            let totalWidth = totalProgress.current.offsetWidth;
+            let clickPosition = e?.pageX;
+            if (authStore.user === null) {
+                audio.current.currentTime = (clickPosition! / totalWidth) * 60;
+            } else {
+                audio.current.currentTime = (clickPosition! / totalWidth) * audio.current.duration;
+            }
+        } else {
+            return;
+        };
+    };
+    
+    const handleVolume = (e: React.MouseEvent): void => {
+        if (totalVolume.current && audio.current) { // Progress와 달리 화면 중간에 위치해있기 때문에 클릭지점을 left 거리만큼 계산해야된다. 구글참고
+            const clickedPositionInPage = e.pageX;
+            const progressStart = totalVolume.current.getBoundingClientRect().left;
+            const progressWidth = totalVolume.current.offsetWidth
+            const clickedPositionInBar = clickedPositionInPage - progressStart;
+            const volume = (clickedPositionInBar / progressWidth);
+            audio.current.volume = volume;
+            setVolume(volume);
+        };
+    };
+    
+    const handleLoopPlay = (): void => {
+        audio.current!.currentTime = 0;
+    };
 
     const toggleList = (): void => {
         setHandleTab(!handleTab);
@@ -34,31 +174,31 @@ const PlayBar: React.FC = observer(() => {
     };
 
     useEffect(() => {
-        audio.handleAutoPlay(musicStore.trackAvailable);
+        handleAutoPlay(musicStore.trackAvailable);
     }, [playList]); // eslint-disable-line
 
     useEffect(() => {
-        audio.showModal(musicStore.trackAvailable);
+        showModal(musicStore.trackAvailable);
     }, [musicStore.trackIndex]); // eslint-disable-line
 
     useEffect(() => { // 로그인 상태에 따른 재생가능한 시간 변경
-        audio.setAudioData();
+        setAudioData();
     }, [authStore.user]) // eslint-disable-line
 
     return (
         <>  
-            <Modal isopen={audio.isOpen}>
+            <Modal isopen={isOpen}>
                 로그인 정보가 없어 1분 미리듣기만 가능합니다.
             </Modal>
 
-            <ProgressBar ref={audio.totalProgress}>
-                <ProgressHandler ref={audio.progressHandler} // MDN: linear-gradient 그라데이션 없이 구분선을 정해주어, 퍼센트값을 넣어준다.
-                    onMouseDown={audio.handleProgress}
+            <ProgressBar ref={totalProgress}>
+                <ProgressHandler ref={progressHandler} // MDN: linear-gradient 그라데이션 없이 구분선을 정해주어, 퍼센트값을 넣어준다.
+                    onMouseDown={handleProgress}
                     style={{ 
                         height: '100%',
                         background: `linear-gradient(to right,
-                            rgb(192, 56, 56) ${audio.currentProgressPercent}%,
-                            rgba(192, 56, 56, .5) ${audio.currentProgressPercent}% 100%)`,
+                            rgb(192, 56, 56) ${currentProgressPercent}%,
+                            rgba(192, 56, 56, .5) ${currentProgressPercent}% 100%)`,
                     }}
                 />
             </ProgressBar>
@@ -80,44 +220,44 @@ const PlayBar: React.FC = observer(() => {
                 
                 <TrackController>
                     <ControlBtn icon={faRandom}
-                        style={{color: audio.isRandom ? 'white' : 'grey'}}
-                        onClick={audio.handleRandom}
+                        style={{color: isRandom ? 'white' : 'grey'}}
+                        onClick={handleRandom}
                     />
                     <ControlBtn icon={faStepBackward}
-                        onClick={() => audio.isLoop ?  audio.handleLoopPlay() : musicStore.handlePrev(audio.isRandom)}
+                        onClick={() => isLoop ?  handleLoopPlay() : musicStore.handlePrev(isRandom)}
                     />
-                    <ControlBtn icon={audio.isPlay ? faPause : faPlay}
-                        onClick={() => audio.handlePlayPause(playList ,musicStore.handleTrackAvailable)}
+                    <ControlBtn icon={isPlay ? faPause : faPlay}
+                        onClick={() => handlePlayPause(playList ,musicStore.handleTrackAvailable)}
                     />
                     <ControlBtn icon={faStepForward}
-                        onClick={() => audio.isLoop ?  audio.handleLoopPlay() : musicStore.handleNext(audio.isRandom)}
+                        onClick={() => isLoop ?  handleLoopPlay() : musicStore.handleNext(isRandom)}
                     />
                     <ControlBtn icon={faSync}
-                        style={{ color: audio.isLoop ? 'white' : 'grey' }}
-                        onClick={audio.handleLoop}
+                        style={{ color: isLoop ? 'white' : 'grey' }}
+                        onClick={handleLoop}
                     />
                 </TrackController>
             
                 <TimeViewerBox>
                         <TimeViewer display={playList.length === 0 ? 'none' : 'block'} >
-                            {audio.formatDuration(audio.currentTime)} / {audio.formatDuration(audio.duration)}
+                            {formatDuration(currentTime)} / {formatDuration(duration)}
                         </TimeViewer>
                 </TimeViewerBox>
 
                 <VolumeControllerBox>
                     <VolumeIconBox>
-                        <VolumeIcon icon={audio.isMute ? faVolumeMute : faVolumeUp}
-                            onClick={audio.handleMute}
+                        <VolumeIcon icon={isMute ? faVolumeMute : faVolumeUp}
+                            onClick={handleMute}
                         />
                     </VolumeIconBox>
-                    <VolumeBar ref={audio.totalVolume}
-                        onClick={audio.handleVolume}
+                    <VolumeBar ref={totalVolume}
+                        onClick={handleVolume}
                     >
                         <VolumeHandler style={{
                                 height: '100%',
                                 background: `linear-gradient(to right,
-                                    rgb(255, 255, 255) ${audio.currentVolumePercent}%,
-                                    rgba(255, 255, 255, .5) ${audio.currentVolumePercent}% 100%)`,
+                                    rgb(255, 255, 255) ${currentVolumePercent}%,
+                                    rgba(255, 255, 255, .5) ${currentVolumePercent}% 100%)`,
                             }}
                         />
                     </VolumeBar>
@@ -135,16 +275,16 @@ const PlayBar: React.FC = observer(() => {
             
             <ListBar handletab={handleTab}
                 display={display}
-                reset={() => audio.handlePlayPause(playList ,musicStore.handleTrackAvailable)}
+                reset={() => handlePlayPause(playList ,musicStore.handleTrackAvailable)}
             />
             <Audio src={playList[musicStore.trackIndex]?.src}
-                ref={audio.audio}
+                ref={audio}
                 crossOrigin='anonymous'
                 preload='none'
-                onEnded={() => audio.isLoop ? audio.handleLoopPlay() : musicStore.handleNext(audio.isRandom)}
-                onLoadedData={audio.setAudioData}
-                onTimeUpdate={() => audio.setAudioTime(() => musicStore.handleNext(audio.isRandom), playList)}
-                onCanPlay={audio.setVolumeData}
+                onEnded={() => isLoop ? handleLoopPlay() : musicStore.handleNext(isRandom)}
+                onLoadedData={setAudioData}
+                onTimeUpdate={() => setAudioTime(() => musicStore.handleNext(isRandom), playList)}
+                onCanPlay={setVolumeData}
             />
         </>
     )

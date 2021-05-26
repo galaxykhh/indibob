@@ -55,7 +55,7 @@ class AuthStore implements IAuthStore {
             if (!token) {
                 return
             };
-            const { data: { message, userData }} = await authRepository.autoLogin(); // 해당 토큰의 계정 정보를 가져옴
+            const { data: { message, userData } } = await authRepository.autoLogin(); // 해당 토큰의 계정 정보를 가져옴
             runInAction(() => {
                 if (message === 'valid token') {
                     this.setIsSignIn(true);
@@ -72,7 +72,7 @@ class AuthStore implements IAuthStore {
     // 로그인
     public async signIn(data: ISignIn): Promise<void> {
         try {
-            const { data: { message, userData, token }} =  await authRepository.signIn(data);
+            const { data: { message, userData, token } } =  await authRepository.signIn(data);
             runInAction(() => {
                 if (message === 'error') {
                     alert('아이디 또는 비밀번호 오류입니다');

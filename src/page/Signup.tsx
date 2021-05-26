@@ -14,7 +14,7 @@ interface Inputs {
 }
 
 const Signup: React.FC = () => {
-        const { register, handleSubmit, setError, watch, formState: { errors } } = useForm<Inputs>();
+        const { register, handleSubmit, trigger, setError, watch, formState: { errors } } = useForm<Inputs>();
         const [isChecked, setIsChecked] = useState<boolean>(false);
         const history = useHistory();
     
@@ -35,14 +35,22 @@ const Signup: React.FC = () => {
         };
     
         const checkDuplicated = async (account: string): Promise<void> => {
-            const { data: { message } } = await authRepository.checkDuplicated(account);
-            if (message === 'duplicated') {
-                setError('account', { type: 'duplicated' });
-                return
-            };
-            if (message === 'notExist') {
-                setError('account', { type: 'notExist' });
-                setIsChecked(true)
+            try {
+                await trigger('account');
+                if (errors.account) {
+                    return;
+                };
+                const { data: { message } } = await authRepository.checkDuplicated(account);
+                if (message === 'duplicated') {
+                    setError('account', { type: 'duplicated' });
+                    return
+                };
+                if (message === 'notExist') {
+                    setError('account', { type: 'notExist' });
+                    setIsChecked(true)
+                };
+            } catch(err) {
+                return;
             };
         };
 
@@ -86,7 +94,9 @@ const Signup: React.FC = () => {
                     {errors.account && errors.account.type === 'duplicated' && <ErrorMsg> 이미 사용중인 아이디입니다 </ErrorMsg>}
                     {errors.account && errors.account.type === 'notChecked' && <ErrorMsg> 아이디 중복확인을 해주세요 </ErrorMsg>}
                     {errors.account && errors.account.type === 'notExist' && <Msg> 사용 가능한 아이디입니다 </Msg>}
-                    <CheckBtn onClick={() => checkDuplicated(watch('account'))}>
+                    <CheckBtn onClick={() => checkDuplicated(watch('account'))}
+                        type='button'
+                    >
                         중복확인
                     </CheckBtn>
                 <Input width='385px'
