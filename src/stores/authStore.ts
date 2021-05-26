@@ -69,7 +69,6 @@ class AuthStore implements IAuthStore {
             });
         } catch(err) {
             alert(`서버가 점검중입니다\n잠시 후 시도해주세요`);
-            setTimeout(() => console.clear(), 100);
         };
     };
 
@@ -78,26 +77,34 @@ class AuthStore implements IAuthStore {
         localStorage.removeItem('IndieToken');
     };
 
-    public async deleteAccount(push: () => void): Promise<void> {
-        await authRepository.deleteAccount(this.user!.account);
-        runInAction(() => {
-            this.setUser(null);
-            push();
-        });
+    public async deleteAccount(): Promise<boolean> {
+        try {
+            await authRepository.deleteAccount(this.user!.account);
+            runInAction(() => {
+                this.setUser(null);
+                return true;
+            });
+        } catch(err) {
+            console.log(err);
+        } finally {
+            return false;
+        }
     };
 
-    public async signUp(data: ISignUp, push: () => void): Promise<void> {
+    public async signUp(data: ISignUp): Promise<boolean> {
         try {
             const { data: { message } } = await authRepository.signUp(data);
             runInAction(() => {
                 if (message === 'success') {
                     alert('회원가입이 완료되었습니다');
-                    push();
+                    return true;
                 };
             });
         } catch(err) {
             console.log(err);
             alert('서버에 오류가 있습니다');
+        } finally {
+            return false;
         };
     };
 };

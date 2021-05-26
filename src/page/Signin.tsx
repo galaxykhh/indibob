@@ -14,14 +14,8 @@ const Signin: React.FC = observer(() => {
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
     const history = useHistory();
 
-    const pushMain = () => {
-        if (authStore.user) {
-            history.push('/');
-        };
-    };
-
     useEffect(() => {
-        pushMain();
+        if (authStore.user) history.push('/');
     }, [authStore.user]); // eslint-disable-line
 
     return (

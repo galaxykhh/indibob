@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { faPause, faPlay, faRandom, faStepBackward, faStepForward, faSync } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { observer } from 'mobx-react';
 
 interface ITrackController {
     isRandom: boolean;
@@ -15,7 +16,7 @@ interface ITrackController {
     handlePlayPause: () => void;
 };
 
-const TrackController: React.FC<ITrackController>= ({ isRandom, isLoop, trackAvailable, toggleIsRandom, toggleIsLoop, replay, playNext, playPrev, handlePlayPause }) => {
+const TrackController: React.FC<ITrackController>= observer(({ isRandom, isLoop, trackAvailable, toggleIsRandom, toggleIsLoop, replay, playNext, playPrev, handlePlayPause }) => {
     return (
         <Container>
             <ControlBtn
@@ -25,7 +26,7 @@ const TrackController: React.FC<ITrackController>= ({ isRandom, isLoop, trackAva
             />
             <ControlBtn
                 icon={faStepBackward}
-                onClick={() => isLoop ? replay : playPrev(isRandom)}
+                onClick={isLoop ? replay : () => playPrev(isRandom)}
             />
             <ControlBtn
                 icon={trackAvailable ? faPause : faPlay}
@@ -33,7 +34,7 @@ const TrackController: React.FC<ITrackController>= ({ isRandom, isLoop, trackAva
             />
             <ControlBtn
                 icon={faStepForward}
-                onClick={() => isLoop ? replay() : playNext(isRandom)}
+                onClick={isLoop ? replay : () => playNext(isRandom)}
             />
             <ControlBtn
                 icon={faSync}
@@ -42,7 +43,7 @@ const TrackController: React.FC<ITrackController>= ({ isRandom, isLoop, trackAva
             />
         </Container>
     );
-};
+});
 
 export default TrackController;
 

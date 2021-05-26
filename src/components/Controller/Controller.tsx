@@ -72,9 +72,10 @@ const Controller: React.FC = observer(() => {
     };
 
     const handleAudioState = (): void => {
-        if (musicStore.trackAvailable) {
+        const result = musicStore.handlePlayPause();
+        if (result) {
             audio.current?.play();
-        } else {
+        } else if (!result) {
             audio.current?.pause();
         };
     };
@@ -188,9 +189,9 @@ const Controller: React.FC = observer(() => {
                     toggleIsRandom={toggleIsRandom}
                     toggleIsLoop={toggleIsLoop}
                     replay={replay}
-                    playPrev={musicStore.playPrev}
-                    playNext={musicStore.playNext}
-                    handlePlayPause={() => musicStore.handlePlayPause(handleAudioState)}
+                    playPrev={() => musicStore.playPrev(isRandom)}
+                    playNext={() => musicStore.playNext(isRandom)}
+                    handlePlayPause={handleAudioState}
                 />
 
                 {playList.length !== 0 &&
@@ -218,8 +219,6 @@ const Controller: React.FC = observer(() => {
                 handletab={handleTab}
                 display={display}
                 playList={playList}
-                reset={() => musicStore.handlePlayPause(handleAudioState)}
-                handleCurrentMusic={musicStore.handleCurrentMusic}
                 trackIndex={musicStore.trackIndex}
                 trackAvailable={musicStore.trackAvailable}
             />

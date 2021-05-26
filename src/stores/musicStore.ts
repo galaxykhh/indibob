@@ -1,4 +1,4 @@
-import { action, makeObservable, observable, runInAction } from 'mobx';
+import { action, makeObservable, observable, runInAction, toJS } from 'mobx';
 import musicRepository from '../repository/musicRepository';
 import { HOT10, LASTEST10 } from '../config';
 import authStore from './authStore';
@@ -184,33 +184,38 @@ class MusicStore {
         };
     };
 
-    public handlePlayPause(handleAudio: () => void): void {
+    public handlePlayPause(): boolean | null {
         if (this.playList.length === 0) {
-            return;
+            this.setTrackAvailable(false);
+            return null;
         };
         if (this.trackAvailable) {
             this.setTrackAvailable(false);
-            handleAudio();
+            return false;
         } else {
             this.setTrackAvailable(true);
-            handleAudio();
+            return true;
         };
     };
     // 재생목록 선택 곡 삭제 [ListItem] --- 재생중인 곡이 바뀌지 않게 인덱스 핸들링
-    public handleDelete(song: MusicData, reset: () => void) {
-        const index = this.playList.indexOf(song);
+    public handleDelete(song: MusicData): void {
+        const index = this.playList.findIndex(songs => songs.id === song.id);
+        console.log(index);
         if (index > this.trackIndex){
-            this.playList.splice(this.playList.indexOf(song), 1);
+            this.playList.splice(index, 1);
         } else if (index < this.trackIndex) {
-            this.playList.splice(this.playList.indexOf(song), 1);
+            this.playList.splice(index, 1);
             this.setTrackIndex(this.trackIndex - 1);
-        } else if (index === this.trackIndex) { // 마지막 한 곡까지 완전히 삭제할 경우에, 모든 음악을 종료한다.
-            this.playList.splice(this.playList.indexOf(song), 1);
-            reset();
+        } else if (index === this.trackIndex) {
+            this.playList.splice(index, 1);
+            this.setTrackAvailable(false);
         };
     };
     // 앞곡으로 변경
-    public playPrev(isRandom: boolean) {
+    public playPrev(isRandom: boolean): void {
+        if (!this.playList) {
+            return;
+        };
         const randomNumber = Math.floor(Math.random() * this.playList?.length);
         if (isRandom === false) {
             if (this.trackIndex - 1 < 0) { // 맨 첫곡에서 누르면 마지막 곡 재생
@@ -228,7 +233,10 @@ class MusicStore {
         };
     };
     // 뒷곡으로 변경
-    public playNext(isRandom: boolean) {
+    public playNext(isRandom: boolean): void {
+        if (!this.playList) {
+            return;
+        };
         const randomNumber = Math.floor(Math.random() * this.playList?.length);
         if (isRandom === false) {
             if (this.trackIndex + 1 >= this.playList.length) {
@@ -237,6 +245,8 @@ class MusicStore {
                 this.setTrackIndex(this.trackIndex + 1);
             };
         } else if (this.playList?.length === 1) {
+            this.playList = [];
+            console.log('여기ㅏ')
         } else if (randomNumber === this.trackIndex) {
             const lastTrackIndex = this.playList.length - 1;
             this.setTrackIndex(randomNumber + 1 > lastTrackIndex ? randomNumber - 1 : randomNumber + 1);

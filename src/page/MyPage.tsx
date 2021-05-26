@@ -6,8 +6,12 @@ import { useHistory } from 'react-router';
 
 const MyPage: React.FC = observer(() => {
     const history = useHistory();
-    const pushMain = () => {
-        history.push('/');
+    
+    const deleteAccount = async (): Promise<void> => {
+        const isSuccess = await authStore.deleteAccount();
+        if (isSuccess) {
+            history.push('/');
+        };
     };
 
     return (
@@ -16,7 +20,7 @@ const MyPage: React.FC = observer(() => {
                 <div style={{fontSize: '20px', color: 'white', marginBottom: '20px'}}> 내 정보</div>
                 <div style={{fontSize: '20px', color: 'white'}}> 아이디 : {authStore.user?.account} </div>
                 <div style={{fontSize: '20px', color: 'white'}}> 이름 : {authStore.user?.lastName}{authStore.user?.firstName} </div>
-                <DeleteAccount onClick={() => authStore.deleteAccount(pushMain)} >
+                <DeleteAccount onClick={deleteAccount} >
                     회원탈퇴
                 </DeleteAccount>
             </Box>

@@ -15,15 +15,15 @@ export interface Item {
 interface IListItem{
     item: Item;
     isPlaying: boolean;
-    reset: () => void;
-    handleCurrentMusic: () => void;
+    handleCurrentMusic: (item: Item) => void;
+    handleDelete: (item: Item) => void;
 };
 
-const ListItem: React.FC<IListItem> = observer(({ item, isPlaying, reset, handleCurrentMusic }) => {
+const ListItem: React.FC<IListItem> = observer(({ item, isPlaying, handleCurrentMusic, handleDelete }) => {
     const { image, songTitle, artist } = item;
     return (
         <ItemBox >
-            <ImgDiv onClick={handleCurrentMusic} >
+            <ImgDiv onClick={() => handleCurrentMusic(item)} >
                 <Img url={image}>
                     <PlayingLoader type="Audio"
                         color="rgba(255, 255, 255, 0.8)"
@@ -34,12 +34,12 @@ const ListItem: React.FC<IListItem> = observer(({ item, isPlaying, reset, handle
                 </Img>
             </ImgDiv>
 
-            <TABox onClick={handleCurrentMusic} >
+            <TABox onClick={() => handleCurrentMusic(item)} >
                 <Title> {songTitle} </Title>
                 <Artist> {artist} </Artist>
             </TABox>
 
-            <DeleteBtn onClick={() => musicStore.handleDelete(item, reset)} > × </DeleteBtn>
+            <DeleteBtn onClick={() => handleDelete(item)} > × </DeleteBtn>
             
         </ItemBox>
     );

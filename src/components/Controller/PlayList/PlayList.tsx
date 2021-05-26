@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { MusicData } from '../../../stores/musicStore';
+import { observer } from 'mobx-react';
+import musicStore, { MusicData } from '../../../stores/musicStore';
 import { tabClose, tabOpen } from '../../../style/keyframes';
 import ListItem, { Item } from './ListItem';
 
@@ -8,13 +9,11 @@ interface IPlayList {
     handletab: boolean;
     display: string;
     playList: MusicData[];
-    handleCurrentMusic: (item: Item) => void;
     trackIndex: number;
     trackAvailable: boolean;
-    reset: () => void;
 };
 
-const PlayList: React.FC<IPlayList> = ({ handletab, display, playList, reset, handleCurrentMusic, trackIndex, trackAvailable }) => {
+const PlayList: React.FC<IPlayList> = observer(({ handletab, display, playList, trackIndex, trackAvailable }) => {
     return (
         <Container handletab={handletab}
             display={display}
@@ -25,15 +24,15 @@ const PlayList: React.FC<IPlayList> = ({ handletab, display, playList, reset, ha
                     <ListItem
                         item={item}
                         isPlaying={trackIndex === index && trackAvailable}
-                        reset={reset}
-                        handleCurrentMusic={() => handleCurrentMusic(item)}
+                        handleCurrentMusic={() => musicStore.handleCurrentMusic(item)}
+                        handleDelete={() => musicStore.handleDelete(item)}
                         key={item.id}
                     />
                 ))}
             </ItemBox>
         </Container>
     );
-};
+});
 
 export default PlayList;
 

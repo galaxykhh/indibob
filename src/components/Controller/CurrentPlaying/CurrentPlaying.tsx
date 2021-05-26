@@ -1,6 +1,7 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
 import styled from "styled-components";
+import { observer } from "mobx-react";
+import { NavLink } from "react-router-dom";
 import { MusicData } from "../../../stores/musicStore";
 
 interface ICurrentPlaying {
@@ -8,7 +9,7 @@ interface ICurrentPlaying {
     currentIndex: number;
 }
 
-const CurrentPlaying: React.FC<ICurrentPlaying> = ({ playList, currentIndex }) => {
+const CurrentPlaying: React.FC<ICurrentPlaying> = observer(({ playList, currentIndex }) => {
     return (
         <Container>
             <ImgBox>
@@ -22,7 +23,7 @@ const CurrentPlaying: React.FC<ICurrentPlaying> = ({ playList, currentIndex }) =
             </TABox>
         </Container>
     );
-};
+});
 
 export default CurrentPlaying;
 

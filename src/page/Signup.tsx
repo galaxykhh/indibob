@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import authRepository from '../repository/authRepository';
@@ -14,45 +14,48 @@ interface Inputs {
 }
 
 const Signup: React.FC = () => {
-        const { register, handleSubmit, trigger, setError, watch, formState: { errors } } = useForm<Inputs>();
-        const [isChecked, setIsChecked] = useState<boolean>(false);
-        const history = useHistory();
-    
-        useEffect(() => { // 계정 중복확인을 받고나서, input 내용이 달라질 경우 다시 스테이트에 null값을 준다.
-            setIsChecked(false);
-        }, [watch('account')]) // eslint-disable-line
-    
-        const pushSignIn = (): void => {
+    const { register, handleSubmit, trigger, setError, watch, formState: { errors } } = useForm<Inputs>();
+    const [isChecked, setIsChecked] = useState<boolean>(false);
+    const history = useHistory();
+
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {
+        if (!isChecked) {
+            setError('account', { type: 'notChecked' });
+            return;
+        };
+        const isSuccess = await authStore.signUp(data);
+        if (isSuccess) {
             history.push('/signin');
         };
+    };
     
-        const onSubmit: SubmitHandler<Inputs> = async (data) => {
-            if (!isChecked) {
-                setError('account', { type: 'notChecked' });
+    const checkDuplicated = useCallback( async (account: string): Promise<void> => {
+        try {
+            await trigger('account');
+            if (errors.account) {
                 return;
             };
-            authStore.signUp(data, pushSignIn);
-        };
-    
-        const checkDuplicated = async (account: string): Promise<void> => {
-            try {
-                await trigger('account');
-                if (errors.account) {
-                    return;
-                };
-                const { data: { message } } = await authRepository.checkDuplicated(account);
-                if (message === 'duplicated') {
-                    setError('account', { type: 'duplicated' });
-                    return
-                };
-                if (message === 'notExist') {
-                    setError('account', { type: 'notExist' });
-                    setIsChecked(true)
-                };
-            } catch(err) {
-                return;
+            const { data: { message } } = await authRepository.checkDuplicated(account);
+            if (message === 'duplicated') {
+                setError('account', { type: 'duplicated' });
+                return
             };
+            if (message === 'notExist') {
+                setError('account', { type: 'notExist' });
+                setIsChecked(true)
+            };
+        } catch(err) {
+            return;
         };
+    }, []);
+
+    useEffect(() => { // 계정 중복확인을 받고나서, input 내용이 달라질 경우 다시 false로 변경
+        setError('account', {
+            type: 'required'
+        });
+        setIsChecked(false);
+    }, [watch('account')]) // eslint-disable-line
+    
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} >
