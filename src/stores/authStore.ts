@@ -8,21 +8,16 @@ interface IUser {
 };
 
 interface IAuthStore {
-    isSignIn: boolean;
     user: IUser | null;
 };
 
 class AuthStore implements IAuthStore {
-    private _isSignIn: boolean = false;
     private _user: IUser | null = null;
 
     constructor() {
-        makeObservable<AuthStore, '_isSignIn' | '_user'>(this,{
-            _isSignIn: observable,
+        makeObservable<AuthStore, '_user'>(this,{
             _user: observable,
-            isSignIn: computed,
             user: computed,
-            setIsSignIn: action,
             setUser: action,
             signIn: action.bound,
             signOut: action.bound,
@@ -33,16 +28,8 @@ class AuthStore implements IAuthStore {
 
     //유효한 토큰을 가지고 있을 경우에, 자동으로 로그인 + 토큰 재발급
 
-    public get isSignIn(): boolean {
-        return this._isSignIn;
-    };
-
     public get user(): IUser | null {
         return this._user;
-    };
-
-    public setIsSignIn(boolean: boolean): void {
-        this._isSignIn = boolean;
     };
 
     public setUser(user: IUser | null): void {
@@ -58,10 +45,7 @@ class AuthStore implements IAuthStore {
             const { data: { message, userData } } = await authRepository.autoLogin(); // 해당 토큰의 계정 정보를 가져옴
             runInAction(() => {
                 if (message === 'valid token') {
-                    this.setIsSignIn(true);
                     this.setUser(userData);
-                } else {
-                    return;
                 };
             });
         } catch(err) {
@@ -81,7 +65,6 @@ class AuthStore implements IAuthStore {
                 if (message === 'success') {
                     this.setUser(userData);
                     localStorage.setItem('IndieToken', token);
-                    this.setIsSignIn(true);
                 };
             });
         } catch(err) {
@@ -92,14 +75,12 @@ class AuthStore implements IAuthStore {
 
     public signOut(): void {
         this.setUser(null);
-        this.setIsSignIn(false);
         localStorage.removeItem('IndieToken');
     };
 
     public async deleteAccount(push: () => void): Promise<void> {
         await authRepository.deleteAccount(this.user!.account);
         runInAction(() => {
-            this.setIsSignIn(false);
             this.setUser(null);
             push();
         });

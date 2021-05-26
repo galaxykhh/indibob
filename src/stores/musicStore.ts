@@ -2,7 +2,6 @@ import { action, makeObservable, observable, runInAction } from 'mobx';
 import musicRepository from '../repository/musicRepository';
 import { HOT10, LASTEST10 } from '../config';
 import authStore from './authStore';
-import React from 'react';
 
 export interface MusicData {
     id: string;

@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import GlobalStyle from './style/global';
 import Header from './components/Header/Header';
-import PlayBar from './components/PlayBar/PlayBar';
+import Controller from './components/Controller/Controller';
 // pages
 import Main from './page/Main';
 import SongInfo from './page/SongInfo';
@@ -44,7 +44,7 @@ const App = () => {
                         <MyPage />
                     </PrivateRoute>
                 </Switch>
-                <PlayBar />
+                <Controller />
             </BrowserRouter>
         </>
     );

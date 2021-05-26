@@ -15,14 +15,14 @@ const Signin: React.FC = observer(() => {
     const history = useHistory();
 
     const pushMain = () => {
-        if (authStore.isSignIn === true) {
+        if (authStore.user) {
             history.push('/');
         };
     };
 
     useEffect(() => {
         pushMain();
-    }, [authStore.isSignIn]); // eslint-disable-line
+    }, [authStore.user]); // eslint-disable-line
 
     return (
         <form onSubmit={handleSubmit(authStore.signIn)} >

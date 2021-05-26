@@ -5,7 +5,7 @@ import authStore from '../stores/authStore';
 const PrivateRoute: React.FC<any>= ({ children }) => {
     return (
         <Route
-            render={() => authStore.isSignIn ? (children) : (<Redirect to='/signin'/>)}
+            render={() => authStore.user ? (children) : (<Redirect to='/signin'/>)}
         />
     );
 }

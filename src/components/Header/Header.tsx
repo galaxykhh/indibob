@@ -50,7 +50,7 @@ const Header: React.FC = observer(() => {
 
     return (
         <>
-            {authStore.isSignIn ? 
+            {authStore.user ? 
                 <>
                     <SignOutBtn to='/'
                         onClick={authStore.signOut}

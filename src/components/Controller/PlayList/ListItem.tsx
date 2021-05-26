@@ -1,26 +1,29 @@
 import React from 'react'
 import styled from 'styled-components/';
-import musicStore from '../../stores/musicStore';
+import musicStore from '../../../stores/musicStore';
 import Loader from 'react-loader-spinner';
 import { observer } from 'mobx-react';
 
-interface IListItem{
-    item: {
-        id: string;
-        image: string;
-        songTitle: string;
-        artist: string;
-        src: string;
-    };
-    isPlaying: boolean;
-    reset: () => void;
+export interface Item {
+    id: string;
+    image: string;
+    songTitle: string;
+    artist: string;
+    src: string;
 };
 
-const ListItem: React.FC<IListItem> = observer(({ item, isPlaying, reset }) => {
+interface IListItem{
+    item: Item;
+    isPlaying: boolean;
+    reset: () => void;
+    handleCurrentMusic: () => void;
+};
+
+const ListItem: React.FC<IListItem> = observer(({ item, isPlaying, reset, handleCurrentMusic }) => {
     const { image, songTitle, artist } = item;
     return (
         <ItemBox >
-            <ImgDiv onClick={() => musicStore.handleCurrentMusic(item)} >
+            <ImgDiv onClick={handleCurrentMusic} >
                 <Img url={image}>
                     <PlayingLoader type="Audio"
                         color="rgba(255, 255, 255, 0.8)"
@@ -31,7 +34,7 @@ const ListItem: React.FC<IListItem> = observer(({ item, isPlaying, reset }) => {
                 </Img>
             </ImgDiv>
 
-            <TABox onClick={() => musicStore.handleCurrentMusic(item)} >
+            <TABox onClick={handleCurrentMusic} >
                 <Title> {songTitle} </Title>
                 <Artist> {artist} </Artist>
             </TABox>

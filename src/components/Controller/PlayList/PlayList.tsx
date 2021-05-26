@@ -1,36 +1,41 @@
 import React from 'react';
 import styled from 'styled-components';
-import { tabClose, tabOpen } from '../../style/keyframes';
-import musicStore from '../../stores/musicStore';
-import { observer } from 'mobx-react';
-import ListItem from './ListItem';
+import { MusicData } from '../../../stores/musicStore';
+import { tabClose, tabOpen } from '../../../style/keyframes';
+import ListItem, { Item } from './ListItem';
 
-interface IListBar {
+interface IPlayList {
     handletab: boolean;
     display: string;
+    playList: MusicData[];
+    handleCurrentMusic: (item: Item) => void;
+    trackIndex: number;
+    trackAvailable: boolean;
     reset: () => void;
 };
 
-const ListBar: React.FC<IListBar> = observer(({ handletab, display, reset }) => {
+const PlayList: React.FC<IPlayList> = ({ handletab, display, playList, reset, handleCurrentMusic, trackIndex, trackAvailable }) => {
     return (
         <Container handletab={handletab}
             display={display}
         >
             <Top> 플레이리스트 </Top>
             <ItemBox>
-                {musicStore.playList.map((item, index) => (
-                    <ListItem item={item}
-                        key={item.id}
-                        isPlaying={musicStore.trackIndex === index && musicStore.trackAvailable === true}
+                {playList.map((item, index) => (
+                    <ListItem
+                        item={item}
+                        isPlaying={trackIndex === index && trackAvailable}
                         reset={reset}
+                        handleCurrentMusic={() => handleCurrentMusic(item)}
+                        key={item.id}
                     />
                 ))}
             </ItemBox>
         </Container>
     );
-});
+};
 
-export default ListBar;
+export default PlayList;
 
 const Container = styled.div<{ handletab: boolean, display: string }>`
     position: fixed;
