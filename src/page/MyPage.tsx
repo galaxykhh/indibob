@@ -17,9 +17,9 @@ const MyPage: React.FC = observer(() => {
     return (
         <Flex>
             <Box>
-                <div style={{fontSize: '20px', color: 'white', marginBottom: '20px'}}> 내 정보</div>
-                <div style={{fontSize: '20px', color: 'white'}}> 아이디 : {authStore.user?.account} </div>
-                <div style={{fontSize: '20px', color: 'white'}}> 이름 : {authStore.user?.lastName}{authStore.user?.firstName} </div>
+                <Text style={{ marginBottom: '20px' }}> 내 정보</Text>
+                <Text> 아이디 : {authStore.user?.account} </Text>
+                <Text> 이름 : {authStore.user?.lastName}{authStore.user?.firstName} </Text>
                 <DeleteAccount onClick={deleteAccount} >
                     회원탈퇴
                 </DeleteAccount>
@@ -36,6 +36,11 @@ const Flex = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+`;
+
+const Text = styled.div`
+    font-size: 20px;
+    color: white;
 `;
 
 const Box = styled.div`

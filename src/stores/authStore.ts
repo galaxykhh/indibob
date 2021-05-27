@@ -1,4 +1,4 @@
-import { action, computed, makeObservable, observable, runInAction } from 'mobx';
+import { action, flow, computed, makeObservable, observable, runInAction } from 'mobx';
 import authRepository, { ISignIn, ISignUp } from '../repository/authRepository';
 
 interface IUser {
@@ -19,10 +19,10 @@ class AuthStore implements IAuthStore {
             _user: observable,
             user: computed,
             setUser: action,
-            signIn: action.bound,
-            signOut: action.bound,
-            deleteAccount: action.bound,
-            signUp: action,
+            signIn: flow,
+            signOut: flow,
+            deleteAccount: flow,
+            signUp: flow,
         });
     };
 
@@ -36,37 +36,36 @@ class AuthStore implements IAuthStore {
         this._user = user;
     };
 
-    public async autoLogin(): Promise<void> {
+    public *autoLogin() {
         try {
             const token = localStorage.getItem('IndieToken');
             if (!token) {
-                return
+                return false;
             };
-            const { data: { message, userData } } = await authRepository.autoLogin(); // 해당 토큰의 계정 정보를 가져옴
-            runInAction(() => {
-                if (message === 'valid token') {
-                    this.setUser(userData);
-                };
-            });
+            const { data: { message, userData } } = yield authRepository.autoLogin(); // 해당 토큰의 계정 정보를 가져옴
+            if (message === 'valid token') {
+                this.setUser(userData);
+                return true;
+            };
         } catch(err) {
             console.log(err);
+            alert('서버 오류입니다');
         };
     };
 
     // 로그인
-    public async signIn(data: ISignIn): Promise<void> {
+    public *signIn(data: ISignIn) {
         try {
-            const { data: { message, userData, token } } =  await authRepository.signIn(data);
-            runInAction(() => {
-                if (message === 'error') {
-                    alert('아이디 또는 비밀번호 오류입니다');
-                    return;
-                }
-                if (message === 'success') {
-                    this.setUser(userData);
-                    localStorage.setItem('IndieToken', token);
-                };
-            });
+            const { data: { message, userData, token } } =  yield authRepository.signIn(data);
+            if (message === 'error') {
+                alert('아이디 또는 비밀번호 오류입니다');
+                return;
+            }
+            if (message === 'success') {
+                this.setUser(userData);
+                localStorage.setItem('IndieToken', token);
+                return true;
+            };
         } catch(err) {
             alert(`서버가 점검중입니다\n잠시 후 시도해주세요`);
         };
@@ -77,7 +76,7 @@ class AuthStore implements IAuthStore {
         localStorage.removeItem('IndieToken');
     };
 
-    public async deleteAccount(): Promise<boolean> {
+    public async deleteAccount(): Promise<boolean | void> {
         try {
             await authRepository.deleteAccount(this.user!.account);
             runInAction(() => {
@@ -86,9 +85,7 @@ class AuthStore implements IAuthStore {
             });
         } catch(err) {
             console.log(err);
-        } finally {
-            return false;
-        }
+        };
     };
 
     public async signUp(data: ISignUp): Promise<boolean> {
@@ -103,9 +100,8 @@ class AuthStore implements IAuthStore {
         } catch(err) {
             console.log(err);
             alert('서버에 오류가 있습니다');
-        } finally {
-            return false;
         };
+        return false;
     };
 };
 

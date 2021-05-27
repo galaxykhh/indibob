@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import authStore from '../stores/authStore';
 import { observer } from 'mobx-react';
+import { flowResult } from 'mobx';
 
 interface Inputs {
     account: string;
@@ -14,14 +15,22 @@ const Signin: React.FC = observer(() => {
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
     const history = useHistory();
 
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {
+        const isSuccess = await flowResult(authStore.signIn(data));
+        if (isSuccess) {
+            history.push('/');
+        };
+    };
+
     useEffect(() => {
         if (authStore.user) history.push('/');
     }, [authStore.user]); // eslint-disable-line
 
     return (
-        <form onSubmit={handleSubmit(authStore.signIn)} >
+        <form onSubmit={handleSubmit(onSubmit)} >
         <Flex>
-            <Input placeholder='아이디'
+            <Input
+                placeholder='아이디'
                 {...register('account', {
                     required: '아이디를 입력해주세요',
                     pattern: { value: /^[a-zA-Z0-9]+$/, message: '영문과 숫자만을 조합하여 입력해주세요'},
@@ -30,7 +39,8 @@ const Signin: React.FC = observer(() => {
                 })}
             />
             {errors.account && <ErrorMsg> {errors.account.message} </ErrorMsg>}
-            <Input placeholder='비밀번호'
+            <Input
+                placeholder='비밀번호'
                 autoComplete='off'
                 {...register('password', {
                     required: '비밀번호를 입력해주세요',
@@ -39,7 +49,7 @@ const Signin: React.FC = observer(() => {
                     type='password'
                 />
             {errors.password && <ErrorMsg> {errors.password.message} </ErrorMsg>}
-            <SigninBtn onClick={handleSubmit(authStore.signIn)}
+            <SigninBtn onClick={handleSubmit(onSubmit)}
                 type='submit'
             >
                 로그인
