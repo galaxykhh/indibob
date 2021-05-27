@@ -48,7 +48,25 @@ const Controller: React.FC = observer(() => {
         return audio.current?.play();
     };
 
-    const replay = (): void => {
+    const toggleIsRandom = (): void => {
+        if (isLoop) {
+            setIsLoop(!isLoop);
+            setIsRandom(!isRandom);
+        } else {
+            setIsRandom(!isRandom);
+        };
+    };
+    
+    const toggleIsLoop = (): void => {
+        if (isRandom) {
+            setIsRandom(!isRandom);
+            setIsLoop(!isLoop);
+        } else {
+            setIsLoop(!isLoop);
+        };
+    };
+
+    const loopPlay = (): void => {
         audio.current!.currentTime = 0;
     };
     
@@ -71,8 +89,28 @@ const Controller: React.FC = observer(() => {
         };
     };
 
+    const timeValidator = (): void => {
+        const isNextExist = musicStore.timeValidator(audio.current?.currentTime);
+        if (isNextExist === false && isLoop) { // not signin / no next track / isLoop
+            loopPlay();
+            return;
+        };
+        if (isNextExist === false && !isLoop) { // not signin / no next track / !isLoop
+            musicStore.setTrackAvailable(false);
+            audio.current?.pause();
+            return;
+        }
+        if (isNextExist === true && !isLoop) { // not signIn / next track exist
+            musicStore.playNext(isRandom);
+            return;
+        };
+        if (isNextExist === true && isLoop) {
+            loopPlay();
+        };
+    };
+
     const handleAudioState = (): void => {
-        const result = musicStore.handlePlayPause();
+        const result = musicStore.handlePlayPause(audio.current?.currentTime);
         if (result) {
             audio.current?.play();
         } else if (!result) {
@@ -105,24 +143,6 @@ const Controller: React.FC = observer(() => {
             setIsMute(!isMute);
             musicStore.setVolume(0);
             audio.current.muted = true;
-        };
-    };
-    
-    const toggleIsRandom = (): void => {
-        if (isLoop) {
-            setIsLoop(!isLoop);
-            setIsRandom(!isRandom);
-        } else {
-            setIsRandom(!isRandom);
-        };
-    };
-    
-    const toggleIsLoop = (): void => {
-        if (isRandom) {
-            setIsRandom(!isRandom);
-            setIsLoop(!isLoop);
-        } else {
-            setIsLoop(!isLoop);
         };
     };
     
@@ -188,7 +208,7 @@ const Controller: React.FC = observer(() => {
                     trackAvailable={musicStore.trackAvailable}
                     toggleIsRandom={toggleIsRandom}
                     toggleIsLoop={toggleIsLoop}
-                    replay={replay}
+                    replay={loopPlay}
                     playPrev={() => musicStore.playPrev(isRandom)}
                     playNext={() => musicStore.playNext(isRandom)}
                     handlePlayPause={handleAudioState}
@@ -227,9 +247,9 @@ const Controller: React.FC = observer(() => {
                 ref={audio}
                 crossOrigin='anonymous'
                 preload='none'
-                onEnded={() => isLoop ? replay() : musicStore.playNext(isRandom)}
+                onEnded={isLoop ? loopPlay : () => musicStore.playNext(isRandom)}
                 onLoadedData={() => musicStore.setDuration(audio.current?.duration)}
-                onTimeUpdate={() => musicStore.handleCurrentTime(isRandom, audio.current?.currentTime)}
+                onTimeUpdate={timeValidator}
                 onCanPlay={() => musicStore.setVolume(audio.current?.volume)}
             />
         </>

@@ -53,7 +53,7 @@ class MusicStore {
             setDuration: action,
             setCurrentTime: action,
             setVolume: action,
-            handleCurrentTime: action,
+            timeValidator: action.bound,
             getHotList: action,
             getLastestList: action,
             getSelectedTrackInfo: action,
@@ -65,7 +65,7 @@ class MusicStore {
             handlePlayPause: action,
             handleDelete: action,
             playPrev: action,
-            playNext: action,
+            playNext: action.bound,
         });
     };
 
@@ -113,12 +113,14 @@ class MusicStore {
         this.volume = volume;
     };
 
-    public handleCurrentTime(isRandom: boolean, currentTime: number | undefined): void {
-        if (authStore.user === null && currentTime! >= 60) {
-            this.playNext(isRandom);
-        } else {
-            this.setCurrentTime(currentTime);
+    public timeValidator(currentTime: number | undefined): boolean | void {
+        if (!authStore.user && currentTime! >= 60 && this.playList.length === 1) {
+            return false;
+        } ;
+        if (!authStore.user && currentTime! >= 60 && this.playList.length > 1) {
+            return true;
         };
+        this.setCurrentTime(currentTime);
     };
     // Hot10 곡 리스트를 서버에서 가져온다 [HotTen]
     public async getHotList(): Promise<void> {
@@ -184,10 +186,12 @@ class MusicStore {
         };
     };
 
-    public handlePlayPause(): boolean | null {
+    public handlePlayPause(currentTime: number | undefined): boolean | void {
+        if (!authStore.user && currentTime! >= 60) {
+            return;
+        };
         if (this.playList.length === 0) {
             this.setTrackAvailable(false);
-            return null;
         };
         if (this.trackAvailable) {
             this.setTrackAvailable(false);
@@ -200,7 +204,6 @@ class MusicStore {
     // 재생목록 선택 곡 삭제 [ListItem] --- 재생중인 곡이 바뀌지 않게 인덱스 핸들링
     public handleDelete(song: MusicData): void {
         const index = this.playList.findIndex(songs => songs.id === song.id);
-        console.log(index);
         if (index > this.trackIndex){
             this.playList.splice(index, 1);
         } else if (index < this.trackIndex) {
@@ -234,9 +237,6 @@ class MusicStore {
     };
     // 뒷곡으로 변경
     public playNext(isRandom: boolean): void {
-        if (!this.playList) {
-            return;
-        };
         const randomNumber = Math.floor(Math.random() * this.playList?.length);
         if (isRandom === false) {
             if (this.trackIndex + 1 >= this.playList.length) {
@@ -244,9 +244,8 @@ class MusicStore {
             } else {
                 this.setTrackIndex(this.trackIndex + 1);
             };
-        } else if (this.playList?.length === 1) {
-            this.playList = [];
-            console.log('여기ㅏ')
+        } else if (this.playList.length === 1) {
+            this.setTrackAvailable(false);
         } else if (randomNumber === this.trackIndex) {
             const lastTrackIndex = this.playList.length - 1;
             this.setTrackIndex(randomNumber + 1 > lastTrackIndex ? randomNumber - 1 : randomNumber + 1);
