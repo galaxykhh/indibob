@@ -17,7 +17,7 @@ import { observer } from 'mobx-react';
 const App = observer(() => {
 
     useEffect(() => {
-        authStore.autoLogin();
+        authStore.autoSignIn();
     }, []) // eslint-disable-line
 
     return (

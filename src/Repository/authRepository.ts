@@ -14,7 +14,7 @@ export interface ISignUp extends ISignIn {
 class AuthRepository {
     private path = '/api/auth';
 
-    public autoLogin(): Promise<AxiosResponse> {
+    public autoSignIn(): Promise<AxiosResponse> {
         return indieInstance.get(`${this.path}/autologin`)
     };
 

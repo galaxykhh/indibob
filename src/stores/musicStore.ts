@@ -216,9 +216,6 @@ class MusicStore {
     };
     // 앞곡으로 변경
     public playPrev(isRandom: boolean): void {
-        if (!this.playList) {
-            return;
-        };
         const randomNumber = Math.floor(Math.random() * this.playList?.length);
         if (isRandom === false) {
             if (this.trackIndex - 1 < 0) { // 맨 첫곡에서 누르면 마지막 곡 재생

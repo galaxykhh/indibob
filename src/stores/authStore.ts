@@ -19,7 +19,7 @@ class AuthStore implements IAuthStore {
             _user: observable,
             user: computed,
             setUser: action,
-            autoLogin: flow,
+            autoSignIn: flow,
             signIn: flow,
             signOut: action.bound,
             deleteAccount: flow,
@@ -37,13 +37,13 @@ class AuthStore implements IAuthStore {
         this._user = user;
     };
 
-    public *autoLogin() {
+    public *autoSignIn() {
         try {
             const token = localStorage.getItem('IndieToken');
             if (!token) {
                 return;
             };
-            const { data: { message, userData } } = yield authRepository.autoLogin(); // 해당 토큰의 계정 정보를 가져옴
+            const { data: { message, userData } } = yield authRepository.autoSignIn(); // 해당 토큰의 계정 정보를 가져옴
             if (message === 'valid token') {
                 this.setUser(userData);
             };
