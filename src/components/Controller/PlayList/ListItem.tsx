@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components/';
-import musicStore from '../../../stores/musicStore';
 import Loader from 'react-loader-spinner';
 import { observer } from 'mobx-react';
 

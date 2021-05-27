@@ -2,14 +2,14 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import musicStore from '../../stores/musicStore';
 import MainSongBox from './MainSongBox';
-import LoadingSpinner from '../../LoadingSpinener'
+import LoadingSpinner from '../LoadingSpinener';
 import { observer } from 'mobx-react';
 
 const NewIndie: React.FC= observer(() => {
 
     useEffect(() => {
         musicStore.getLastestList();
-    }, [])
+    }, []);
 
     return (
         <>

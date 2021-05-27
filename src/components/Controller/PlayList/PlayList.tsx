@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { observer } from 'mobx-react';
 import musicStore, { MusicData } from '../../../stores/musicStore';
 import { tabClose, tabOpen } from '../../../style/keyframes';
-import ListItem, { Item } from './ListItem';
+import ListItem from './ListItem';
 
 interface IPlayList {
     handletab: boolean;

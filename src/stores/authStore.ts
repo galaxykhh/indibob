@@ -1,4 +1,4 @@
-import { action, flow, computed, makeObservable, observable, runInAction } from 'mobx';
+import { action, flow, computed, makeObservable, observable } from 'mobx';
 import authRepository, { ISignIn, ISignUp } from '../repository/authRepository';
 
 interface IUser {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import authRepository from '../repository/authRepository';
@@ -30,7 +30,7 @@ const Signup: React.FC = () => {
         };
     };
     
-    const checkDuplicated = useCallback( async (account: string): Promise<void> => {
+    const checkDuplicated = async (account: string): Promise<void> => {
         try {
             await trigger('account');
             if (errors.account) {
@@ -48,7 +48,7 @@ const Signup: React.FC = () => {
         } catch(err) {
             return;
         };
-    }, []);
+    };
 
     useEffect(() => { // 계정 중복확인을 받고나서, input 내용이 달라질 경우 다시 false로 변경
         setError('account', {

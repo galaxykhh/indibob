@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import MainSongBox from './MainSongBox';
-import LoadingSpinner from '../../LoadingSpinener'
+import LoadingSpinner from '../LoadingSpinener';
 import musicStore from '../../stores/musicStore';
 import { observer } from 'mobx-react';
 
@@ -9,7 +9,7 @@ const HotTen: React.FC = observer(() => {
 
     useEffect(() => {
         musicStore.getHotList();
-    }, []); // eslint-disabled-line
+    }, []);
 
     return (
         <>
