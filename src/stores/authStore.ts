@@ -19,8 +19,9 @@ class AuthStore implements IAuthStore {
             _user: observable,
             user: computed,
             setUser: action,
+            autoLogin: flow,
             signIn: flow,
-            signOut: flow,
+            signOut: action.bound,
             deleteAccount: flow,
             signUp: flow,
         });
@@ -40,12 +41,11 @@ class AuthStore implements IAuthStore {
         try {
             const token = localStorage.getItem('IndieToken');
             if (!token) {
-                return false;
+                return;
             };
             const { data: { message, userData } } = yield authRepository.autoLogin(); // 해당 토큰의 계정 정보를 가져옴
             if (message === 'valid token') {
                 this.setUser(userData);
-                return true;
             };
         } catch(err) {
             console.log(err);
@@ -76,32 +76,31 @@ class AuthStore implements IAuthStore {
         localStorage.removeItem('IndieToken');
     };
 
-    public async deleteAccount(): Promise<boolean | void> {
+    public *deleteAccount() {
         try {
-            await authRepository.deleteAccount(this.user!.account);
-            runInAction(() => {
+            const { data: { message } } = yield authRepository.deleteAccount(this.user!.account);
+            if (message === 'deleted') {
                 this.setUser(null);
                 return true;
-            });
+            };
+            return false;
         } catch(err) {
             console.log(err);
         };
     };
 
-    public async signUp(data: ISignUp): Promise<boolean> {
+    public *signUp(data: ISignUp) {
         try {
-            const { data: { message } } = await authRepository.signUp(data);
-            runInAction(() => {
-                if (message === 'success') {
-                    alert('회원가입이 완료되었습니다');
-                    return true;
-                };
-            });
+            const { data: { message } } = yield authRepository.signUp(data);
+            if (message === 'success') {
+                alert('회원가입이 완료되었습니다');
+                return true;
+            };
+            return false;
         } catch(err) {
             console.log(err);
             alert('서버에 오류가 있습니다');
         };
-        return false;
     };
 };
 

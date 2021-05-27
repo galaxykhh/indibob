@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import { observer } from 'mobx-react';
 import authStore from '../stores/authStore';
 import { useHistory } from 'react-router';
+import { flowResult } from 'mobx';
 
 const MyPage: React.FC = observer(() => {
     const history = useHistory();
     
     const deleteAccount = async (): Promise<void> => {
-        const isSuccess = await authStore.deleteAccount();
+        const isSuccess = await flowResult(authStore.deleteAccount());
         if (isSuccess) {
             history.push('/');
         };

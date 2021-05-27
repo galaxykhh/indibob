@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import authRepository from '../repository/authRepository';
 import styled from 'styled-components';
 import authStore from '../stores/authStore';
+import { flowResult } from 'mobx';
 
 interface Inputs {
     firstName: string;
@@ -23,7 +24,7 @@ const Signup: React.FC = () => {
             setError('account', { type: 'notChecked' });
             return;
         };
-        const isSuccess = await authStore.signUp(data);
+        const isSuccess = await flowResult(authStore.signUp(data));
         if (isSuccess) {
             history.push('/signin');
         };

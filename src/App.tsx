@@ -12,8 +12,9 @@ import MyPage from './page/MyPage'
 import PrivateRoute from './components/PrivateRoute';
 import { useEffect } from 'react';
 import authStore from './stores/authStore';
+import { observer } from 'mobx-react';
 
-const App = () => {
+const App = observer(() => {
 
     useEffect(() => {
         authStore.autoLogin();
@@ -48,6 +49,6 @@ const App = () => {
             </BrowserRouter>
         </>
     );
-}
+});
 
 export default App;
