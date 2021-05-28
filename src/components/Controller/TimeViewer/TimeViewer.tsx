@@ -1,16 +1,22 @@
 import React from 'react';
 import styled from 'styled-components';
+import { MusicData } from '../../../stores/musicStore';
 
 interface ITimeViewer {
     currentTime: string;
     duration: string;
+    playList: MusicData[];
 };
 
-const TimeViewer: React.FC<ITimeViewer>= ({ currentTime, duration }) => {
+const TimeViewer: React.FC<ITimeViewer>= ({ playList, currentTime, duration }) => {
     return (
     <Container>
         <Time>
-            {currentTime} / {duration}
+            {playList.length > 0 && 
+            <>
+                {currentTime} / {duration}
+            </>
+            }
         </Time>
     </Container>
     );

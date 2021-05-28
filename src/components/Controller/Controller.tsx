@@ -214,12 +214,11 @@ const Controller: React.FC = observer(() => {
                     handlePlayPause={handleAudioState}
                 />
 
-                {playList.length !== 0 &&
-                    <TimeViewer
-                        currentTime={getCurrentTime()}
-                        duration={getDuration()}
-                    />
-                }
+                <TimeViewer
+                    playList={playList}
+                    currentTime={getCurrentTime()}
+                    duration={getDuration()}
+                />
 
                 <VolumeController
                     isMute={isMute}
