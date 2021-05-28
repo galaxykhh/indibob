@@ -186,7 +186,7 @@ const Controller: React.FC = observer(() => {
 
     return (
         <>  
-            <Modal isopen={isOpen}>
+            <Modal isOpen={isOpen}>
                 로그인 정보가 없어 1분 미리듣기만 가능합니다.
             </Modal>
 
@@ -236,7 +236,7 @@ const Controller: React.FC = observer(() => {
             </Container>
 
             <PlayList
-                handletab={handleTab}
+                handleTab={handleTab}
                 display={display}
                 playList={playList}
                 trackIndex={musicStore.trackIndex}

@@ -22,7 +22,7 @@ const Info: React.FC = observer(() => {
     return (
         <Container>
             <TAContainer>
-                <Modal isopen={isOpen} >
+                <Modal isOpen={isOpen} >
                     이 곡은 이미 플레이 리스트에 있는 곡입니다
                 </Modal>
 

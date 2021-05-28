@@ -1,5 +1,5 @@
 import React from 'react'
-import TopMent from '../components/Header/TopMent';
+import TopAnnounce from '../components/Header/TopAnnounce';
 import CategoryContainer from '../components/Main/CategoryContainer';
 import HotTen from '../components/Main/HotTen';
 import NewIndie from '../components/Main/NewIndie'
@@ -9,7 +9,7 @@ const Main: React.FC = observer(() => {
 
     return (
         <>
-            <TopMent first='Show Your Indie,' second='Let Me Indie' />
+            <TopAnnounce first='Show Your Indie,' second='Let Me Indie' />
             <CategoryContainer to='/' category='HOT 10 Indie'>
                 <HotTen />
             </CategoryContainer>

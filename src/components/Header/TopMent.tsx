@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const TopMent: React.FC<{ first: string, second: string }> = ({ first, second }) => {
+const TopAnnounce: React.FC<{ first: string, second: string }> = ({ first, second }) => {
     return (
         <BGContainer>
             <Text>{first}</Text>
@@ -9,7 +9,7 @@ const TopMent: React.FC<{ first: string, second: string }> = ({ first, second })
         </BGContainer>
     );
 };
-export default TopMent;
+export default TopAnnounce;
 
 const Text = styled.div<{ ml?: string }>`
     font-family: 'Kalam', cursive;

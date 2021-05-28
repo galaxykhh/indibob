@@ -6,16 +6,16 @@ import { tabClose, tabOpen } from '../../../style/keyframes';
 import ListItem from './ListItem';
 
 interface IPlayList {
-    handletab: boolean;
+    handleTab: boolean;
     display: string;
     playList: MusicData[];
     trackIndex: number;
     trackAvailable: boolean;
 };
 
-const PlayList: React.FC<IPlayList> = observer(({ handletab, display, playList, trackIndex, trackAvailable }) => {
+const PlayList: React.FC<IPlayList> = observer(({ handleTab, display, playList, trackIndex, trackAvailable }) => {
     return (
-        <Container handletab={handletab}
+        <Container handleTab={handleTab}
             display={display}
         >
             <Top> 플레이리스트 </Top>
@@ -36,7 +36,7 @@ const PlayList: React.FC<IPlayList> = observer(({ handletab, display, playList, 
 
 export default PlayList;
 
-const Container = styled.div<{ handletab: boolean, display: string }>`
+const Container = styled.div<{ handleTab: boolean, display: string }>`
     position: fixed;
     right: 0;
     top: 0;
@@ -44,7 +44,7 @@ const Container = styled.div<{ handletab: boolean, display: string }>`
     width: 400px;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.9);
-    animation: ${({ handletab}) => handletab ? tabOpen : tabClose} .6s forwards;
+    animation: ${({ handleTab}) => handleTab ? tabOpen : tabClose} .6s forwards;
 `;
 
 const ItemBox = styled.div`

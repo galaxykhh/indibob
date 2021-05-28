@@ -3,16 +3,16 @@ import styled from 'styled-components';
 import { modalOpen, modalClose } from '../../style/keyframes';
 
 interface IModal {
-    isopen: boolean
+    isOpen: boolean
 }
 
-const Modal: React.FC<IModal>= ({ children, isopen }) => {
+const Modal: React.FC<IModal>= ({ children, isOpen }) => {
     return (
-        <Form isopen={isopen}>
+        <Form isOpen={isOpen}>
             <Flex>
-                <Ment>
+                <Announce>
                     {children}
-                </Ment>
+                </Announce>
             </Flex>
         </Form>
     );
@@ -20,8 +20,8 @@ const Modal: React.FC<IModal>= ({ children, isopen }) => {
 
 export default Modal;
 
-const Form = styled.div<{ isopen: boolean }>`
-    display: ${({ isopen }) => isopen ? 'block' : 'none'};
+const Form = styled.div<{ isOpen: boolean }>`
+    display: ${({ isOpen }) => isOpen ? 'block' : 'none'};
     position: fixed;
     top: 50%;
     left: 50%;
@@ -30,7 +30,7 @@ const Form = styled.div<{ isopen: boolean }>`
     margin: -250px;
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 40px;
-    animation: ${({ isopen }) => isopen ? modalOpen : modalClose} 1.5s ease;
+    animation: ${({ isOpen }) => isOpen ? modalOpen : modalClose} 1.5s ease;
 `;
 
 const Flex = styled.div`
@@ -42,7 +42,7 @@ const Flex = styled.div`
     height: 50px;
 `;
 
-const Ment = styled.div`
+const Announce = styled.div`
     color: white;
     font-size: 18px;
     text-align: center;

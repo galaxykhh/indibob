@@ -23,7 +23,7 @@ class MusicStore {
     public trackIndex: number = 0;
     public searchResult: MusicData[] = [];
     public hotList: MusicData[] | '' = ''; // Array.isArray(array) ?... => 데이터를 받아오지 못했을 때 '' 로 초기화 시켜주어 스피너 활성화
-    public lastestList: MusicData[] | '' = '';
+    public latestList: MusicData[] | '' = '';
     public selectedTrack: SelectedData = {id: '', albumTitle: '', songTitle: '', artist: '', image: '', bob: 0, date: 0, src: ''};
     public selectedArtist: SelectedData[] = [];
     public duration: number | undefined = undefined;
@@ -37,7 +37,7 @@ class MusicStore {
             trackIndex: observable,
             searchResult: observable,
             hotList: observable,
-            lastestList: observable,
+            latestList: observable,
             selectedTrack: observable,
             selectedArtist: observable,
             duration: observable,
@@ -47,7 +47,7 @@ class MusicStore {
             setTrackIndex: action,
             setSearchResult: action,
             setHotList: action,
-            setLastestList: action,
+            setLatestList: action,
             setSelectedTrack: action,
             setSelectedArtist: action,
             setDuration: action,
@@ -55,7 +55,7 @@ class MusicStore {
             setVolume: action,
             timeValidator: action.bound,
             getHotList: action,
-            getLastestList: action,
+            getLatestList: action,
             getSelectedTrackInfo: action,
             getSelectedArtistInfo: action,
             getSearchResult: action,
@@ -81,8 +81,8 @@ class MusicStore {
         this.hotList = data;
     };
 
-    public setLastestList(data: MusicData[]): void {
-        this.lastestList = data;
+    public setLatestList(data: MusicData[]): void {
+        this.latestList = data;
     };
 
     public setSelectedTrack(data: SelectedData): void {
@@ -122,18 +122,18 @@ class MusicStore {
         };
         this.setCurrentTime(currentTime);
     };
-    // Hot10 곡 리스트를 서버에서 가져온다 [HotTen]
+    // Hot10 곡 리스트를 서버에서 받아온다 [HotTen]
     public async getHotList(): Promise<void> {
         const { data } = await musicRepository.getData(HOT10);
         runInAction(() => {
             this.setHotList(data);
         });
     };
-    // Lastest10 곡 리스트를 서버에서 받아온다 [NewIndie]
-    public async getLastestList(): Promise<void> {
+    // Latest10 곡 리스트를 서버에서 받아온다 [NewIndie]
+    public async getLatestList(): Promise<void> {
         const { data } = await musicRepository.getData(LASTEST10);
         runInAction(() => {
-            this.setLastestList(data);
+            this.setLatestList(data);
         });
     };
     // 내가 클릭한 노래의 정보를 서버에서 받아온다. [SongInfo]
