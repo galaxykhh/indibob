@@ -12,7 +12,7 @@ class MusicRepository {
         return indieInstance.get(`${this.path}/findtrack/${id}`);
     };
 
-    public fintArtist(artist: string): Promise<AxiosResponse> { // findTrack과 코드는 똑같지만 이름으로 구별하기 쉽기 위해서..
+    public findArtist(artist: string): Promise<AxiosResponse> { // findTrack과 코드는 똑같지만 이름으로 구별하기 쉽기 위해서..
         return indieInstance.get(`${this.path}/findartist/${artist}`);
     };
 

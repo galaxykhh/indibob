@@ -1,4 +1,4 @@
-import { action, makeObservable, observable, runInAction } from 'mobx';
+import { action, makeObservable, observable, flow } from 'mobx';
 import musicRepository from '../repository/musicRepository';
 import { HOT10, LASTEST10 } from '../config';
 import authStore from './authStore';
@@ -54,11 +54,11 @@ class MusicStore {
             setCurrentTime: action,
             setVolume: action,
             timeValidator: action.bound,
-            getHotList: action,
-            getLatestList: action,
-            getSelectedTrackInfo: action,
-            getSelectedArtistInfo: action,
-            getSearchResult: action,
+            getHotList: flow,
+            getLatestList: flow,
+            getSelectedTrackInfo: flow,
+            getSelectedArtistInfo: flow,
+            getSearchResult: flow,
             handleTrackAvailable: action.bound,
             handleCurrentMusic: action,
             handleAddTrack: action,
@@ -123,40 +123,30 @@ class MusicStore {
         this.setCurrentTime(currentTime);
     };
     // Hot10 곡 리스트를 서버에서 받아온다 [HotTen]
-    public async getHotList(): Promise<void> {
-        const { data } = await musicRepository.getData(HOT10);
-        runInAction(() => {
-            this.setHotList(data);
-        });
+    public *getHotList() {
+        const { data } = yield musicRepository.getData(HOT10);
+        this.setHotList(data);
     };
     // Latest10 곡 리스트를 서버에서 받아온다 [NewIndie]
-    public async getLatestList(): Promise<void> {
-        const { data } = await musicRepository.getData(LASTEST10);
-        runInAction(() => {
-            this.setLatestList(data);
-        });
+    public *getLatestList() {
+        const { data } = yield musicRepository.getData(LASTEST10);
+        this.setLatestList(data);
     };
     // 내가 클릭한 노래의 정보를 서버에서 받아온다. [SongInfo]
-    public async getSelectedTrackInfo(parameter: string): Promise<void> {
-        const { data } = await musicRepository.findTrack(parameter);
-        runInAction(() => {
-            this.setSelectedTrack(data);
-        });
+    public *getSelectedTrackInfo(parameter: string) {
+        const { data } = yield musicRepository.findTrack(parameter);
+        this.setSelectedTrack(data);
     };
     // 클릭한 아티스트의 곡 목록을 받아온다. [ArtistInfo]
-    public async getSelectedArtistInfo(parameter: string): Promise<void> {
-        const { data } = await musicRepository.fintArtist(parameter);
-        runInAction(() => {
-            this.setSelectedArtist(data);
-        });
+    public *getSelectedArtistInfo(parameter: string) {
+        const { data } = yield musicRepository.findArtist(parameter);
+        this.setSelectedArtist(data);
     };
     // 검색어가 포함되는 노래 정보를 서버에서 받아온다 [Header, ResultItem]
-    public async getSearchResult(parameter: string): Promise<void> {
+    public *getSearchResult(parameter: string) {
         const replacedWord =  parameter.replace(/ /g,'');
-        const { data } = await musicRepository.searchTrack(replacedWord);
-        runInAction(() => {
-            this.setSearchResult(data);
-        });
+        const { data } = yield musicRepository.searchTrack(replacedWord);
+        this.setSearchResult(data);
     };
 
     public handleTrackAvailable(): void {

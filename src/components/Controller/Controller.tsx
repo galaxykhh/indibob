@@ -154,9 +154,7 @@ const Controller: React.FC = observer(() => {
                 audio.current.currentTime = (clickPosition! / totalWidth) * 60;
             } else {
                 audio.current.currentTime = (clickPosition! / totalWidth) * audio.current.duration;
-            }
-        } else {
-            return;
+            };
         };
     };
     
