@@ -6,8 +6,8 @@ import Controller from './components/Controller/Controller';
 import Main from './page/Main';
 import SongInfo from './page/SongInfo';
 import ArtistInfo from './page/ArtistInfo';
-import Signin from './page/Signin';
-import Signup from './page/Signup';
+import SignIn from './page/SignIn';
+import SignUp from './page/SignUp';
 import MyPage from './page/MyPage'
 import PrivateRoute from './components/PrivateRoute';
 import { useEffect } from 'react';
@@ -36,10 +36,10 @@ const App = observer(() => {
                         <ArtistInfo />
                     </Route>
                     <Route exact path='/signin' >
-                        <Signin />
+                        <SignIn />
                     </Route>
                     <Route exact path='/signup' >
-                        <Signup />
+                        <SignUp />
                     </Route>
                     <PrivateRoute exact path='/mypage'>
                         <MyPage />

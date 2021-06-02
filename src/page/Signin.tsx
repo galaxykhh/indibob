@@ -11,7 +11,7 @@ interface Inputs {
     password: string;
 }
 
-const Signin: React.FC = observer(() => {
+const SignIn: React.FC = observer(() => {
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
     const history = useHistory();
 
@@ -49,24 +49,24 @@ const Signin: React.FC = observer(() => {
                     type='password'
                 />
             {errors.password && <ErrorMsg> {errors.password.message} </ErrorMsg>}
-            <SigninBtn onClick={handleSubmit(onSubmit)}
+            <SignInBtn onClick={handleSubmit(onSubmit)}
                 type='submit'
             >
                 로그인
-            </SigninBtn>
+            </SignInBtn>
             <div style={{color: '#ffffff', marginBottom: '12px'}} > 아직 회원이 아니신가요? </div>
             <div style={{color: '#ffffff'}} > 인디밥 회원이 되어 전체 노래를 감상해보세요! </div>
             <NavLink to='signup' >
-                <SignupBtn>
+                <SignUpBtn>
                     회원가입
-                </SignupBtn>
+                </SignUpBtn>
             </NavLink>
         </Flex>
         </form>
     )
 });
 
-export default Signin;
+export default SignIn;
 
 const Flex = styled.div`
     display: flex;
@@ -94,7 +94,7 @@ const Input = styled.input.attrs(props => ({
     }
 `;
 
-const SigninBtn = styled.button`
+const SignInBtn = styled.button`
     border: 1px solid white; border-radius: 50px;
     background-color: #f1404b;
     font-size: 17px;
@@ -111,7 +111,7 @@ const ErrorMsg = styled.div`
     color: #dd3d3d;
 `;
 
-const SignupBtn = styled(SigninBtn)`
+const SignUpBtn = styled(SignInBtn)`
     margin-top: 20px;
     background-color: #4a74ce;
 `;

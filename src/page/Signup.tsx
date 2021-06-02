@@ -14,7 +14,7 @@ interface Inputs {
     passwordCheck: string;
 }
 
-const Signup: React.FC = () => {
+const SignUp: React.FC = () => {
     const { register, handleSubmit, trigger, setError, watch, formState: { errors } } = useForm<Inputs>();
     const [isChecked, setIsChecked] = useState<boolean>(false);
     const history = useHistory();
@@ -126,17 +126,17 @@ const Signup: React.FC = () => {
                 />
                 {errors.passwordCheck && <ErrorMsg> {errors.passwordCheck.message} </ErrorMsg>}
                 {errors.passwordCheck && errors.passwordCheck.type === 'validate' && <ErrorMsg> 비밀번호가 일치하지 않습니다 </ErrorMsg>}
-                    <SignupBtn onClick={handleSubmit(onSubmit)}
+                    <SignUpBtn onClick={handleSubmit(onSubmit)}
                         type='submit'
                     >
                         확인
-                    </SignupBtn>
+                    </SignUpBtn>
             </Column>
         </form>
     )
 }
 
-export default Signup;
+export default SignUp;
 
 const Column = styled.div<{ marginTop?: string }>`
     display: flex;
@@ -169,7 +169,7 @@ const Input = styled.input<{ width: string, mr?: string, ml?: string }>`
     };
 `;
 
-const SignupBtn = styled.button`
+const SignUpBtn = styled.button`
     border: 1px solid white; border-radius: 50px;
     font-size: 17px;
     color: white;
@@ -181,7 +181,7 @@ const SignupBtn = styled.button`
     background-color: #f1404b;
 `;
 
-const CheckBtn = styled(SignupBtn)`
+const CheckBtn = styled(SignUpBtn)`
     background-color: #4a74ce;
 `;
 

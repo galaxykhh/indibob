@@ -240,10 +240,6 @@ class MusicStore {
             this.setTrackIndex(randomNumber);
         };
     };
-
-    // playPrev, handleNext를 usePlayer 내부 함수로 사용하지 않는 이유는
-    // musicStore의 변수를 사용하지 않는 기본적인 정지, 다시 재생하는 기능은 usePlayer에서 관리를 하고,
-    // 변수를 사용하여 핸들링 해주는 기능은 musicStore 내부 메소드로 적어둠.
 };
 
 const musicStore = new MusicStore();
